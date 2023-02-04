@@ -6,7 +6,7 @@ img_alt: Screenshot of Zoom page with MOSTEC students
 description: |
   Participate in MOSTEC 2021, run by the MIT Office our Engineering Outreach Programs (now MITES), through collaborative classes, projects, and events.
 tags:
-  - Applied Mathematics
+  - Applied Math
   - Science Writing
   - Collaboration
 ---
