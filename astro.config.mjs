@@ -15,6 +15,11 @@ export default defineConfig({
   integrations: [prefetch({
     throttle: 3
   }), compress(), robotsTxt({
-    disableIndexing: true
+    policy: [
+      {
+        userAgent: '*',
+        disallow: '/'
+      }
+    ]
   }), sitemap()]
 });
