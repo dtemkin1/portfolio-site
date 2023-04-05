@@ -12,7 +12,15 @@
   },
   "dependencies": {
     "@astrojs/prefetch": "^0.1.2",
+    "@astrojs/sitemap": "^1.2.1",
     "astro": "^2.1.7",
-    "astro-compress": "^1.1.33"
-  }
+    "astro-compress": "^1.1.33",
+    "astro-robots-txt": "^0.4.1"
+  },
+  "description": "TO-DO: DOCUMENT WHAT I DID IN THIS REPO",
+  "main": "index.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
