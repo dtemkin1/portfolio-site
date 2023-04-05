@@ -14,12 +14,5 @@ export default defineConfig({
   site: 'https://diegotemkin.com',
   integrations: [prefetch({
     throttle: 3
-  }), compress(), robotsTxt({
-    policy: [
-      {
-        userAgent: '*',
-        disallow: '/'
-      }
-    ]
-  }), sitemap()]
+  }), compress(), robotsTxt(), sitemap()]
 });
