@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import siteConfig from '../../site.config'; //FOR ROBOTS-TXT
 
 interface Props {
 	title?: string | undefined;
@@ -49,6 +48,3 @@ const {
 		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 	}
 </script>
-
-<meta name="robots" content={siteConfig.disableIndexing ? 'noindex, nofollow' : 'index, follow'} /> 
-<!-- FOR ROBOTS-TXT -->

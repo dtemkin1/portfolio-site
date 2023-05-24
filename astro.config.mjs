@@ -4,10 +4,6 @@ import prefetch from "@astrojs/prefetch";
 import compress from "astro-compress";
 
 // https://astro.build/config
-import robotsTxt from "astro-robots-txt";
-import robotsConfig from './robots-txt.config'; //For advanced config
-
-// https://astro.build/config
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
@@ -15,5 +11,5 @@ export default defineConfig({
   site: 'https://diegotemkin.com',
   integrations: [prefetch({
     throttle: 3
-  }), compress(), robotsTxt(robotsConfig), sitemap()]
+  }), sitemap(), compress()]
 });
