@@ -6,11 +6,13 @@ interface Props {
 }
 
 const { data, slug } = Astro.props.project;
+import { Image } from '@astrojs/image/components';
 ---
 
 <a rel="prefetch" class="card" href={`/work/${slug}`}>
 	<span class="title">{data.title}</span>
-	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+	<!-- <img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" /> -->
+	<Image src={data.img} alt={data.img_alt || ''} width={800} height={500} format='webp'/>
 </a>
 
 <style>
