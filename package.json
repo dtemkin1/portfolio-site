@@ -11,13 +11,15 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/image": "^0.16.9",
     "@astrojs/prefetch": "^0.1.2",
     "@astrojs/rss": "^2.4.3",
     "@astrojs/sitemap": "^1.2.1",
-    "astro": "^2.1.7",
+    "astro": "^2.5.5",
     "astro-compress": "^1.1.33",
     "markdown-it": "^13.0.1",
-    "sanitize-html": "^2.10.0"
+    "sanitize-html": "^2.10.0",
+    "sharp": "^0.32.1"
   },
   "description": "TO-DO: DOCUMENT WHAT I DID IN THIS REPO",
   "main": "index.js",

@@ -1,15 +1,16 @@
 import { defineConfig } from 'astro/config';
+
 import prefetch from "@astrojs/prefetch";
-
 import compress from "astro-compress";
-
-// https://astro.build/config
 import sitemap from "@astrojs/sitemap";
+import image from "@astrojs/image";
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://diegotemkin.com',
   integrations: [prefetch({
     throttle: 3
-  }), sitemap(), compress()]
+  }), sitemap(), image({
+    serviceEntryPoint: '@astrojs/image/sharp'
+  }), compress()]
 });
