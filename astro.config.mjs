@@ -8,7 +8,9 @@ import image from "@astrojs/image";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://diegotemkin.com',
-  integrations: [prefetch(), sitemap(), image({
+  integrations: [prefetch({
+    throttle: 5
+  }), sitemap(), image({
     serviceEntryPoint: '@astrojs/image/sharp'
   }), compress()]
 });
