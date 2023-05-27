@@ -17,6 +17,7 @@
     "@astrojs/sitemap": "^1.2.1",
     "astro": "^2.5.5",
     "astro-compress": "^1.1.33",
+    "astro-google-fonts-optimizer": "^0.2.2",
     "markdown-it": "^13.0.1",
     "sanitize-html": "^2.10.0",
     "sharp": "^0.32.1"
