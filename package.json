@@ -1,8 +1,17 @@
 {
-  "name": "@example/portfolio",
+  "name": "@dtemkin1/portfolio-site",
   "type": "module",
   "version": "0.0.1",
   "private": true,
+  "description": "TO-DO: DOCUMENT WHAT I DID IN THIS REPO",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Diego Temkin",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dtemkin1/portfolio-site.git"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -21,10 +30,5 @@
     "markdown-it": "^13.0.1",
     "sanitize-html": "^2.10.0",
     "sharp": "^0.32.1"
-  },
-  "description": "TO-DO: DOCUMENT WHAT I DID IN THIS REPO",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }
