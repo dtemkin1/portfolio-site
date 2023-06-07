@@ -11,7 +11,9 @@ import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
 import Pill from '../components/Pill.astro';
 import PortfolioPreview from '../components/PortfolioPreview.astro';
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets'
+
+import portrait from "../assets/portrait.jpg";
 
 // Page section components
 import ContactCTA from '../components/ContactCTA.astro';
@@ -46,8 +48,7 @@ const projects = (await getCollection('work'))
 					alt="Diego Temkin smiling in a blue button-down shirt in front of a marble column"
 					width={480}
 					height={620}
-					src="/assets/portrait.jpg"
-					format='webp'
+					src={portrait}
 				/>
 			</header>
 
