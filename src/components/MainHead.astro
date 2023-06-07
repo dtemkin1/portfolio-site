@@ -1,4 +1,7 @@
 ---
+import '@fontsource-variable/public-sans';
+import '@fontsource-variable/rubik';
+
 import '../styles/global.css';
 
 interface Props {
@@ -10,8 +13,6 @@ const {
 	title = 'Diego Temkin',
 	description = 'The personal site of Diego Temkin',
 } = Astro.props;
-
-import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
 ---
 
 <meta charset="UTF-8" />
@@ -20,16 +21,13 @@ import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
 <meta name="generator" content={Astro.generator} />
 <title>{title}</title>
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
+<!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
 	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,700;1,400&family=Rubik:wght@500;600&display=swap"
 	rel="stylesheet"
 /> -->
-<GoogleFontsOptimizer 
-	url="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,700;1,400&family=Rubik:wght@500;600&display=swap">
-</GoogleFontsOptimizer>
 
 <link rel="sitemap" href="/sitemap-index.xml">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed for Diego Temkin's website" href="/rss.xml" />
