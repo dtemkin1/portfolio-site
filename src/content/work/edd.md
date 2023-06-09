@@ -10,6 +10,4 @@ tags:
   - Medical Biology
 ---
 
-## TODO
-
-WRITE DESCRIPTION OF EDD
+Under construction :)

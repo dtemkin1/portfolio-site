@@ -10,6 +10,4 @@ tags:
   - Design
 ---
 
-## TODO
-
-WRITE DESCRIPTION OF MIT ATHENA SITE
+Under construction :)

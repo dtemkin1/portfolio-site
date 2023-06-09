@@ -10,6 +10,4 @@ tags:
   - Design
 ---
 
-## TODO
-
-WRITE DESCRIPTION OF MINI-UROP 2023
+Under construction :)
