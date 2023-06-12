@@ -1,8 +1,9 @@
 import { defineConfig, sharpImageService } from 'astro/config';
-
 import prefetch from "@astrojs/prefetch";
 import compress from "astro-compress";
 import sitemap from "@astrojs/sitemap";
+
+import netlify from "@astrojs/netlify/functions";
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,9 +12,11 @@ export default defineConfig({
     assets: true
   },
   image: {
-    service: sharpImageService(),
+    service: sharpImageService()
   },
   integrations: [prefetch({
     throttle: 5
-  }), sitemap(), compress()]
+  }), sitemap(), compress()],
+  output: "server",
+  adapter: netlify()
 });
