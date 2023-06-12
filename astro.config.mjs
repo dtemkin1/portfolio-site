@@ -3,8 +3,6 @@ import prefetch from "@astrojs/prefetch";
 import compress from "astro-compress";
 import sitemap from "@astrojs/sitemap";
 
-import netlify from "@astrojs/netlify/functions";
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://diegotemkin.com',
@@ -16,7 +14,5 @@ export default defineConfig({
   },
   integrations: [prefetch({
     throttle: 5
-  }), sitemap(), compress()],
-  output: "server",
-  adapter: netlify()
+  }), sitemap(), compress()]
 });
