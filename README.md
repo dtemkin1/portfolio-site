@@ -1,3 +1,3 @@
-# Ny Portfolio Site :D
+# My Portfolio Site :D
 
 TO-DO: DOCUMENT WHAT I DID IN THIS REPO
