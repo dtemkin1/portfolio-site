@@ -1,3 +1,3 @@
-# Diego Temkin's Portfolio Site
+# Ny Portfolio Site :D
 
 TO-DO: DOCUMENT WHAT I DID IN THIS REPO
