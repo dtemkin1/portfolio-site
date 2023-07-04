@@ -1,7 +1,7 @@
-import { defineConfig, sharpImageService } from 'astro/config';
-import prefetch from "@astrojs/prefetch";
+import { defineConfig } from 'astro/config';
 import compress from "astro-compress";
 import sitemap from "@astrojs/sitemap";
+import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,10 +9,7 @@ export default defineConfig({
   experimental: {
     assets: true
   },
-  image: {
-    service: sharpImageService()
-  },
-  integrations: [prefetch({
-    throttle: 5
-  }), sitemap(), compress()]
+  integrations: [sitemap(), compress()],
+  output: "server",
+  adapter: cloudflare()
 });
