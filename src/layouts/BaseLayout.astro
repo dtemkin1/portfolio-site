@@ -22,7 +22,9 @@ const { title, description } = Astro.props;
 	<body>
 		<div class="stack backgrounds">
 			<Nav />
-			<slot />
+			<main id="swup" class="wrapper">
+				<slot />
+			</main>
 			<Footer />
 		</div>
 
@@ -109,5 +111,6 @@ const { title, description } = Astro.props;
 				}
 			}
 		</style>
+		<script type="module" src="/app.js"></script>
 	</body>
 </html>
