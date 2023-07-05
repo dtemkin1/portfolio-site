@@ -15,27 +15,6 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<script>
-	import Swup from "swup";
-	import SwupA11yPlugin from "@swup/a11y-plugin";
-	import SwupHeadPlugin from "@swup/head-plugin";
-	import SwupSlideTheme from "@swup/slide-theme";
-	import SwupPreloadPlugin from "@swup/preload-plugin";
-	import SwupProgressPlugin from "@swup/progress-plugin";
-	import SwupScrollPlugin from "@swup/scroll-plugin";
-
-	const swup = new Swup({
-		plugins: [
-		new SwupA11yPlugin(),
-		new SwupHeadPlugin(),
-		new SwupSlideTheme(),
-		new SwupPreloadPlugin(),
-		new SwupProgressPlugin(),
-		new SwupScrollPlugin(),
-		],
-	});
-</script>
-
 <html lang="en">
 	<head>
 		<MainHead title={title} description={description} />
@@ -43,9 +22,7 @@ const { title, description } = Astro.props;
 	<body>
 		<div class="stack backgrounds">
 			<Nav />
-			<main id="swup" class="wrapper">
-				<slot />
-			</main>
+			<slot />
 			<Footer />
 		</div>
 
