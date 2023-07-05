@@ -21,7 +21,7 @@ const iconLinks: { label: string; href: string; icon: IconProps['icon'] }[] = [
 
 <nav>
 	<div class="menu-header">
-		<a rel="prefetch" href="/" class="site-title">
+		<a href="/" class="site-title">
 			<Icon icon="fin-the-human" color="var(--accent-regular)" size="1.6em" gradient />
 			Diego Temkin
 		</a>
@@ -40,7 +40,6 @@ const iconLinks: { label: string; href: string; icon: IconProps['icon'] }[] = [
 				textLinks.map(({ label, href }) => (
 					<li>
 						<a
-							rel="prefetch"
 							aria-current={Astro.url.pathname === href}
 							class:list={[
 								'link',

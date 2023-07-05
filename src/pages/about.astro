@@ -3,9 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 import ContactCTA from '../components/ContactCTA.astro';
 import Hero from '../components/Hero.astro';
-
-import { Image } from 'astro:assets'
-import mainPic from "../assets/graduation.jpg"
 ---
 
 <BaseLayout title="About Me | Diego Temkin" description="About Diego Temkin">
@@ -15,12 +12,11 @@ import mainPic from "../assets/graduation.jpg"
 				title="About Me"
 				tagline="Thanks for stopping by! Read below to learn more about myself and my background."
 			>
-				<Image
-					width={1553}
-					height={873}
-					src={mainPic}
+				<img
+					width=1553
+					height=873
+					src="/assets/graduation.jpg"
 					alt="My high school graduation picture"
-					format='webp'
 				/>
 			</Hero>
 
