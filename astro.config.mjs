@@ -17,5 +17,6 @@ export default defineConfig({
     filter: (page) => page !== 'https://diegotemkin.com/rss.xml/',
   }), compress()],
   output: "server",
-  adapter: cloudflare()
+  adapter: cloudflare(),
+  compressHTML: true
 });
