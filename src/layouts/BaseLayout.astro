@@ -37,7 +37,12 @@ const { title, description } = Astro.props;
 
 	swup.on('contentReplaced', function() {
 		const navitems = document.getElementsByClassName("nav-items");
+		const menucontent = document.getElementById("menu-content");
 		const pathname =  window.location.pathname;
+		
+		if (menucontent !== null) {
+			menucontent.hidden = true;
+		}
 		
 		for (const child of navitems[0].children) {
 			const childa = child.children[0] as HTMLAnchorElement;
