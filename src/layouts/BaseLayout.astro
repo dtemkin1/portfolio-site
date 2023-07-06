@@ -40,7 +40,7 @@ const { title, description } = Astro.props;
 		const pathname =  window.location.pathname;
 		
 		for (const child of navitems[0].children) {
-			const childa = child.children[0];
+			const childa = child.children[0] as HTMLAnchorElement;
 			const chiidPathname = childa.pathname;
 
 			if (pathname === chiidPathname) {
