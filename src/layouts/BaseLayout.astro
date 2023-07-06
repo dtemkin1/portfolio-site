@@ -37,20 +37,19 @@ const { title, description } = Astro.props;
 
 	swup.on('contentReplaced', function() {
 		const navitems = document.getElementsByClassName("nav-items");
-		const pathname =  window.location.pathname
+		const pathname =  window.location.pathname;
 		
 		for (const child of navitems[0].children) {
-			const childa = child.children[0]
-			
-			console.log(pathname)
-			console.log(childa.pathname)
-			if (pathname === childa.pathname) {
+			const childa = child.children[0];
+			const chiidPathname = childa.pathname;
+
+			if (pathname === chiidPathname) {
 				childa.ariaCurrent = "true";
 			} else {
 				childa.removeAttribute("aria-current");
 			}
 
-			if (pathname === childa.pathname || (childa.pathname !== '/' && pathname.startsWith(childa.pathname))) {
+			if (pathname === chiidPathname || (chiidPathname !== '/' && pathname.startsWith(chiidPathname))) {
 				childa.classList.add("active");
 			} else {
 				childa.classList.remove("active");
