@@ -15,6 +15,51 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
+<script>
+  import Swup from "swup";
+  import SwupA11yPlugin from "@swup/a11y-plugin";
+  import SwupHeadPlugin from "@swup/head-plugin";
+  import SwupSlideTheme from "@swup/slide-theme";
+  import SwupPreloadPlugin from "@swup/preload-plugin";
+  import SwupProgressPlugin from "@swup/progress-plugin";
+  import SwupScrollPlugin from "@swup/scroll-plugin";
+
+  const swup = new Swup({
+    plugins: [
+		// new SwupA11yPlugin(),
+		new SwupHeadPlugin(),
+		new SwupSlideTheme(),
+		new SwupPreloadPlugin(),
+		new SwupProgressPlugin(),
+		new SwupScrollPlugin()
+	]
+	});
+
+	swup.on('contentReplaced', function() {
+		const navitems = document.getElementsByClassName("nav-items");
+		const pathname =  window.location.pathname
+		
+		for (const child of navitems[0].children) {
+			const childa = child.children[0]
+			
+			console.log(pathname)
+			console.log(childa.pathname)
+			if (pathname === childa.pathname) {
+				childa.ariaCurrent = "true";
+			} else {
+				childa.removeAttribute("aria-current");
+			}
+
+			if (pathname === childa.pathname || (childa.pathname !== '/' && pathname.startsWith(childa.pathname))) {
+				childa.classList.add("active");
+			} else {
+				childa.classList.remove("active");
+			}
+
+		}
+	})
+</script>
+
 <html lang="en">
 	<head>
 		<MainHead title={title} description={description} />
@@ -22,7 +67,9 @@ const { title, description } = Astro.props;
 	<body>
 		<div class="stack backgrounds">
 			<Nav />
-			<slot />
+			<div id="swup" class="transition-slide">
+				<slot />
+			</div>
 			<Footer />
 		</div>
 
