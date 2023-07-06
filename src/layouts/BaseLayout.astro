@@ -37,13 +37,16 @@ const { title, description } = Astro.props;
 
 	swup.on('contentReplaced', function() {
 		const navitems = document.getElementsByClassName("nav-items");
-		const menucontent = document.getElementById("menu-content");
+		const menucontent = document.getElementById("menu-content") as HTMLDivElement;
+		const menubutton = document.getElementsByClassName("menu-button")[0] as HTMLButtonElement;
 		const pathname =  window.location.pathname;
 		
 		if (menucontent !== null) {
 			menucontent.hidden = true;
 		}
-		
+
+		menubutton.ariaExpanded = "false";
+
 		for (const child of navitems[0].children) {
 			const childa = child.children[0] as HTMLAnchorElement;
 			const chiidPathname = childa.pathname;
