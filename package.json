@@ -16,11 +16,11 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "wrangler pages dev ./dist",
+    "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^6.6.0",
+    "@astrojs/netlify": "^2.3.0",
     "@astrojs/rss": "^2.4.3",
     "@astrojs/sitemap": "^1.3.3",
     "@fontsource-variable/public-sans": "^5.0.5",
@@ -35,7 +35,6 @@
     "@swup/progress-plugin": "^1.2.1",
     "@swup/scroll-plugin": "^1.3.3",
     "@swup/slide-theme": "^1.0.5",
-    "swup": "^3.1.1",
-    "wrangler": "^3.1.2"
+    "swup": "^3.1.1"
   }
 }
