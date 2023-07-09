@@ -23,6 +23,9 @@ const projects = (await getCollection('work'))
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/core-concepts/astro-components/
+
+import { Image } from 'astro:assets'
+import portrait from "../assets/portrait.jpg";
 ---
 
 <BaseLayout>
@@ -41,11 +44,11 @@ const projects = (await getCollection('work'))
 					</div>
 				</Hero>
 
-				<img
+				<Image
 					alt="Diego Temkin smiling in a blue button-down shirt in front of a marble column"
-					width=480
-					height=620
-					src="/assets/portrait.jpg"
+					width={480}
+					height={620}
+					src={portrait}
 				/>
 			</header>
 
