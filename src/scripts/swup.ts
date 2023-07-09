@@ -9,7 +9,9 @@ import SwupScrollPlugin from "@swup/scroll-plugin";
 const swup = new Swup({
     plugins: [
         // new SwupA11yPlugin(),
-        new SwupHeadPlugin(),
+        new SwupHeadPlugin({ 
+            awaitAssets: true, 
+        }),
         new SwupSlideTheme(),
         new SwupPreloadPlugin(),
         new SwupProgressPlugin(),
