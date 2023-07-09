@@ -1,5 +1,4 @@
 import { defineConfig, sharpImageService } from 'astro/config';
-import compress from "astro-compress";
 import sitemap from "@astrojs/sitemap";
 import netlify from "@astrojs/netlify/functions";
 
@@ -21,7 +20,7 @@ export default defineConfig({
       'https://diegotemkin.com/work/psfc/'
     ],
     filter: page => page !== 'https://diegotemkin.com/rss.xml/'
-  }), compress()],
+  })],
   output: "server",
   adapter: netlify(),
   compressHTML: true
