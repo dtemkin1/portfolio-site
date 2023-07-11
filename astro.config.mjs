@@ -5,6 +5,9 @@ import netlify from "@astrojs/netlify/functions";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://diegotemkin.com',
+  build: {
+    inlineStylesheets: "auto",
+  },
   experimental: {
     assets: true,
   },
