@@ -7,7 +7,6 @@ export default defineConfig({
   site: 'https://diegotemkin.com',
   build: {
     inlineStylesheets: "auto",
-    split: true,
   },
   experimental: {
     assets: true,
