@@ -20,57 +20,53 @@
 
         return h(
           "div",
-          { className: "stack gap-20" },
+          { className: "stack gap-15" },
           h(
-            "div",
-            { className: "stack gap-15" },
+            "header",
+            {},
             h(
-              "header",
-              {},
+              "div",
+              { className: "wrapper stack gap-2" },
               h(
-                "div",
-                { className: "wrapper stack gap-2" },
+                "header",
+                { className: "hero stack gap-4 start" },
                 h(
-                  "header",
-                  { className: "hero stack gap-4 start" },
+                  "div",
+                  { className: "stack gap-2" },
+                  h(
+                    "h1",
+                    { className: "title" },
+                    "title_here"
+                  )
+                ),
+                h(
+                  "div",
+                  { className: "details" },
                   h(
                     "div",
-                    { className: "stack gap-2" },
-                    h(
-                      "h1",
-                      { className: "title" },
-                      "title_here"
-                    )
+                    { className: "tags" },
+                    "tags here"
                   ),
                   h(
-                    "div",
-                    { className: "details" },
-                    h(
-                      "div",
-                      { className: "tags" },
-                      "tags here"
-                    ),
-                    h(
-                      "p",
-                      { className: "description" },
-                      "description_here"
-                    )
+                    "p",
+                    { className: "description" },
+                    "description_here"
                   )
                 )
               )
-            ),
+            )
+          ),
+          h(
+            "main",
+            { className: "wrapper" },
             h(
-              "main",
-              { className: "wrapper" },
+              "div",
+              { className: "stack gap-10 content" },
+              h("img", { src: "src_here", alt: "alt_here" }),
               h(
                 "div",
-                { className: "stack gap-10 content" },
-                h("img", { src: "src_here", alt: "alt_here" }),
-                h(
-                  "div",
-                  { className: "content" },
-                  h("content", "content_here")
-                )
+                { className: "content" },
+                "content_here"
               )
             )
           )
