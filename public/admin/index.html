@@ -21,6 +21,7 @@
         var imgAlt = entry.getIn(['data', 'img_alt']);
         var description = entry.getIn(['data', 'description']);
         var content = entry.getIn(['data', 'body']);
+        var tags = entry.getIn(['data', 'tags']);
 
         return h(
           "div",
@@ -49,7 +50,12 @@
                   h(
                     "div",
                     { className: "tags" },
-                    "tags here"
+                    entry.data.tags.map((t) => h(
+                        "div",
+                        { className: "pill"},
+                        t
+                        )
+                      )
                   ),
                   h(
                     "p",
