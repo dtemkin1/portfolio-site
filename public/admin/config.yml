@@ -4,6 +4,7 @@ backend:
 publish_mode: editorial_workflow
 media_folder: "src/assets/posts" # Media files will be stored in the repo under src/assets/posts
 public_folder: "/assets/posts"
+site_url: https://www.diegotemkin.com
 collections:
   - name: "work"
     label: "Work"
