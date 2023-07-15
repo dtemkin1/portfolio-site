@@ -18,6 +18,17 @@ const currentYear = new Date().getFullYear();
 		<a href="https://www.instagram.com/dtemkin1/"> Instagram</a>
 		<a href="https://web.mit.edu/dtemkin/www/"> MIT Athena</a>
 	</p>
+	<script is:inline>
+		if (window.netlifyIdentity) {
+		  window.netlifyIdentity.on("init", user => {
+			if (!user) {
+			  window.netlifyIdentity.on("login", () => {
+				document.location.href = "/admin/";
+			  });
+			}
+		  });
+		}
+	</script>
 </footer>
 <style>
 	footer {
