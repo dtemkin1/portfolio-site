@@ -16,7 +16,11 @@
     var WorkPreview = createClass({
       render: function () {
         var entry = this.props.entry;
-        var title = entry.getIn['data', 'title'];
+        var title = entry.getIn(['data', 'title']);
+        var imgSrc = this.props.getAsset(entry.getIn(['data', 'img']));
+        var imgAlt = entry.getIn(['data', 'img_alt']);
+        var description = entry.getIn(['data', 'description']);
+        var content = entry.getIn(['data', 'body']);
 
         return h(
           "div",
@@ -36,7 +40,7 @@
                   h(
                     "h1",
                     { className: "title" },
-                    "title_here"
+                    title
                   )
                 ),
                 h(
@@ -50,7 +54,7 @@
                   h(
                     "p",
                     { className: "description" },
-                    "description_here"
+                    description
                   )
                 )
               )
@@ -62,11 +66,11 @@
             h(
               "div",
               { className: "stack gap-10 content" },
-              h("img", { src: "src_here", alt: "alt_here" }),
+              h("img", { src: imgSrc.toString(), alt: imgAlt }),
               h(
                 "div",
                 { className: "content" },
-                "content_here"
+                content
               )
             )
           )
