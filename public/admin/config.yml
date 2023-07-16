@@ -4,7 +4,7 @@ backend:
   branch: main # Branch to update (optional; defaults to master)
 publish_mode: editorial_workflow
 media_folder: "src/assets/posts" # Media files will be stored in the repo under src/assets/posts
-public_folder: "/assets/posts"
+public_folder: "../../assets/posts"
 site_url: https://www.diegotemkin.com
 collections:
   - name: "work"
@@ -14,7 +14,7 @@ collections:
     slug: "{{slug}}"
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "publishDate", widget: "datetime"}
+      - {label: "Publish Date", name: "publishDate", widget: "datetime", format: "MM-DD-YYYY HH:mm:ss"}
       - {label: "Content Preview", name: "img", widget: "image"}
       - {label: "Image Alt", name: "img_alt", widget: "string"}
       - {label: "Description", name: "description", widget: "string"}
