@@ -2,6 +2,20 @@ import { defineConfig, sharpImageService } from 'astro/config';
 import sitemap from "@astrojs/sitemap";
 import netlify from "@astrojs/netlify/functions";
 
+// code for sitemap
+import url from 'node:url';
+import path from 'node:path';
+import fs from 'node:fs';
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const directoryPath = path.join(__dirname, 'src', 'content', 'work');
+const files = fs.readdirSync(directoryPath);
+const siteUrl = 'https://www.diegotemkin.com';
+const blogUrls = files.map((file) => {
+  const fileName = file.split('.')[0];
+  return `${siteUrl}/${fileName}`;
+});
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.diegotemkin.com',
@@ -15,13 +29,7 @@ export default defineConfig({
     service: sharpImageService(),
   },
   integrations: [sitemap({
-    customPages: [
-      'https://diegotemkin.com/work/mostec-2021/',
-      'https://diegotemkin.com/work/mit-athena-site/',
-      'https://diegotemkin.com/work/edd/',
-      'https://diegotemkin.com/work/mini-urop-2023/',
-      'https://diegotemkin.com/work/psfc/'
-    ],
+    customPages: blogUrls,
     filter: page => page !== 'https://diegotemkin.com/rss.xml/'
   })],
   output: "server",
