@@ -22,7 +22,6 @@
         var description = entry.getIn(['data', 'description']);
         var content = this.props.widgetFor('body');
         var tags = entry.getIn(['data', 'tags']);
-        console.log(tags)
 
         return h(
           "div",
@@ -51,7 +50,7 @@
                   h(
                     "div",
                     { className: "tags" },
-                    ((tags.length > 0) ? tags.map((t) => h(
+                    ((tags.size > 0) ? tags.map((t) => h(
                         "div",
                         { className: "pill"},
                         t
