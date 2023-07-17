@@ -23,59 +23,27 @@
         var content = this.props.widgetFor('body');
         var tags = entry.getIn(['data', 'tags']);
 
-        return h(
-          "div",
-          { className: "stack gap-15" },
-          h(
-            "header",
-            {},
-            h(
-              "div",
-              { className: "wrapper stack gap-2" },
-              h(
-                "header",
-                { className: "hero stack gap-4 start" },
-                h(
-                  "div",
-                  { className: "stack gap-2" },
-                  h(
-                    "h1",
-                    { className: "title" },
-                    title
-                  )
+        return 
+        h("div", { className: "stack gap-15" },
+          h("header", {},
+            h("div", { className: "wrapper stack gap-2" },
+              h("header", { className: "hero stack gap-4 start" },
+                h("div", { className: "stack gap-2" },
+                  h("h1", { className: "title" }, title)
                 ),
-                h(
-                  "div",
-                  { className: "details" },
-                  h(
-                    "div",
-                    { className: "tags" },
-                    ((tags.size > 0) ? tags.map((t) => h(
-                        "div",
-                        { className: "pill"},
-                        t
-                        )
-                      ) : null)
+                h("div", { className: "details" },
+                  h("div", { className: "tags" },
+                    ((tags.size > 0) ? tags.map((t) => h("div", { className: "pill"}, t)) : null)
                   ),
-                  h(
-                    "p",
-                    { className: "description" },
-                    description
-                  )
+                  h("p", { className: "description" }, description)
                 )
               )
             )
           ),
-          h(
-            "main",
-            { className: "wrapper" },
-            h(
-              "div",
-              { className: "stack gap-10 content" },
+          h("main", { className: "wrapper" },
+            h("div", { className: "stack gap-10 content" },
               h("img", { src: imgSrc.toString(), alt: imgAlt }),
-              h(
-                "div",
-                { className: "content" },
+              h("div", { className: "content" }, 
                 content
               )
             )
