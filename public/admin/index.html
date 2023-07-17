@@ -20,7 +20,7 @@
         var imgSrc = this.props.getAsset(entry.getIn(['data', 'img']));
         var imgAlt = entry.getIn(['data', 'img_alt']);
         var description = entry.getIn(['data', 'description']);
-        var content = entry.getIn(['data', 'body']);
+        var content = this.props.widgetFor('body');
         var tags = entry.getIn(['data', 'tags']);
 
         return h(
@@ -50,12 +50,12 @@
                   h(
                     "div",
                     { className: "tags" },
-                    tags.map((t) => h(
+                    ((tags.length) ? tags.map((t) => h(
                         "div",
                         { className: "pill"},
                         t
                         )
-                      )
+                      ) : null)
                   ),
                   h(
                     "p",
