@@ -1,6 +1,6 @@
 ---
 title: Nature-Based Solutions Dashboard
-publishDate: 06-12-2023 00:00:30
+publishDate: 2006-12-20 00:00:00
 img: ../../assets/posts/nbs.png
 img_alt: Test image
 description: Construct a digital platform regarding nature-based urban
