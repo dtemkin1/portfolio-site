@@ -1,4 +1,3 @@
-local_backend: true
 backend:
   name: git-gateway
   branch: main # Branch to update (optional; defaults to master)
@@ -10,6 +9,7 @@ collections:
   - name: "work"
     label: "Work"
     folder: "/src/content/work"
+    preview_path: "work/{{slug}}"
     create: true
     slug: "{{slug}}"
     fields: 
