@@ -12,4 +12,4 @@ tags:
   - Mapping
 draft: false
 ---
-Under construction! This project can be viewed [here](https://dtemkin1.github.io/dusp-nbs/)!
+Under construction. This project can be viewed [here](https://dtemkin1.github.io/dusp-nbs/)! :D
