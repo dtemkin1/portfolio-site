@@ -13,11 +13,11 @@ collections:
     create: true
     slug: "{{slug}}"
     fields: 
-      - {label: "Title", name: "title", widget: "string", pattern: ['.{,60}', "Must have at most 60 characters"]}
+      - {label: "Title", name: "title", widget: "string", pattern: ['^{,60}$', "Must have at most 60 characters"]}
       - {label: "Publish Date", name: "publishDate", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss", date_format: "L", time_format: "LTS"}
       - {label: "Content Preview", name: "img", widget: "image"}
       - {label: "Image Alt", name: "img_alt", widget: "string"}
-      - {label: "Description", name: "description", widget: "string", pattern: ['.{,160}', "Must have at most 160 characters"]}
+      - {label: "Description", name: "description", widget: "string", pattern: ['^{,160}$', "Must have at most 160 characters"]}
       - {label: "Tags", name: "tags", widget: "list"}
       - {label: "Draft", name: "draft", widget: "boolean", default: true}
       - {label: "Content", name: "body", widget: "markdown"}
