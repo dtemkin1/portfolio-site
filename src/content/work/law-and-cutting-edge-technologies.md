@@ -7,9 +7,9 @@ description: Research legal, scientific, and technological materials regarding
   interactions and proposals relating to modern technologies and established
   digital tech law
 tags:
-  - Law
-  - Research
+  - Legal Research
   - Digital Tech
+  - Collaboration
 draft: false
 ---
 U﻿nder construction :)
