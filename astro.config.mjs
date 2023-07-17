@@ -13,7 +13,7 @@ const files = fs.readdirSync(directoryPath);
 const siteUrl = 'https://www.diegotemkin.com';
 const blogUrls = files.map((file) => {
   const fileName = file.split('.')[0];
-  return `${siteUrl}/${fileName}`;
+  return `${siteUrl}/work/${fileName}`;
 });
 
 // https://astro.build/config
