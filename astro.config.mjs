@@ -30,7 +30,7 @@ export default defineConfig({
   },
   integrations: [sitemap({
     customPages: blogUrls,
-    filter: page => page !== 'https://diegotemkin.com/rss.xml/'
+    filter: page => !(page in ['https://www.diegotemkin.com/rss.xml/']),
   })],
   output: "server",
   adapter: netlify(),
