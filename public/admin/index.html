@@ -32,7 +32,7 @@
                 ),
                 h("div", { className: "details" },
                   h("div", { className: "tags" },
-                    ((tags.size > 0) ? tags.map((t) => h("div", { className: "pill"}, t)) : null)
+                    (((tags.size) ? (tags.size > 0) : false) ? tags.map((t) => h("div", { className: "pill"}, t)) : null)
                   ),
                   h("p", { className: "description" }, description)
                 )
