@@ -2,6 +2,7 @@
 import '@fontsource-variable/public-sans';
 import '@fontsource-variable/rubik';
 
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -25,7 +26,7 @@ const {
 
 <link rel="sitemap" href="/sitemap-index.xml">
 <link rel="alternate" type="application/rss+xml" title="RSS Feed for Diego Temkin's website" href="/rss.xml" />
-
+<ViewTransitions />
 <script is:inline>
 	// This code is inlined in the head to make dark mode instant & blocking.
 	const getThemePreference = () => {
