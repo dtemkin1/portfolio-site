@@ -19,9 +19,6 @@ const blogUrls = files.map((file) => {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.diegotemkin.com',
-  build: {
-    inlineStylesheets: "auto",
-  },
   experimental: {
     assets: true,
     viewTransitions: true
