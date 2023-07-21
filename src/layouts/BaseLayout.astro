@@ -15,14 +15,18 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
+<script src="../scripts/swup.ts"></script>
+
 <html lang="en">
 	<head>
 		<MainHead title={title} description={description} />
 	</head>
-	<body transition:animate="morph">
+	<body>
 		<div class="stack backgrounds">
 			<Nav />
-			<slot />
+			<div id="swup" class="transition-slide">
+				<slot />
+			</div>
 			<Footer />
 		</div>
 
