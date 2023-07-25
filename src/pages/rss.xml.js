@@ -12,8 +12,9 @@ export async function get(context) {
         site: context.site,
         xmlns: {
             media: "http://search.yahoo.com/mrss/",
+            atom: "http://www.w3.org/2005/Atom",
         },
-        customData: `<language>en-us</language>`,
+        customData: `<language>en-us</language><atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml" />`,
         items: work.map((post) => ({
             title: post.data.title,
             pubDate: post.data.publishDate,
