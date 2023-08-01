@@ -20,13 +20,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/netlify": "^2.5.1",
+    "@astrojs/netlify": "^2.5.2",
     "@astrojs/rss": "^2.4.3",
     "@astrojs/sitemap": "^2.0.1",
     "@fontsource-variable/public-sans": "^5.0.6",
     "@fontsource-variable/rubik": "^5.0.7",
     "@swup/astro": "^1.0.2",
-    "astro": "^2.9.6",
+    "astro": "^2.9.7",
     "markdown-it": "^13.0.1",
     "sanitize-html": "^2.11.0",
     "sharp": "^0.32.4"
