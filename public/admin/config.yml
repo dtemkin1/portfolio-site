@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: dtemkin1/portfolio-site
   branch: main # Branch to update (optional; defaults to master)
   squash_merges: true
 publish_mode: editorial_workflow
