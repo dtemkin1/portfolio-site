@@ -4,15 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <title>Content Manager</title>
   </head>
 
   <body>
     <!-- Include the script that builds the page and powers Decap CMS -->
-    <script src="https://decap-cms.netlify.app/cms.js"></script>
-    <script>
+    <script is:inline src="https://decap-cms.netlify.app/cms.js"></script>
+    <script is:inline>
       var WorkPreview = createClass({
         render: function () {
           var entry = this.props.entry;
