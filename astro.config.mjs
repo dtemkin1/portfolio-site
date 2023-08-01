@@ -1,6 +1,7 @@
 import { defineConfig, sharpImageService } from 'astro/config';
 import sitemap from "@astrojs/sitemap";
 import netlify from "@astrojs/netlify/functions";
+import swup from '@swup/astro';
 
 // code for sitemap
 import url from 'node:url';
@@ -28,7 +29,12 @@ export default defineConfig({
   image: {
     service: sharpImageService(),
   },
-  integrations: [sitemap({
+  integrations: [swup({
+    theme: 'slide',
+    containers: ['#swup'],
+    accessibility: false,
+    globalInstance: true,
+  }), sitemap({
     customPages: blogUrls,
     filter: page => !(page in ['https://www.diegotemkin.com/rss.xml/']),
   })],

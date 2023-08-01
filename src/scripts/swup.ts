@@ -1,25 +1,4 @@
-import Swup from "swup";
-// import SwupA11yPlugin from "@swup/a11y-plugin";
-import SwupHeadPlugin from "@swup/head-plugin";
-import SwupSlideTheme from "@swup/slide-theme";
-import SwupPreloadPlugin from "@swup/preload-plugin";
-import SwupProgressPlugin from "@swup/progress-plugin";
-import SwupScrollPlugin from "@swup/scroll-plugin";
-
-const swup = new Swup({
-    plugins: [
-        // new SwupA11yPlugin(),
-        new SwupHeadPlugin({ 
-            awaitAssets: true, 
-        }),
-        new SwupSlideTheme(),
-        new SwupPreloadPlugin(),
-        new SwupProgressPlugin(),
-        new SwupScrollPlugin()
-    ]
-});
-
-swup.on('contentReplaced', function () {
+document.addEventListener('swup:content:replace', () => {
     const navitems = document.getElementsByClassName("nav-items");
     const menucontent = document.getElementById("menu-content") as HTMLDivElement;
     const menubutton = document.getElementsByClassName("menu-button")[0] as HTMLButtonElement;
@@ -48,4 +27,4 @@ swup.on('contentReplaced', function () {
         }
 
     }
-})
+});
