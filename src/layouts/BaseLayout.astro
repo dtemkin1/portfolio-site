@@ -20,6 +20,7 @@ const { title, description } = Astro.props;
 <html lang="en">
 	<head>
 		<MainHead title={title} description={description} />
+		<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 	</head>
 	<body>
 		<div class="stack backgrounds">
@@ -113,5 +114,17 @@ const { title, description } = Astro.props;
 				}
 			}
 		</style>
+
+	<script is:inline>
+		if (window.netlifyIdentity) {
+	  		window.netlifyIdentity.on("init", user => {
+				if (!user) {
+		  			window.netlifyIdentity.on("login", () => {
+						document.location.href = "/admin/";
+		  			});
+				}
+			});
+		}
+  	</script>
 	</body>
 </html>
