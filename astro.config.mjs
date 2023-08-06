@@ -1,6 +1,6 @@
 import { defineConfig, sharpImageService } from 'astro/config';
-import sitemap from "@astrojs/sitemap";
-import netlify from "@astrojs/netlify/functions";
+import sitemap from '@astrojs/sitemap';
+import netlify from '@astrojs/netlify/functions';
 import swup from '@swup/astro';
 
 // code for sitemap
@@ -21,24 +21,27 @@ const blogUrls = files.map((file) => {
 export default defineConfig({
   site: 'https://www.diegotemkin.com',
   build: {
-    inlineStylesheets: "auto",
+    inlineStylesheets: 'auto'
   },
   experimental: {
-    assets: true,
+    assets: true
   },
   image: {
-    service: sharpImageService(),
+    service: sharpImageService()
   },
-  integrations: [swup({
-    theme: 'slide',
-    containers: ['#swup'],
-    accessibility: false,
-    globalInstance: true,
-  }), sitemap({
-    customPages: blogUrls,
-    filter: page => !(page in ['https://www.diegotemkin.com/rss.xml/']),
-  })],
-  output: "server",
+  integrations: [
+    swup({
+      theme: 'slide',
+      containers: ['#swup'],
+      accessibility: false,
+      globalInstance: true
+    }),
+    sitemap({
+      customPages: blogUrls,
+      filter: (page) => !(page in ['https://www.diegotemkin.com/rss.xml/'])
+    })
+  ],
+  output: 'server',
   adapter: netlify(),
   compressHTML: true
 });

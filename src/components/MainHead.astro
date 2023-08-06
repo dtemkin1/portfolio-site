@@ -5,13 +5,13 @@ import '@fontsource-variable/rubik';
 import '../styles/global.css';
 
 interface Props {
-	title?: string | undefined;
-	description?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
 }
 
 const {
-	title = 'Diego Temkin',
-	description = 'The personal site of Diego Temkin',
+  title = 'Diego Temkin',
+  description = 'The personal site of Diego Temkin'
 } = Astro.props;
 ---
 
@@ -23,26 +23,36 @@ const {
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-<link rel="sitemap" href="/sitemap-index.xml">
-<link rel="alternate" type="application/rss+xml" title="RSS Feed for Diego Temkin's website" href="/rss.xml" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="RSS Feed for Diego Temkin's website"
+  href="/rss.xml"
+/>
 
 <script is:inline>
-	// This code is inlined in the head to make dark mode instant & blocking.
-	const getThemePreference = () => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-			return localStorage.getItem('theme');
-		}
-		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-	};
-	const isDark = getThemePreference() === 'dark';
-	document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
+  // This code is inlined in the head to make dark mode instant & blocking.
+  const getThemePreference = () => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  };
+  const isDark = getThemePreference() === 'dark';
+  document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
 
-	if (typeof localStorage !== 'undefined') {
-		// Watch the document element and persist user preference when it changes.
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('theme-dark');
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
-		});
-		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-	}
+  if (typeof localStorage !== 'undefined') {
+    // Watch the document element and persist user preference when it changes.
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
 </script>
