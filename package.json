@@ -23,7 +23,7 @@
     "@astrojs/netlify": "^2.5.2",
     "@astrojs/rss": "^2.4.3",
     "@astrojs/sitemap": "^2.0.1",
-    "@fontsource-variable/public-sans": "^5.0.6",
+    "@fontsource-variable/public-sans": "^5.0.9",
     "@fontsource-variable/rubik": "^5.0.10",
     "@swup/astro": "^1.0.2",
     "astro": "^2.9.7",
