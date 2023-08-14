@@ -26,7 +26,7 @@
     "@astrojs/sitemap": "^2.0.1",
     "@fontsource-variable/public-sans": "^5.0.9",
     "@fontsource-variable/rubik": "^5.0.10",
-    "@swup/astro": "^1.0.2",
+    "@swup/astro": "^1.1.0",
     "astro": "^2.10.7",
     "markdown-it": "^13.0.1",
     "sanitize-html": "^2.11.0",
