@@ -34,7 +34,11 @@ export default defineConfig({
       theme: 'slide',
       containers: ['#swup'],
       accessibility: false,
-      globalInstance: true
+      globalInstance: true,
+      preload: {
+        hover: true,
+        visible: true
+      }
     }),
     sitemap({
       customPages: blogUrls,
