@@ -3,7 +3,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:astro/recommended',
-    'plugin:astro/jsx-a11y-recommended'
+    'plugin:astro/jsx-a11y-recommended',
   ],
   overrides: [
     {
@@ -11,16 +11,16 @@ module.exports = {
       parser: 'astro-eslint-parser',
       parserOptions: {
         parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.astro']
+        extraFileExtensions: ['.astro'],
       },
-      rules: {}
+      rules: {},
     },
     {
       files: ['*.js'],
       parserOptions: {
         sourceType: 'module',
-        ecmaVersion: 2020
-      }
-    }
-  ]
+        ecmaVersion: 2020,
+      },
+    },
+  ],
 };

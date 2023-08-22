@@ -1,14 +1,24 @@
-/** @type {import("prettier").Options} */
+/** @type {import ("prettier").Config} */
 module.exports = {
+  printWidth: 100,
+  semi: true,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: 'es5',
+  useTabs: true,
   plugins: [require.resolve('prettier-plugin-astro')],
   overrides: [
     {
-      files: '*.astro',
+      files: ['.*', '*.json', '*.md', '*.toml', '*.yml'],
       options: {
-        parser: 'astro'
-      }
-    }
+        useTabs: false,
+      },
+    },
+    {
+      files: ['**/*.astro'],
+      options: {
+        parser: 'astro',
+      },
+    },
   ],
-  singleQuote: true,
-  trailingComma: 'none'
 };

@@ -19,8 +19,7 @@ collections:
           label: 'Title',
           name: 'title',
           widget: 'string',
-          pattern:
-            ['^(?=[\S\s]{0,60}$)[\S\s]*', 'Must have at most 60 characters']
+          pattern: ['^(?=[\S\s]{0,60}$)[\S\s]*', 'Must have at most 60 characters'],
         }
       - {
           label: 'Publish Date',
@@ -28,7 +27,7 @@ collections:
           widget: 'datetime',
           format: 'YYYY-MM-DD HH:mm:ss',
           date_format: 'L',
-          time_format: 'LTS'
+          time_format: 'LTS',
         }
       - { label: 'Content Preview', name: 'img', widget: 'image' }
       - { label: 'Image Alt', name: 'img_alt', widget: 'string' }
@@ -36,8 +35,7 @@ collections:
           label: 'Description',
           name: 'description',
           widget: 'string',
-          pattern:
-            ['^(?=[\S\s]{0,160}$)[\S\s]*', 'Must have at most 160 characters']
+          pattern: ['^(?=[\S\s]{0,160}$)[\S\s]*', 'Must have at most 160 characters'],
         }
       - { label: 'Tags', name: 'tags', widget: 'list' }
       - { label: 'Draft', name: 'draft', widget: 'boolean', required: false }

@@ -60,7 +60,45 @@ const iconLinks: {
       </template>
     </menu-button>
   </div>
-  <div id="menu-content">
+  <noscript class="menu-noscript">
+    <ul class="nav-items">
+      {
+        textLinks.map(({ label, href }) => (
+          <li>
+            <a
+              aria-current={Astro.url.pathname === href}
+              class:list={[
+                'link',
+                {
+                  active:
+                    Astro.url.pathname === href ||
+                    (href !== '/' && Astro.url.pathname.startsWith(href))
+                }
+              ]}
+              href={href}
+            >
+              {label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </noscript>
+  <noscript>
+    <div class="menu-footer">
+      <div class="socials">
+        {
+          iconLinks.map(({ href, icon, label }) => (
+            <a href={href} class="social">
+              <span class="sr-only">{label}</span>
+              <Icon icon={icon} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </noscript>
+  <div id="menu-content" hidden>
     <ul class="nav-items">
       {
         textLinks.map(({ label, href }) => (
@@ -114,6 +152,8 @@ const iconLinks: {
       // Hide menu (shown by default to support no-JS browsers).
       const menu = document.getElementById('menu-content')!;
       menu.hidden = true;
+      // Add "menu-content" class in JS to avoid covering content in non-JS browsers.
+      menu.classList.add('menu-content');
 
       /** Set whether the menu is currently expanded or collapsed. */
       const setExpanded = (expand: boolean) => {
@@ -193,7 +233,7 @@ const iconLinks: {
     z-index: -1;
   }
 
-  #menu-content {
+  .menu-content {
     position: absolute;
     left: 0;
     right: 0;
@@ -278,7 +318,7 @@ const iconLinks: {
       font-size: var(--text-lg);
     }
 
-    #menu-content {
+    .menu-content {
       display: contents;
     }
 
