@@ -3,79 +3,69 @@ import Icon from './Icon.astro';
 ---
 
 <section class="box skills">
-  <div class="stack gap-2 lg:gap-4">
-    <Icon
-      icon="terminal-window"
-      color="var(--accent-regular)"
-      size="2.5rem"
-      gradient
-    />
-    <h2>Data Science</h2>
-    <p>
-      Experience with a variety of programming languages and projects, including
-      websites, machine learning, and statistical modelling.
-    </p>
-  </div>
-  <div class="stack gap-2 lg:gap-4">
-    <Icon icon="wrench" color="var(--accent-regular)" size="2.5rem" gradient />
-    <h2>Engineering</h2>
-    <p>
-      Familiar with design and engineering principles in a variety of fields,
-      from computer science to coastal engineering.
-    </p>
-  </div>
-  <div class="stack gap-2 lg:gap-4">
-    <Icon
-      icon="notebook"
-      color="var(--accent-regular)"
-      size="2.5rem"
-      gradient
-    />
-    <h2>Research</h2>
-    <p>
-      Through undergraduate research opportunities, gained necessary skills to
-      engage in academic and professional research.
-    </p>
-  </div>
+	<div class="stack gap-2 lg:gap-4">
+		<Icon icon="terminal-window" color="var(--accent-regular)" size="2.5rem" gradient />
+		<h2>Data Science</h2>
+		<p>
+			Experience with a variety of programming languages and projects, including websites, machine
+			learning, and statistical modelling.
+		</p>
+	</div>
+	<div class="stack gap-2 lg:gap-4">
+		<Icon icon="wrench" color="var(--accent-regular)" size="2.5rem" gradient />
+		<h2>Engineering</h2>
+		<p>
+			Familiar with design and engineering principles in a variety of fields, from computer science
+			to coastal engineering.
+		</p>
+	</div>
+	<div class="stack gap-2 lg:gap-4">
+		<Icon icon="notebook" color="var(--accent-regular)" size="2.5rem" gradient />
+		<h2>Research</h2>
+		<p>
+			Through undergraduate research opportunities, gained necessary skills to engage in academic
+			and professional research.
+		</p>
+	</div>
 </section>
 
 <style>
-  .box {
-    border: 1px solid var(--gray-800);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    background-color: var(--gray-999_40);
-    box-shadow: var(--shadow-sm);
-  }
+	.box {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		background-color: var(--gray-999_40);
+		box-shadow: var(--shadow-sm);
+	}
 
-  .skills {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
+	.skills {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
 
-  .skills h2 {
-    font-size: var(--text-lg);
-  }
+	.skills h2 {
+		font-size: var(--text-lg);
+	}
 
-  .skills p {
-    color: var(--gray-400);
-  }
+	.skills p {
+		color: var(--gray-400);
+	}
 
-  @media (min-width: 50em) {
-    .box {
-      border-radius: 1.5rem;
-      padding: 2.5rem;
-    }
+	@media (min-width: 50em) {
+		.box {
+			border-radius: 1.5rem;
+			padding: 2.5rem;
+		}
 
-    .skills {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 5rem;
-    }
+		.skills {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 5rem;
+		}
 
-    .skills h2 {
-      font-size: var(--text-2xl);
-    }
-  }
+		.skills h2 {
+			font-size: var(--text-2xl);
+		}
+	}
 </style>
