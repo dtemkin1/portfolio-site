@@ -35,10 +35,6 @@ export default defineConfig({
 			containers: ['#swup'],
 			accessibility: false,
 			globalInstance: true,
-			preload: {
-				hover: false,
-				visible: true,
-			},
 		}),
 		sitemap({
 			customPages: blogUrls,
