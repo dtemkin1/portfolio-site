@@ -23,6 +23,7 @@
   "dependencies": {
     "@astrojs/netlify": "^3.0.0",
     "@astrojs/rss": "^3.0.0",
+    "@astrojs/sitemap": "^3.0.0",
     "@fontsource-variable/public-sans": "^5.0.9",
     "@fontsource-variable/rubik": "^5.0.10",
     "astro": "^3.0.5",
