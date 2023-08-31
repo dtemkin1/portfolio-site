@@ -1,4 +1,4 @@
-import { defineConfig, sharpImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import netlify from '@astrojs/netlify/functions';
 import swup from '@swup/astro';
@@ -20,15 +20,6 @@ const blogUrls = files.map((file) => {
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://www.diegotemkin.com',
-	build: {
-		inlineStylesheets: 'auto',
-	},
-	experimental: {
-		assets: true,
-	},
-	image: {
-		service: sharpImageService(),
-	},
 	integrations: [
 		swup({
 			theme: 'slide',
@@ -43,5 +34,4 @@ export default defineConfig({
 	],
 	output: 'server',
 	adapter: netlify(),
-	compressHTML: true,
 });
