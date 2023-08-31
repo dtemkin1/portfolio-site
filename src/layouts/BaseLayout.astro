@@ -15,8 +15,6 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<script src="../scripts/swup.ts"></script>
-
 <html lang="en">
 	<head>
 		<MainHead title={title} description={description} />
@@ -24,9 +22,7 @@ const { title, description } = Astro.props;
 	<body>
 		<div class="stack backgrounds">
 			<Nav />
-			<div id="swup" class="transition-slide">
-				<slot />
-			</div>
+			<slot />
 			<Footer />
 		</div>
 
