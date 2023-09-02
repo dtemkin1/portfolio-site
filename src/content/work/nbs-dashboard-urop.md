@@ -13,4 +13,4 @@ tags:
 draft: false
 ---
 
-Under construction. This project can be viewed [here](https://dtemkin1.github.io/dusp-nbs/)! :D
+Under construction. This project can be viewed [here](http://dusp-nbs.xvm.mit.edu/)! :D
