@@ -1,6 +1,4 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
-
 import '@fontsource-variable/public-sans';
 import '@fontsource-variable/rubik';
 
@@ -52,11 +50,4 @@ const { title = 'Diego Temkin', description = 'The personal site of Diego Temkin
 			attributeFilter: ['class'],
 		});
 	}
-
-	document.addEventListener('astro:after-swap', () => {
-		const isDark = getThemePreference() === 'dark';
-		document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
-	});
 </script>
-
-<ViewTransitions />
