@@ -24,7 +24,7 @@
     "@astrojs/netlify": "^3.0.2",
     "@astrojs/rss": "^3.0.0",
     "@astrojs/sitemap": "^3.0.0",
-    "@fontsource-variable/public-sans": "^5.0.9",
+    "@fontsource-variable/public-sans": "^5.0.14",
     "@fontsource-variable/rubik": "^5.0.17",
     "astro": "^3.2.3",
     "markdown-it": "^13.0.2",
