@@ -1,6 +1,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import netlify from '@astrojs/netlify/functions';
+import robotsTxt from 'astro-robots-txt';
+
+import robotsConfig from './robots-txt.config';
 
 // code for sitemap
 import url from 'node:url';
@@ -24,6 +27,7 @@ export default defineConfig({
 			customPages: blogUrls,
 			filter: (page) => !(page in ['https://www.diegotemkin.com/rss.xml/']),
 		}),
+		robotsTxt(robotsConfig),
 	],
 	output: 'server',
 	adapter: netlify(),
