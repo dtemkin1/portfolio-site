@@ -4,8 +4,6 @@ import '@fontsource-variable/rubik';
 
 import '../styles/global.css';
 
-import siteConfig from '../../site.config';
-
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
@@ -19,8 +17,6 @@ const { title = 'Diego Temkin', description = 'The personal site of Diego Temkin
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
 <title>{title}</title>
-
-<meta name="robots" content={siteConfig.disableIndexing ? 'noindex, nofollow' : 'index, follow'} />
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
