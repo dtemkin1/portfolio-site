@@ -81,10 +81,14 @@ import Icon from './Icon.astro';
 			};
 
 			// Toggle the theme when a user clicks the button.
-			button.addEventListener('click', () => setTheme(!this.isDark()));
+			document.addEventListener('astro:page-load', () => {
+				button.addEventListener('click', () => setTheme(!this.isDark()));
+			});
 
 			// Initialize button state to reflect current theme.
-			setTheme(this.isDark());
+			document.addEventListener('astro:page-load', () => {
+				setTheme(this.isDark());
+			});
 		}
 
 		isDark() {
