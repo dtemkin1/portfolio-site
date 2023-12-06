@@ -4,7 +4,7 @@ import sanitizeHtml from 'sanitize-html';
 import MarkdownIt from 'markdown-it';
 const parser = new MarkdownIt();
 
-export async function get(context) {
+export async function GET(context) {
 	const work = await getCollection('work');
 	return rss({
 		title: 'Diego Temkin',
