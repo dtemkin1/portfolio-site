@@ -24,7 +24,7 @@
     "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.0.3",
     "@fontsource-variable/public-sans": "^5.0.17",
-    "@fontsource-variable/rubik": "^5.0.19",
+    "@fontsource-variable/rubik": "^5.0.20",
     "astro": "^4.0.2",
     "markdown-it": "^13.0.2",
     "sanitize-html": "^2.11.0"
