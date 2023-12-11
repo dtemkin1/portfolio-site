@@ -21,7 +21,7 @@
     "fix": "prettier --write . && eslint --ext .js,.ts,.astro src"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.0",
+    "@astrojs/rss": "^4.0.1",
     "@astrojs/sitemap": "^3.0.3",
     "@fontsource-variable/public-sans": "^5.0.17",
     "@fontsource-variable/rubik": "^5.0.19",
