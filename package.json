@@ -26,7 +26,7 @@
     "@fontsource-variable/public-sans": "^5.0.17",
     "@fontsource-variable/rubik": "^5.0.20",
     "astro": "^4.0.2",
-    "markdown-it": "^13.0.2",
+    "markdown-it": "^14.0.0",
     "sanitize-html": "^2.11.0"
   },
   "devDependencies": {
