@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.1",
-    "@astrojs/sitemap": "^3.0.3",
+    "@astrojs/sitemap": "^3.0.4",
     "@fontsource-variable/public-sans": "^5.0.17",
     "@fontsource-variable/rubik": "^5.0.20",
     "astro": "^4.0.8",
