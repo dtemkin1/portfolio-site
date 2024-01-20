@@ -6,4 +6,8 @@ export default defineConfig({
 	site: 'https://www.diegotemkin.com',
 	integrations: [sitemap()],
 	prefetch: true,
+	experimental: {
+		clientPrerender: true,
+		globalRoutePriority: true,
+	},
 });
