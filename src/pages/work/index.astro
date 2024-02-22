@@ -23,9 +23,9 @@ const projects = (await getCollection('work')).sort(
 			/>
 			<Grid variant="offset">
 				{
-					projects.map((project) => (
+					projects.map((project, index) => (
 						<li>
-							<PortfolioPreview project={project} />
+							<PortfolioPreview project={project} loading={index < 5 ? 'eager' : 'lazy'}/>
 						</li>
 					))
 				}

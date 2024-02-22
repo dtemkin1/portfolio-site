@@ -4,14 +4,15 @@ import { Image } from 'astro:assets';
 
 interface Props {
 	project: CollectionEntry<'work'>;
+	loading?: 'eager' | 'lazy' | undefined | null;
 }
 
-const { data, slug } = Astro.props.project;
----
+const { loading, project: {data, slug} } = Astro.props;
+--- 
 
 <a class="card" href={`/work/${slug}`}>
 	<span class="title">{data.title}</span>
-	<Image src={data.img} alt={data.img_alt || ''} width={800} height={500} />
+	<Image src={data.img} alt={data.img_alt || ''} width={800} height={500} loading={loading}/>
 </a>
 
 <style>

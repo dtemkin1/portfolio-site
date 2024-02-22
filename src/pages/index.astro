@@ -50,6 +50,7 @@ import portrait from '../assets/portrait.jpg';
 					width={480}
 					height={595}
 					src={portrait}
+					loading={'eager'}
 				/>
 			</header>
 
@@ -68,7 +69,7 @@ import portrait from '../assets/portrait.jpg';
 						{
 							projects.map((project) => (
 								<li>
-									<PortfolioPreview project={project} />
+									<PortfolioPreview project={project} loading={'eager'} />
 								</li>
 							))
 						}
