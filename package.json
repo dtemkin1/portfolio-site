@@ -18,7 +18,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "fix": "prettier --write . && eslint --ext .js,.ts,.astro src"
+    "fix": "prettier --write . && eslint --ext .js,.ts,.astro src",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.5",
