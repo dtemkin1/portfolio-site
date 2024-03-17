@@ -24,8 +24,16 @@ const projects = (await getCollection('work'))
 // Full Astro Component Syntax:
 // https://docs.astro.build/core-concepts/astro-components/
 
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import portrait from '../assets/portrait.jpg';
+
+import noise from '../assets/backgrounds/noise.png';
+import type { ImageMetadata } from 'astro';
+
+let getCSSImg = async (img: ImageMetadata) =>
+	`url(${(await getImage({ src: img, format: 'webp' })).src})`;
+
+const noiseUrl = await getCSSImg(noise);
 ---
 
 <BaseLayout>
@@ -90,7 +98,7 @@ import portrait from '../assets/portrait.jpg';
 	</div>
 </BaseLayout>
 
-<style>
+<style define:vars={{ noiseUrl }}>
 	.hero {
 		display: flex;
 		flex-direction: column;
@@ -154,7 +162,7 @@ import portrait from '../assets/portrait.jpg';
 		top: 0;
 		transform: translateY(-75%) translateX(-50%);
 		background:
-			url('/assets/backgrounds/noise.png') top center/220px repeat,
+			var(--noiseUrl) top center/220px repeat,
 			var(--hero-bg) center center / var(--bg-gradient-size) no-repeat,
 			var(--gray-999);
 		background-blend-mode: overlay, normal, normal, normal;
