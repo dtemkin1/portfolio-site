@@ -5,7 +5,7 @@ import ContactCTA from '../components/ContactCTA.astro';
 import Hero from '../components/Hero.astro';
 
 import { Image } from 'astro:assets';
-import mainPic from '../assets/graduation.jpg';
+import aboutPic from '../assets/graduation.jpg';
 ---
 
 <BaseLayout title="About Me | Diego Temkin" description="About Diego Temkin">
@@ -16,7 +16,9 @@ import mainPic from '../assets/graduation.jpg';
 				tagline="Thanks for stopping by! Read below to learn more about myself and my background."
 			>
 				<Image
-					src={mainPic}
+					src={aboutPic}
+					widths={[240, 540, 720, aboutPic.width]}
+					sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${aboutPic.width}px`}
 					alt="Me at high school graduation"
 					loading={'eager'}
 				/>

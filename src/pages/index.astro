@@ -39,7 +39,7 @@ import portrait from '../assets/portrait.jpg';
 				>
 					<div class="roles">
 						<Pill><Icon icon="code" size="1.33em" /> Computer Science</Pill>
-						<Pill><Icon icon="compass-tool" size="1.33em"/>Engineering</Pill>
+						<Pill><Icon icon="compass-tool" size="1.33em" />Engineering</Pill>
 						<Pill>
 							<Icon icon="pencil-line" size="1.33em" /> Urban Planning
 						</Pill>
@@ -48,6 +48,8 @@ import portrait from '../assets/portrait.jpg';
 
 				<Image
 					alt="Diego Temkin smiling in a blue button-down shirt in front of a marble column"
+					widths={[240, 540, 720, portrait.width]}
+					sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${portrait.width}px`}
 					src={portrait}
 					loading={'eager'}
 				/>
