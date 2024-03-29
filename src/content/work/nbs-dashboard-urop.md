@@ -32,4 +32,4 @@ The dashboard was developed by Cong and Diego Temkin, a sophomore pursuing a dua
 [article-link]: https://dusp.mit.edu/news/leveraging-nature-based-solutions-achieve-carbon-neutral-cities
 [climate-project-mit]: https://president.mit.edu/climate-project
 [research-paper]: https://doi.org/10.1038/s41558-023-01737-x
-[nbs-dashboard]: https://dtemkin1.github.io/dusp-nbs/
+[nbs-dashboard]: https://mit-dusp-nbs.github.io/dusp-nbs/
