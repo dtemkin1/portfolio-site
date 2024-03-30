@@ -12,53 +12,6 @@ interface Props {
 	description?: string | undefined;
 }
 
-// Asset Imports
-import { getImage } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-
-let getCSSImg = async (img: ImageMetadata) =>
-	`url(${(await getImage({ src: img, format: 'webp' })).src})`;
-
-import bgFooterDark800 from '../assets/backgrounds/bg-footer-dark-800w.jpg';
-import bgFooterDark1440 from '../assets/backgrounds/bg-footer-dark-1440w.jpg';
-import bgFooterLight800 from '../assets/backgrounds/bg-footer-light-800w.jpg';
-import bgFooterLight1440 from '../assets/backgrounds/bg-footer-light-1440w.jpg';
-import bgMainDark800 from '../assets/backgrounds/bg-main-dark-800w.jpg';
-import bgMainDark1440 from '../assets/backgrounds/bg-main-dark-1440w.jpg';
-import bgMainDarkSVG from '../assets/backgrounds/bg-main-dark.svg';
-import bgMainLight800 from '../assets/backgrounds/bg-main-light-800w.jpg';
-import bgMainLight1440 from '../assets/backgrounds/bg-main-light-1440w.jpg';
-import bgMainLightSVG from '../assets/backgrounds/bg-main-light.svg';
-import bgSubtle1Dark800 from '../assets/backgrounds/bg-subtle-1-dark-800w.jpg';
-import bgSubtle1Dark1440 from '../assets/backgrounds/bg-subtle-1-dark-1440w.jpg';
-import bgSubtle1Light800 from '../assets/backgrounds/bg-subtle-1-light-800w.jpg';
-import bgSubtle1Light1440 from '../assets/backgrounds/bg-subtle-1-light-1440w.jpg';
-import bgSubtle2Dark800 from '../assets/backgrounds/bg-subtle-2-dark-800w.jpg';
-import bgSubtle2Dark1440 from '../assets/backgrounds/bg-subtle-2-dark-1440w.jpg';
-import bgSubtle2Light800 from '../assets/backgrounds/bg-subtle-2-light-800w.jpg';
-import bgSubtle2Light1440 from '../assets/backgrounds/bg-subtle-2-light-1440w.jpg';
-import noise from '../assets/backgrounds/noise.png';
-
-const bgFooterDark800Url = await getCSSImg(bgFooterDark800);
-const bgFooterDark1440Url = await getCSSImg(bgFooterDark1440);
-const bgFooterLight800Url = await getCSSImg(bgFooterLight800);
-const bgFooterLight1440Url = await getCSSImg(bgFooterLight1440);
-const bgMainDark800Url = await getCSSImg(bgMainDark800);
-const bgMainDark1440Url = await getCSSImg(bgMainDark1440);
-const bgMainDarkSVGUrl = await getCSSImg(bgMainDarkSVG);
-const bgMainLight800Url = await getCSSImg(bgMainLight800);
-const bgMainLight1440Url = await getCSSImg(bgMainLight1440);
-const bgMainLightSVGUrl = await getCSSImg(bgMainLightSVG);
-const bgSubtle1Dark800Url = await getCSSImg(bgSubtle1Dark800);
-const bgSubtle1Dark1440Url = await getCSSImg(bgSubtle1Dark1440);
-const bgSubtle1Light800Url = await getCSSImg(bgSubtle1Light800);
-const bgSubtle1Light1440Url = await getCSSImg(bgSubtle1Light1440);
-const bgSubtle2Dark800Url = await getCSSImg(bgSubtle2Dark800);
-const bgSubtle2Dark1440Url = await getCSSImg(bgSubtle2Dark1440);
-const bgSubtle2Light800Url = await getCSSImg(bgSubtle2Light800);
-const bgSubtle2Light1440Url = await getCSSImg(bgSubtle2Light1440);
-const noiseUrl = await getCSSImg(noise);
-
 const { title, description } = Astro.props;
 ---
 
@@ -78,33 +31,11 @@ const { title, description } = Astro.props;
 			addEventListener('load', () => document.documentElement.classList.add('loaded'));
 		</script>
 
-		<style
-			define:vars={{
-				bgFooterDark800Url,
-				bgFooterDark1440Url,
-				bgFooterLight800Url,
-				bgFooterLight1440Url,
-				bgMainDark800Url,
-				bgMainDark1440Url,
-				bgMainDarkSVGUrl,
-				bgMainLight800Url,
-				bgMainLight1440Url,
-				bgMainLightSVGUrl,
-				bgSubtle1Dark800Url,
-				bgSubtle1Dark1440Url,
-				bgSubtle1Light800Url,
-				bgSubtle1Light1440Url,
-				bgSubtle2Dark800Url,
-				bgSubtle2Dark1440Url,
-				bgSubtle2Light800Url,
-				bgSubtle2Light1440Url,
-				noiseUrl,
-			}}
-		>
+		<style>
 			:root {
 				--_placeholder-bg: linear-gradient(transparent, transparent);
-				--bg-image-main: var(--bgMainLight800Url);
-				--bg-image-main-curves: var(--bgMainLightSVGUrl);
+				--bg-image-main: url('/assets/backgrounds/bg-main-light-800w.jpg');
+				--bg-image-main-curves: url('/assets/backgrounds/bg-main-light.svg');
 				--bg-image-subtle-1: var(--_placeholder-bg);
 				--bg-image-subtle-2: var(--_placeholder-bg);
 				--bg-image-footer: var(--_placeholder-bg);
@@ -117,8 +48,8 @@ const { title, description } = Astro.props;
 			}
 
 			:root.theme-dark {
-				--bg-image-main: var(--bgMainDark800Url);
-				--bg-image-main-curves: var(--bgMainDarkSVGUrl);
+				--bg-image-main: url('/assets/backgrounds/bg-main-dark-800w.jpg');
+				--bg-image-main-curves: url('/assets/backgrounds/bg-main-dark.svg');
 				--bg-svg-blend-mode: darken;
 				--bg-blend-mode: lighten;
 			}
@@ -126,34 +57,34 @@ const { title, description } = Astro.props;
 			/* These backgrounds are displayed below the fold, so we lazy load them
          once the `.loaded` class has been set.  */
 			:root.loaded {
-				--bg-image-subtle-1: var(--bgSubtle1Light800Url);
-				--bg-image-subtle-2: var(--bgSubtle2Light800Url);
-				--bg-image-footer: var(--bgFooterLight800Url);
+				--bg-image-subtle-1: url('/assets/backgrounds/bg-subtle-1-light-800w.jpg');
+				--bg-image-subtle-2: url('/assets/backgrounds/bg-subtle-2-light-800w.jpg');
+				--bg-image-footer: url('/assets/backgrounds/bg-footer-light-800w.jpg');
 			}
 			:root.loaded.theme-dark {
-				--bg-image-subtle-1: var(--bgSubtle1Dark800Url);
-				--bg-image-subtle-2: var(--bgSubtle2Dark800Url);
-				--bg-image-footer: var(--bgFooterDark800Url);
+				--bg-image-subtle-1: url('/assets/backgrounds/bg-subtle-1-dark-800w.jpg');
+				--bg-image-subtle-2: url('/assets/backgrounds/bg-subtle-2-dark-800w.jpg');
+				--bg-image-footer: url('/assets/backgrounds/bg-footer-dark-800w.jpg');
 			}
 
 			@media (min-width: 50em) {
 				:root {
 					--bg-scale: 1;
-					--bg-image-main: var(--bgMainLight1440Url);
+					--bg-image-main: url('/assets/backgrounds/bg-main-light-1440w.jpg');
 				}
 				:root.theme-dark {
-					--bg-image-main: var(--bgMainDark1440Url);
+					--bg-image-main: url('/assets/backgrounds/bg-main-dark-1440w.jpg');
 				}
 
 				:root.loaded {
-					--bg-image-subtle-1: var(--bgSubtle1Light1440Url);
-					--bg-image-subtle-2: var(--bgSubtle2Light1440Url);
-					--bg-image-footer: var(--bgFooterLight1440Url);
+					--bg-image-subtle-1: url('/assets/backgrounds/bg-subtle-1-light-1440w.jpg');
+					--bg-image-subtle-2: url('/assets/backgrounds/bg-subtle-2-light-1440w.jpg');
+					--bg-image-footer: url('/assets/backgrounds/bg-footer-light-1440w.jpg');
 				}
 				:root.loaded.theme-dark {
-					--bg-image-subtle-1: var(--bgSubtle1Dark1440Url);
-					--bg-image-subtle-2: var(--bgSubtle2Dark1440Url);
-					--bg-image-footer: var(--bgFooterDark1440Url);
+					--bg-image-subtle-1: url('/assets/backgrounds/bg-subtle-1-dark-1440w.jpg');
+					--bg-image-subtle-2: url('/assets/backgrounds/bg-subtle-2-dark-1440w.jpg');
+					--bg-image-footer: url('/assets/backgrounds/bg-footer-dark-1440w.jpg');
 				}
 			}
 
@@ -162,7 +93,7 @@ const { title, description } = Astro.props;
 				isolation: isolate;
 				background:
 					/*noise*/
-					var(--noiseUrl) top center/220px repeat,
+					url('/assets/backgrounds/noise.png') top center/220px repeat,
 					/*footer*/ var(--bg-image-footer) bottom center/var(--bg-gradient-size) no-repeat,
 					/*header1*/ var(--bg-image-main-curves) top center/var(--bg-gradient-size) no-repeat,
 					/*header2*/ var(--bg-image-main) top center/var(--bg-gradient-size) no-repeat,
