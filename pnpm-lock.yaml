@@ -15,8 +15,8 @@ dependencies:
     specifier: ^5.0.18
     version: 5.0.18
   '@fontsource-variable/rubik':
-    specifier: ^5.0.21
-    version: 5.0.21
+    specifier: ^5.0.22
+    version: 5.0.22
   astro:
     specifier: ^4.6.3
     version: 4.6.3(typescript@5.4.5)
@@ -901,8 +901,8 @@ packages:
     resolution: {integrity: sha512-sDPItjfl8wSnFZgd2OmN6lZYRgI9NYofCUt6qtXMSCajDaaD4rbt3e6DzlvtRYYPtEqUT4Pl822zSZyZCcIbcg==}
     dev: false
 
-  /@fontsource-variable/rubik@5.0.21:
-    resolution: {integrity: sha512-Af9eFEpA9AHC1aizYfKoL4L1sjJvp93nCjhEdPFRDgHo4cO3vNrPkbdg+ER1oO3IASkjFYBPcc35QcpbRTQXTA==}
+  /@fontsource-variable/rubik@5.0.22:
+    resolution: {integrity: sha512-QwMlj57+k5+IsShA8q6FECU6zlR4CIm4TAy49GIIiMxxpmRwDXbMynrTp2kBNZmlN4b/myXzSRBnI2DXmnWBJA==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
