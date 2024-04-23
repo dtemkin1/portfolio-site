@@ -12,8 +12,8 @@ dependencies:
     specifier: ^3.1.2
     version: 3.1.2
   '@fontsource-variable/public-sans':
-    specifier: ^5.0.18
-    version: 5.0.18
+    specifier: ^5.0.19
+    version: 5.0.19
   '@fontsource-variable/rubik':
     specifier: ^5.0.22
     version: 5.0.22
@@ -897,8 +897,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@fontsource-variable/public-sans@5.0.18:
-    resolution: {integrity: sha512-sDPItjfl8wSnFZgd2OmN6lZYRgI9NYofCUt6qtXMSCajDaaD4rbt3e6DzlvtRYYPtEqUT4Pl822zSZyZCcIbcg==}
+  /@fontsource-variable/public-sans@5.0.19:
+    resolution: {integrity: sha512-Tc1V139visg0xUgSe2vQy86OwHEGb0dO57vcrD6Cw2vDRf42sZ4fD7nTuY0Q0AjVNemT7RicmkR9qnB/MfJ6ug==}
     dev: false
 
   /@fontsource-variable/rubik@5.0.22:
