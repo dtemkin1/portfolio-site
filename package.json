@@ -26,23 +26,23 @@
     "@astrojs/sitemap": "^3.1.4",
     "@fontsource-variable/public-sans": "^5.0.19",
     "@fontsource-variable/rubik": "^5.0.22",
-    "astro": "^4.7.0",
+    "astro": "^4.7.1",
     "markdown-it": "^14.1.0",
     "sanitize-html": "^2.13.0",
     "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.5.10",
-    "@types/markdown-it": "^14.0.1",
+    "@types/markdown-it": "^14.1.1",
     "@types/sanitize-html": "^2.11.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "eslint": "^8.57.0",
-    "eslint-plugin-astro": "^1.1.0",
+    "eslint-plugin-astro": "^1.1.2",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10"
+    "vite": "^5.2.11"
   }
 }
