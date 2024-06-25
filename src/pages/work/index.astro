@@ -25,7 +25,7 @@ const projects = (await getCollection('work')).sort(
 				{
 					projects.map((project, index) => (
 						<li>
-							<PortfolioPreview project={project} loading={index < 5 ? 'eager' : 'lazy'}/>
+							<PortfolioPreview project={project} loading={index < 5 ? 'eager' : 'lazy'} />
 						</li>
 					))
 				}
