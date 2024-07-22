@@ -32,7 +32,7 @@
     "sharp": "^0.33.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.8.1",
+    "@astrojs/check": "^0.8.2",
     "@eslint/js": "^9.7.0",
     "@types/eslint__js": "^8.42.3",
     "@types/markdown-it": "^14.1.1",
