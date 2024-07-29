@@ -35,7 +35,7 @@
     "@astrojs/check": "^0.8.2",
     "@eslint/js": "^9.7.0",
     "@types/eslint__js": "^8.42.3",
-    "@types/markdown-it": "^14.1.1",
+    "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.11.0",
     "eslint": "^8.57.0",
     "eslint-plugin-astro": "^1.2.3",
