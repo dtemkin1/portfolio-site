@@ -42,7 +42,7 @@
     "eslint-plugin-jsx-a11y": "^6.9.0",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "typescript-eslint": "^7.17.0",
     "vite": "^5.3.5"
   }
