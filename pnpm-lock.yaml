@@ -18,8 +18,8 @@ importers:
         specifier: ^5.0.19
         version: 5.0.19
       '@fontsource-variable/rubik':
-        specifier: ^5.0.23
-        version: 5.0.23
+        specifier: ^5.0.24
+        version: 5.0.24
       astro:
         specifier: ^4.15.2
         version: 4.15.2(rollup@4.21.1)(typescript@5.6.2)
@@ -409,8 +409,8 @@ packages:
   '@fontsource-variable/public-sans@5.0.19':
     resolution: {integrity: sha512-Tc1V139visg0xUgSe2vQy86OwHEGb0dO57vcrD6Cw2vDRf42sZ4fD7nTuY0Q0AjVNemT7RicmkR9qnB/MfJ6ug==}
 
-  '@fontsource-variable/rubik@5.0.23':
-    resolution: {integrity: sha512-DN5t8EDVPgNRhWaiS2tm2M7oQmCIqp4oIEsKzPZYqtMzbEK1Me5ZoqMKQhlIpNnEhNJHl297wtcPNPkOU3Uv5g==}
+  '@fontsource-variable/rubik@5.0.24':
+    resolution: {integrity: sha512-V/3pPiI+qVA+LOmbMj+Mukee1ejjjDhUtZ382PfDFm4wr//K111OKV4aDmuX4SS7g6E0UGFqf8iirgFacMZEkw==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -3268,7 +3268,7 @@ snapshots:
 
   '@fontsource-variable/public-sans@5.0.19': {}
 
-  '@fontsource-variable/rubik@5.0.23': {}
+  '@fontsource-variable/rubik@5.0.24': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
