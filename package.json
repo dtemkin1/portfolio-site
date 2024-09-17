@@ -37,7 +37,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.13.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.10.0",
     "eslint-plugin-astro": "^1.2.4",
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "prettier": "^3.3.3",
