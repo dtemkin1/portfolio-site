@@ -15,8 +15,8 @@ importers:
         specifier: ^3.1.6
         version: 3.1.6
       '@fontsource-variable/public-sans':
-        specifier: ^5.0.19
-        version: 5.0.19
+        specifier: ^5.1.0
+        version: 5.1.0
       '@fontsource-variable/rubik':
         specifier: ^5.1.0
         version: 5.1.0
@@ -413,8 +413,8 @@ packages:
     resolution: {integrity: sha512-autAXT203ixhqei9xt+qkYOvY8l6LAFIdT2UXc/RPNeUVfqRF1BV94GTJyVPFKT8nFM6MyVJhjLj9E8JWvf5zQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@fontsource-variable/public-sans@5.0.19':
-    resolution: {integrity: sha512-Tc1V139visg0xUgSe2vQy86OwHEGb0dO57vcrD6Cw2vDRf42sZ4fD7nTuY0Q0AjVNemT7RicmkR9qnB/MfJ6ug==}
+  '@fontsource-variable/public-sans@5.1.0':
+    resolution: {integrity: sha512-MxBOQcJNa4+Im4nSdLr2+lUVrTrbLm+kQOWZGaWO/aq5oBOqJrW9OzYCi7uBr3174B1q7eJWTlofo4+UbiHehg==}
 
   '@fontsource-variable/rubik@5.1.0':
     resolution: {integrity: sha512-gmh3xts3ARd0ktWW/VX+MVxhJr6TxHVeGLsQEaQXDVxvuNjn5WRucfKfXK3EVN2BcgRxUe1Fctv/v9zgEd0DUg==}
@@ -3246,7 +3246,7 @@ snapshots:
     dependencies:
       levn: 0.4.1
 
-  '@fontsource-variable/public-sans@5.0.19': {}
+  '@fontsource-variable/public-sans@5.1.0': {}
 
   '@fontsource-variable/rubik@5.1.0': {}
 
