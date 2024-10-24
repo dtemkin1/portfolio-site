@@ -1,131 +1,139 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
-import ContactCTA from '../components/ContactCTA.astro';
-import Hero from '../components/Hero.astro';
+import ContactCTA from "../components/ContactCTA.astro";
+import Hero from "../components/Hero.astro";
 
-import { Image } from 'astro:assets';
-import aboutPic from '../assets/graduation.jpg';
+import { Image } from "astro:assets";
+import aboutPic from "../assets/graduation.jpg";
 ---
 
 <BaseLayout title="About Me | Diego Temkin" description="About Diego Temkin">
-	<div class="stack gap-20">
-		<main class="wrapper about">
-			<Hero
-				title="About Me"
-				tagline="Thanks for stopping by! Read below to learn more about myself and my background."
-			>
-				<Image
-					src={aboutPic}
-					widths={[240, 540, 720, aboutPic.width]}
-					sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${aboutPic.width}px`}
-					alt="Me at high school graduation"
-					loading={'eager'}
-				/>
-			</Hero>
+  <div class="stack gap-20">
+    <main class="wrapper about">
+      <Hero
+        title="About Me"
+        tagline="Thanks for stopping by! Read below to learn more about myself and my background."
+      >
+        <Image
+          src={aboutPic}
+          widths={[240, 540, 720, aboutPic.width]}
+          sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${aboutPic.width}px`}
+          alt="Me at high school graduation"
+          loading={"eager"}
+        />
+      </Hero>
 
-			<section>
-				<h2 class="section-title">Background</h2>
-				<div class="content">
-					<p>
-						Hi! My name is Diego Temkin, and I'm from a region called the Rio Grande Valley in South
-						Texas, right up along the US-Mexico border. My parents both immigrated to the US from
-						Mexico.
-					</p>
-					<p>
-						I attended the South Texas ISD Science Academy, a STEM magnet school in the region. I
-						participated in a variety of science and engineering related extracurriculars, while
-						ensuring I always took a challenging courseload. Furthermore, I maintained a job
-						tutoring children from all grades in mathematics, even virtually throughout the COVID-19
-						pandemic.
-					</p>
-					<p>
-						Now, at MIT, I've engaged in a variety of activities and projects, ranging from personal
-						fun projects (like this website!) to research through funded labs. I hope this site can
-						serve as a catalog of everything I've done and continue to do, and will operate far into
-						the future, no matter where life takes me :)
-					</p>
-				</div>
-			</section>
-			<section>
-				<h2 class="section-title">Education</h2>
-				<div class="content">
-					<p>
-						Massachusetts Institute of Technology, Anticipated SB in Computer Science and
-						Engineering + Urban Planning, 2026
-					</p>
-					<p>South Texas ISD Science Academy, Summa Cum Laude, 2022</p>
-				</div>
-			</section>
-			<section>
-				<h2 class="section-title">Skills</h2>
-				<div class="content">
-					<p>Programming Languages: Python, TypeScript/JavaScript/JSX, Java, C#, MATLAB</p>
-					<p>Languages: English (Native), Spanish (Native)</p>
-					<p>Honors: QuestBridge NCM Scholar, HSF Scholar, AP Scholar with Distinction</p>
-					<p>Interests: Machine Learning, Data Science, Public Policy</p>
-				</div>
-			</section>
-		</main>
+      <section>
+        <h2 class="section-title">Background</h2>
+        <div class="content">
+          <p>
+            Hi! My name is Diego Temkin, and I'm from a region called the Rio
+            Grande Valley in South Texas, right up along the US-Mexico border.
+            My parents both immigrated to the US from Mexico.
+          </p>
+          <p>
+            I attended the South Texas ISD Science Academy, a STEM magnet school
+            in the region. I participated in a variety of science and
+            engineering related extracurriculars, while ensuring I always took a
+            challenging courseload. Furthermore, I maintained a job tutoring
+            children from all grades in mathematics, even virtually throughout
+            the COVID-19 pandemic.
+          </p>
+          <p>
+            Now, at MIT, I've engaged in a variety of activities and projects,
+            ranging from personal fun projects (like this website!) to research
+            through funded labs. I hope this site can serve as a catalog of
+            everything I've done and continue to do, and will operate far into
+            the future, no matter where life takes me :)
+          </p>
+        </div>
+      </section>
+      <section>
+        <h2 class="section-title">Education</h2>
+        <div class="content">
+          <p>
+            Massachusetts Institute of Technology, Anticipated SB in Computer
+            Science and Engineering + Urban Planning, 2026
+          </p>
+          <p>South Texas ISD Science Academy, Summa Cum Laude, 2022</p>
+        </div>
+      </section>
+      <section>
+        <h2 class="section-title">Skills</h2>
+        <div class="content">
+          <p>
+            Programming Languages: Python, TypeScript/JavaScript/JSX, Java, C#,
+            MATLAB
+          </p>
+          <p>Languages: English (Native), Spanish (Native)</p>
+          <p>
+            Honors: QuestBridge NCM Scholar, HSF Scholar, AP Scholar with
+            Distinction
+          </p>
+          <p>Interests: Machine Learning, Data Science, Public Policy</p>
+        </div>
+      </section>
+    </main>
 
-		<ContactCTA />
-	</div>
+    <ContactCTA />
+  </div>
 </BaseLayout>
 
 <style>
-	.about {
-		display: flex;
-		flex-direction: column;
-		gap: 3.5rem;
-	}
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
 
-	img {
-		margin-top: 1.5rem;
-		border-radius: 1.5rem;
-		box-shadow: var(--shadow-md);
-	}
+  img {
+    margin-top: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-md);
+  }
 
-	section {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		color: var(--gray-200);
-	}
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--gray-200);
+  }
 
-	.section-title {
-		grid-column-start: 1;
-		font-size: var(--text-xl);
-		color: var(--gray-0);
-	}
+  .section-title {
+    grid-column-start: 1;
+    font-size: var(--text-xl);
+    color: var(--gray-0);
+  }
 
-	.content {
-		grid-column: 2 / 4;
-	}
+  .content {
+    grid-column: 2 / 4;
+  }
 
-	.content :global(a) {
-		text-decoration: 1px solid underline transparent;
-		text-underline-offset: 0.25em;
-		transition: text-decoration-color var(--theme-transition);
-	}
+  .content :global(a) {
+    text-decoration: 1px solid underline transparent;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--theme-transition);
+  }
 
-	.content :global(a:hover),
-	.content :global(a:focus) {
-		text-decoration-color: currentColor;
-	}
+  .content :global(a:hover),
+  .content :global(a:focus) {
+    text-decoration-color: currentColor;
+  }
 
-	@media (min-width: 50em) {
-		.about {
-			display: grid;
-			grid-template-columns: 1fr 60% 1fr;
-		}
+  @media (min-width: 50em) {
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 60% 1fr;
+    }
 
-		.about > :global(:first-child) {
-			grid-column-start: 2;
-		}
+    .about > :global(:first-child) {
+      grid-column-start: 2;
+    }
 
-		section {
-			display: contents;
-			font-size: var(--text-lg);
-		}
-	}
+    section {
+      display: contents;
+      font-size: var(--text-lg);
+    }
+  }
 </style>

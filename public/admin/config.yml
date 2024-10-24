@@ -4,39 +4,41 @@ backend:
   branch: main # Branch to update (optional; defaults to master)
   squash_merges: true
 publish_mode: editorial_workflow
-media_folder: 'src/assets/posts' # Media files will be stored in the repo under src/assets/posts
-public_folder: '../../assets/posts'
+media_folder: "src/assets/posts" # Media files will be stored in the repo under src/assets/posts
+public_folder: "../../assets/posts"
 site_url: https://www.diegotemkin.com/
 collections:
-  - name: 'work'
-    label: 'Work'
-    folder: '/src/content/work'
-    preview_path: 'work/{{slug}}'
+  - name: "work"
+    label: "Work"
+    folder: "/src/content/work"
+    preview_path: "work/{{slug}}"
     create: true
-    slug: '{{slug}}'
+    slug: "{{slug}}"
     fields:
       - {
-          label: 'Title',
-          name: 'title',
-          widget: 'string',
-          pattern: ['^(?=[\S\s]{0,60}$)[\S\s]*', 'Must have at most 60 characters'],
+          label: "Title",
+          name: "title",
+          widget: "string",
+          pattern:
+            ['^(?=[\S\s]{0,60}$)[\S\s]*', "Must have at most 60 characters"],
         }
       - {
-          label: 'Publish Date',
-          name: 'publishDate',
-          widget: 'datetime',
-          format: 'YYYY-MM-DD HH:mm:ss',
-          date_format: 'L',
-          time_format: 'LTS',
+          label: "Publish Date",
+          name: "publishDate",
+          widget: "datetime",
+          format: "YYYY-MM-DD HH:mm:ss",
+          date_format: "L",
+          time_format: "LTS",
         }
-      - { label: 'Content Preview', name: 'img', widget: 'image' }
-      - { label: 'Image Alt', name: 'img_alt', widget: 'string' }
+      - { label: "Content Preview", name: "img", widget: "image" }
+      - { label: "Image Alt", name: "img_alt", widget: "string" }
       - {
-          label: 'Description',
-          name: 'description',
-          widget: 'string',
-          pattern: ['^(?=[\S\s]{0,160}$)[\S\s]*', 'Must have at most 160 characters'],
+          label: "Description",
+          name: "description",
+          widget: "string",
+          pattern:
+            ['^(?=[\S\s]{0,160}$)[\S\s]*', "Must have at most 160 characters"],
         }
-      - { label: 'Tags', name: 'tags', widget: 'list' }
-      - { label: 'Draft', name: 'draft', widget: 'boolean', required: false }
-      - { label: 'Content', name: 'body', widget: 'markdown' }
+      - { label: "Tags", name: "tags", widget: "list" }
+      - { label: "Draft", name: "draft", widget: "boolean", required: false }
+      - { label: "Content", name: "body", widget: "markdown" }

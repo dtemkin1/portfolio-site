@@ -1,17 +1,20 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions } from "astro:transitions";
 
-import '@fontsource-variable/public-sans';
-import '@fontsource-variable/rubik';
+import "@fontsource-variable/public-sans";
+import "@fontsource-variable/rubik";
 
-import '../styles/global.css';
+import "../styles/global.css";
 
 interface Props {
-	title?: string | undefined;
-	description?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
 }
 
-const { title = 'Diego Temkin', description = 'The personal site of Diego Temkin' } = Astro.props;
+const {
+  title = "Diego Temkin",
+  description = "The personal site of Diego Temkin",
+} = Astro.props;
 ---
 
 <meta charset="UTF-8" />
@@ -27,45 +30,57 @@ const { title = 'Diego Temkin', description = 'The personal site of Diego Temkin
 
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title="RSS Feed for Diego Temkin's website"
-	href="/rss.xml"
+  rel="alternate"
+  type="application/rss+xml"
+  title="RSS Feed for Diego Temkin's website"
+  href="/rss.xml"
 />
 
 <script is:inline>
-	// This code is inlined in the head to make dark mode instant & blocking.
-	const getThemePreference = () => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-			return localStorage.getItem('theme');
-		}
-		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-	};
+  // This code is inlined in the head to make dark mode instant & blocking.
+  const getThemePreference = () => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
 
-	const isDark = getThemePreference() === 'dark';
-	document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
+  const isDark = getThemePreference() === "dark";
+  document.documentElement.classList[isDark ? "add" : "remove"]("theme-dark");
 
-	if (typeof localStorage !== 'undefined') {
-		// Watch the document element and persist user preference when it changes.
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('theme-dark');
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
-		});
-		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-	}
+  if (typeof localStorage !== "undefined") {
+    // Watch the document element and persist user preference when it changes.
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("theme-dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  }
 
-	document.addEventListener('astro:before-swap', (ev) => {
-		const getThemePreference = () => {
-			if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-				return localStorage.getItem('theme');
-			}
-			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-		};
+  document.addEventListener("astro:before-swap", (ev) => {
+    const getThemePreference = () => {
+      if (
+        typeof localStorage !== "undefined" &&
+        localStorage.getItem("theme")
+      ) {
+        return localStorage.getItem("theme");
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    };
 
-		const isDark = getThemePreference() === 'dark';
-		// Set the theme on the incoming document
-		ev.newDocument.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
-	});
+    const isDark = getThemePreference() === "dark";
+    // Set the theme on the incoming document
+    ev.newDocument.documentElement.classList[isDark ? "add" : "remove"](
+      "theme-dark",
+    );
+  });
 </script>
 
 <ViewTransitions />
