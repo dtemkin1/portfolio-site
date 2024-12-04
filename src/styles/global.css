@@ -119,8 +119,8 @@
   --gradient-stroke: linear-gradient(180deg, var(--gray-600), var(--gray-800));
 
   --shadow-sm: 0px 6px 3px rgba(255, 255, 255, 0.01),
-    0px 4px 2px rgba(255, 255, 255, 0.01), 0px 2px 2px rgba(255, 255, 255, 0.02),
-    0px 0px 1px rgba(255, 255, 255, 0.03);
+    0px 4px 2px rgba(255, 255, 255, 0.01),
+    0px 2px 2px rgba(255, 255, 255, 0.02), 0px 0px 1px rgba(255, 255, 255, 0.03);
   --shadow-md: 0px 28px 11px rgba(255, 255, 255, 0.01),
     0px 16px 10px rgba(255, 255, 255, 0.03),
     0px 7px 7px rgba(255, 255, 255, 0.05), 0px 2px 4px rgba(255, 255, 255, 0.06);
