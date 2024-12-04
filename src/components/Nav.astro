@@ -38,6 +38,14 @@ const iconLinks: {
     icon: "linux-logo",
   },
 ];
+
+/** Test if a link is pointing to the current page. */
+const isCurrentPage = (href: string) => {
+  let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
+  if (pathname.at(0) !== "/") pathname = "/" + pathname;
+  if (pathname.at(-1) !== "/") pathname += "/";
+  return pathname === href || (href !== "/" && pathname.startsWith(href));
+};
 ---
 
 <nav>
@@ -65,15 +73,8 @@ const iconLinks: {
         textLinks.map(({ label, href }) => (
           <li>
             <a
-              aria-current={Astro.url.pathname === href}
-              class:list={[
-                "link",
-                {
-                  active:
-                    Astro.url.pathname === href ||
-                    (href !== "/" && Astro.url.pathname.startsWith(href)),
-                },
-              ]}
+              aria-current={isCurrentPage(href) ? "page" : null}
+              class="link"
               href={href}
             >
               {label}
@@ -103,15 +104,8 @@ const iconLinks: {
         textLinks.map(({ label, href }) => (
           <li>
             <a
-              aria-current={Astro.url.pathname === href}
-              class:list={[
-                "link",
-                {
-                  active:
-                    Astro.url.pathname === href ||
-                    (href !== "/" && Astro.url.pathname.startsWith(href)),
-                },
-              ]}
+              aria-current={isCurrentPage(href) ? "page" : null}
+              class="link"
               href={href}
             >
               {label}
@@ -257,7 +251,7 @@ const iconLinks: {
     text-decoration: none;
   }
 
-  .link.active {
+  .link[aria-current] {
     color: var(--gray-0);
   }
 
@@ -355,7 +349,7 @@ const iconLinks: {
       background-color: var(--accent-subtle-overlay);
     }
 
-    .link.active {
+    .link[aria-current] {
       color: var(--accent-text-over);
       background-color: var(--accent-regular);
     }
@@ -383,7 +377,7 @@ const iconLinks: {
     }
   }
   @media (forced-colors: active) {
-    .link.active {
+    .link[aria-current] {
       color: SelectedItem;
     }
   }
