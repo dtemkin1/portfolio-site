@@ -27,7 +27,7 @@
     "@fontsource-variable/rubik": "^5.2.5",
     "astro": "^5.5.2",
     "markdown-it": "^14.1.0",
-    "sanitize-html": "^2.14.0",
+    "sanitize-html": "^2.15.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
