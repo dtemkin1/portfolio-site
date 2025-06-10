@@ -15,8 +15,8 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
       '@fontsource-variable/public-sans':
-        specifier: ^5.2.5
-        version: 5.2.5
+        specifier: ^5.2.6
+        version: 5.2.6
       '@fontsource-variable/rubik':
         specifier: ^5.2.6
         version: 5.2.6
@@ -513,8 +513,8 @@ packages:
     resolution: {integrity: sha512-0J+zgWxHN+xXONWIyPWKFMgVuJoZuGiIFu8yxk7RJjxkzpGmyja5wRFqZIVtjDVOQpV+Rw0iOAjYPE2eQyjr0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@fontsource-variable/public-sans@5.2.5':
-    resolution: {integrity: sha512-/guMye9ATKBlF7FuQeTJqW3RBilKmgeno6O2HXNEaRHP1JpfpG4oG8HwX8Mf0w6UHHE2b4monggJr1IfR4NhuA==}
+  '@fontsource-variable/public-sans@5.2.6':
+    resolution: {integrity: sha512-NXUIBhVuxk0n0S5ZUQvEJNw6k2vtgh4GIHHGMNm1hPt2dyyl7ScsDoygzUi1Q/LD4+nj6mlb1qjITzNcBAo4dw==}
 
   '@fontsource-variable/rubik@5.2.6':
     resolution: {integrity: sha512-vMOZRIKXE46Q28QN+RKCq0KJW9eg8WAOrlb/W5rjBSzFeINC83ArLvWW4bH9H+bCrp5IeVovH6PqEAjdOU2+xA==}
@@ -3493,7 +3493,7 @@ snapshots:
       '@eslint/core': 0.14.0
       levn: 0.4.1
 
-  '@fontsource-variable/public-sans@5.2.5': {}
+  '@fontsource-variable/public-sans@5.2.6': {}
 
   '@fontsource-variable/rubik@5.2.6': {}
 
