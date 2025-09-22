@@ -18,8 +18,8 @@ importers:
         specifier: ^5.2.6
         version: 5.2.6
       '@fontsource-variable/rubik':
-        specifier: ^5.2.7
-        version: 5.2.7
+        specifier: ^5.2.8
+        version: 5.2.8
       astro:
         specifier: ^5.13.7
         version: 5.13.7(@types/node@24.5.0)(rollup@4.50.2)(typescript@5.9.2)(yaml@2.7.0)
@@ -366,8 +366,8 @@ packages:
   '@fontsource-variable/public-sans@5.2.6':
     resolution: {integrity: sha512-NXUIBhVuxk0n0S5ZUQvEJNw6k2vtgh4GIHHGMNm1hPt2dyyl7ScsDoygzUi1Q/LD4+nj6mlb1qjITzNcBAo4dw==}
 
-  '@fontsource-variable/rubik@5.2.7':
-    resolution: {integrity: sha512-iz70VYGyIqgJl07LZLkK2J6XhqPNM0vrqPWF9aabjRr74ICNVY+vJGFbID09glByI3X7iDe5PP2eZeCw0AaTdA==}
+  '@fontsource-variable/rubik@5.2.8':
+    resolution: {integrity: sha512-vGDExLzB4a2Fj9mca5LqNoA2ZKcU9o+x5FEBLte/nxYkCB9hOQwZS6ZlItUv+Ssn7YMzKauGuI/Po+YueFuZbg==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -3338,7 +3338,7 @@ snapshots:
 
   '@fontsource-variable/public-sans@5.2.6': {}
 
-  '@fontsource-variable/rubik@5.2.7': {}
+  '@fontsource-variable/rubik@5.2.8': {}
 
   '@humanfs/core@0.19.1': {}
 
