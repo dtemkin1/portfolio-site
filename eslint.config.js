@@ -8,7 +8,8 @@ import eslintPluginAstro from "eslint-plugin-astro";
 export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
-  eslintPluginAstro.configs.recommended,
-  eslintPluginAstro.configs["jsx-a11y-recommended"],
+  eslintPluginAstro.configs["flat/recommended"],
+  // TODO: install eslint-plugin-jsx-a11y once it supports eslint 10
+  // eslintPluginAstro.configs["flat/jsx-a11y-recommended"],
   { ignores: ["*.d.ts"] },
 );
