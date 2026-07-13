@@ -21,7 +21,7 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.18",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/public-sans": "^5.2.7",
     "@fontsource-variable/rubik": "^5.2.8",
