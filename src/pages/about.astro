@@ -1,139 +1,132 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-
-import ContactCTA from "../components/ContactCTA.astro";
-import Hero from "../components/Hero.astro";
-
 import { Image } from "astro:assets";
-import aboutPic from "../assets/graduation.jpg";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StripMap from "../components/StripMap.astro";
+import portrait from "../assets/portrait.jpg";
 ---
 
-<BaseLayout title="About Me | Diego Temkin" description="About Diego Temkin">
-  <div class="stack gap-20">
-    <main class="wrapper about">
-      <Hero
-        title="About Me"
-        tagline="Thanks for stopping by! Read below to learn more about myself and my background."
-      >
-        <Image
-          src={aboutPic}
-          widths={[240, 540, 720, aboutPic.width]}
-          sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${aboutPic.width}px`}
-          alt="Me at high school graduation"
-          loading={"eager"}
-        />
-      </Hero>
+<BaseLayout title="About | Diego Temkin" description="About Diego Temkin">
+  <main class="wrapper about">
+    <h1>About</h1>
 
-      <section>
-        <h2 class="section-title">Background</h2>
-        <div class="content">
-          <p>
-            Hi! My name is Diego Temkin, and I'm from a region called the Rio
-            Grande Valley in South Texas, right up along the US-Mexico border.
-            My parents both immigrated to the US from Mexico.
-          </p>
-          <p>
-            I attended the South Texas ISD Science Academy, a STEM magnet school
-            in the region. I participated in a variety of science and
-            engineering related extracurriculars, while ensuring I always took a
-            challenging courseload. Furthermore, I maintained a job tutoring
-            children from all grades in mathematics, even virtually throughout
-            the COVID-19 pandemic.
-          </p>
-          <p>
-            Now, at MIT, I've engaged in a variety of activities and projects,
-            ranging from personal fun projects (like this website!) to research
-            through funded labs. I hope this site can serve as a catalog of
-            everything I've done and continue to do, and will operate far into
-            the future, no matter where life takes me :)
-          </p>
-        </div>
-      </section>
-      <section>
-        <h2 class="section-title">Education</h2>
-        <div class="content">
-          <p>
-            Massachusetts Institute of Technology, Anticipated SB in Computer
-            Science and Engineering + Urban Planning, 2026
-          </p>
-          <p>South Texas ISD Science Academy, Summa Cum Laude, 2022</p>
-        </div>
-      </section>
-      <section>
-        <h2 class="section-title">Skills</h2>
-        <div class="content">
-          <p>
-            Programming Languages: Python, TypeScript/JavaScript/JSX, Java, C#,
-            MATLAB
-          </p>
-          <p>Languages: English (Native), Spanish (Native)</p>
-          <p>
-            Honors: QuestBridge NCM Scholar, HSF Scholar, AP Scholar with
-            Distinction
-          </p>
-          <p>Interests: Machine Learning, Data Science, Public Policy</p>
-        </div>
-      </section>
-    </main>
+    <div class="intro">
+      <div class="prose">
+        <p>
+          I'm a first-year MS Transportation student at MIT and a Graduate
+          Research Assistant in the JTL-Transit Lab. I'm interested in urban
+          mobility, transit network optimization, and transit data systems,
+          with a focus on improving access to public transportation in
+          underserved communities.
+        </p>
+        <p>
+          I'm from the Rio Grande Valley in South Texas, right along the
+          US-Mexico border. My parents both immigrated to the US from Mexico. I
+          attended the Science Academy of South Texas, a STEM magnet school, and
+          tutored children from all grades in math, including virtually through
+          the COVID-19 pandemic.
+        </p>
+      </div>
+      <Image
+        src={portrait}
+        widths={[320, 640]}
+        sizes="(max-width: 48rem) 100vw, 20rem"
+        alt="Diego Temkin smiling in a blue button-down shirt in front of a marble column"
+        loading="eager"
+      />
+    </div>
 
-    <ContactCTA />
-  </div>
+    <section>
+      <h2>The route so far</h2>
+      <StripMap />
+    </section>
+
+    <section class="prose">
+      <h2>Education</h2>
+      <p>MS in Transportation, MIT, expected 2028.</p>
+      <p>
+        BS in Computer Science and Engineering and in Planning, MIT, 2026. My
+        thesis received the MIT DUSP Best Undergraduate Thesis award.
+      </p>
+      <p>The Science Academy of South Texas, 2022.</p>
+    </section>
+
+    <section class="prose">
+      <h2>Publications</h2>
+      <p>
+        <a href="https://dspace.mit.edu/handle/1721.1/176348"
+          ><cite
+            >A Co-Design Framework for School Bus Network Redesign: Applying
+            Category Theory to Routing, Resources, and Equity</cite
+          ></a
+        >. Bachelor's thesis, MIT, May 2026.
+      </p>
+      <p>
+        <a href="https://doi.org/10.1016/B978-0-443-21782-1.00008-7"
+          >NbS and policy communication</a
+        >. With Cong Cong. In <cite
+          >Nature-Based Solutions in Supporting Sustainable Development Goals</cite
+        >, November 2024.
+      </p>
+    </section>
+
+    <section class="prose">
+      <h2>On campus</h2>
+      <p>
+        I'm a Student Developer and Member-at-Large at SIPB, MIT's student
+        computing club, and I help maintain Hydrant and CourseRoad, which
+        students use to plan their classes.
+      </p>
+      <p>
+        I was President of Dormitory Council from 2025 to 2026, representing over
+        3,500 undergraduates.
+      </p>
+    </section>
+
+    <section class="prose">
+      <h2>Skills and honors</h2>
+      <p>
+        Python, TypeScript, Java, C, C#, SQL, Go, and GIS. English and Spanish,
+        both native.
+      </p>
+      <p>
+        MIT Karl Taylor Compton Prize, QuestBridge NCM Scholar, HSF Scholar,
+        National Hispanic Scholar, National Rural and Small Town Scholar, and AP
+        Scholar with Distinction.
+      </p>
+    </section>
+  </main>
 </BaseLayout>
 
 <style>
   .about {
-    display: flex;
-    flex-direction: column;
-    gap: 3.5rem;
+    display: grid;
+    gap: 3rem;
+  }
+
+  .intro {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
   }
 
   img {
-    margin-top: 1.5rem;
-    border-radius: 1.5rem;
-    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 20rem;
+    border-radius: 6px;
   }
 
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    color: var(--gray-200);
+  section > h2 {
+    margin-bottom: 1rem;
   }
 
-  .section-title {
-    grid-column-start: 1;
-    font-size: var(--text-xl);
-    color: var(--gray-0);
+  section.prose > h2 {
+    margin-top: 0;
   }
 
-  .content {
-    grid-column: 2 / 4;
-  }
-
-  .content :global(a) {
-    text-decoration: 1px solid underline transparent;
-    text-underline-offset: 0.25em;
-    transition: text-decoration-color var(--theme-transition);
-  }
-
-  .content :global(a:hover),
-  .content :global(a:focus) {
-    text-decoration-color: currentColor;
-  }
-
-  @media (min-width: 50em) {
-    .about {
-      display: grid;
-      grid-template-columns: 1fr 60% 1fr;
-    }
-
-    .about > :global(:first-child) {
-      grid-column-start: 2;
-    }
-
-    section {
-      display: contents;
-      font-size: var(--text-lg);
+  @media (min-width: 48rem) {
+    .intro {
+      grid-template-columns: 1fr 20rem;
     }
   }
 </style>

@@ -3,9 +3,7 @@ title: Nature-Based Solutions Dashboard
 publishDate: 2024-06-01 00:00:00
 img: ../../assets/posts/nbs.png
 img_alt: A generated view of the nature-based solutions implementations
-description: Construct a digital platform regarding nature-based urban
-  infrastructure solutions that can be used in potential community outreach to
-  implement priorities.
+description: Built a digital platform on nature-based urban infrastructure solutions for use in community outreach.
 tags:
   - Web Development
   - Sustainability

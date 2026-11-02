@@ -3,7 +3,7 @@ title: Plasma Science and Fusion Center at MIT
 publishDate: 2023-06-01 00:00:00
 img: ../../assets/posts/psfc.jpg
 img_alt: MIT logo lit up by red lights at night
-description: Learn about the practical applications of machine learning in plasma science and contribute to this field through hands-on research and experimentation.
+description: Applied machine learning to plasma science, including a surrogate model built on the Alcator C-Mod tokamak experiment.
 tags:
   - Machine Learning
   - Fusion Plasma Control
