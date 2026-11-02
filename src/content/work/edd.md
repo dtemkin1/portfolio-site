@@ -9,5 +9,3 @@ tags:
   - LaTeX
   - Medical Biology
 ---
-
-Under construction :)
