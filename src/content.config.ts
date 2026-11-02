@@ -11,9 +11,11 @@ export const collections = {
         description: z.string(),
         publishDate: z.coerce.date(),
         tags: z.array(z.string()),
-        img: image(),
-        // img: z.string(),
+        img: image().optional(),
         img_alt: z.string().optional(),
+        draft: z.boolean().optional(),
+        when: z.string().optional(),
+        status: z.literal("in-development").optional(),
       }),
   }),
 };

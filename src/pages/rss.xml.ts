@@ -1,13 +1,14 @@
 import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
+
+import { getPublishedWork } from "../lib/work-data";
 
 import sanitizeHtml from "sanitize-html";
 import MarkdownIt from "markdown-it";
 const parser = new MarkdownIt();
 
 export const GET: APIRoute = async (context) => {
-  const work = await getCollection("work");
+  const work = await getPublishedWork();
   return rss({
     title: "Diego Temkin",
     description: "The personal site of Diego Temkin",
@@ -25,13 +26,15 @@ export const GET: APIRoute = async (context) => {
       // This example assumes all posts are rendered as `/blog/[slug]` routes
       link: `/work/${post.id}/`,
       content: sanitizeHtml(parser.render(post.body ?? "")),
-      customData: `<media:content
+      customData: post.data.img
+        ? `<media:content
         type="image/${post.data.img.format == "jpg" ? "jpeg" : "png"}"
         width="${post.data.img.width}"
         height="${post.data.img.height}"
         medium="image"
         url="${context.site + post.data.img.src}" />
-    `,
+    `
+        : "",
     })),
   });
 };
