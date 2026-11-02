@@ -1,3 +1,5 @@
+import { PUBLIC_MBTA_KEY } from "astro:env/client";
+
 import {
   type Alert,
   alertsUrl,
@@ -17,11 +19,14 @@ async function fetchJson(url: string): Promise<unknown> {
 }
 
 export async function fetchDepartures(): Promise<Departure[]> {
-  return nextDepartures(await fetchJson(predictionsUrl()), Date.now());
+  return nextDepartures(
+    await fetchJson(predictionsUrl(PUBLIC_MBTA_KEY)),
+    Date.now(),
+  );
 }
 
 export async function fetchAlerts(): Promise<Alert[]> {
-  return relevantAlerts(await fetchJson(alertsUrl()));
+  return relevantAlerts(await fetchJson(alertsUrl(PUBLIC_MBTA_KEY)));
 }
 
 export async function fetchSong(

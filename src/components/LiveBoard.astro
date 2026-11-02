@@ -1,11 +1,13 @@
 ---
+import { PUBLIC_LAST_FM_KEY, PUBLIC_LAST_FM_USERNAME } from "astro:env/client";
+
 import { LIVE_CONFIG } from "../lib/live";
 
 const lastfmKey = LIVE_CONFIG.music
-  ? import.meta.env.LAST_FM_KEY || undefined
+  ? PUBLIC_LAST_FM_KEY || undefined
   : undefined;
 const lastfmUser = lastfmKey
-  ? import.meta.env.LAST_FM_USERNAME || LIVE_CONFIG.lastfmUser
+  ? PUBLIC_LAST_FM_USERNAME || LIVE_CONFIG.lastfmUser
   : undefined;
 ---
 

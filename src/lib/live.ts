@@ -4,8 +4,7 @@ export const LIVE_CONFIG = {
   stop: "place-knncl",
   route: "Red",
   routeName: "Red Line",
-  music: false,
-  // update later...
+  music: true,
   lastfmUser: "",
 };
 
@@ -49,8 +48,9 @@ type Included = {
   relationships?: { stop?: { data?: { id?: string } } };
 };
 
-export function predictionsUrl(): string {
+export function predictionsUrl(apiKey?: string): string {
   const url = new URL("https://api-v3.mbta.com/predictions");
+  if (apiKey) url.searchParams.set("api_key", apiKey);
   url.searchParams.set("filter[stop]", LIVE_CONFIG.stop);
   url.searchParams.set("filter[route]", LIVE_CONFIG.route);
   url.searchParams.set("include", "trip,vehicle");
@@ -187,8 +187,9 @@ export function steadyDepartures(
   });
 }
 
-export function alertsUrl(): string {
+export function alertsUrl(apiKey?: string): string {
   const url = new URL("https://api-v3.mbta.com/alerts");
+  if (apiKey) url.searchParams.set("api_key", apiKey);
   url.searchParams.set("filter[route]", LIVE_CONFIG.route);
   url.searchParams.set("filter[datetime]", "NOW");
   url.searchParams.set(

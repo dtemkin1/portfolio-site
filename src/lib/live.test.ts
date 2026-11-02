@@ -405,3 +405,18 @@ test("arrival lines put severe alerts first and delays last", () =>
       ],
     ),
   ).toEqual(["Suspended", "Red Line to Alewife: 3 min", "Delayed"]));
+
+test.each([
+  ["predictions", predictionsUrl],
+  ["alerts", alertsUrl],
+])("%s URL sends the MBTA key when there is one", (_, url) => {
+  expect(new URL(url("KEY")).searchParams.get("api_key")).toBe("KEY");
+});
+
+test.each([
+  ["predictions", predictionsUrl],
+  ["alerts", alertsUrl],
+])("%s URL works without a key", (_, url) => {
+  expect(new URL(url()).searchParams.has("api_key")).toBe(false);
+  expect(new URL(url("")).searchParams.has("api_key")).toBe(false);
+});
