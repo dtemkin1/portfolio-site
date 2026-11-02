@@ -19,6 +19,26 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const image = new URL("/og.png", Astro.site).href;
+
+const mit = {
+  "@type": "CollegeOrUniversity",
+  name: "Massachusetts Institute of Technology",
+};
+const person = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Diego Temkin",
+  url: Astro.site?.href,
+  description:
+    "MS in Transportation student at MIT, researching how students ride transit.",
+  affiliation: mit,
+  alumniOf: mit,
+  sameAs: [
+    "https://github.com/dtemkin1",
+    "https://www.linkedin.com/in/diego-temkin/",
+    "https://bsky.app/profile/dtemkin1.bsky.social",
+  ],
+});
 ---
 
 <meta charset="UTF-8" />
@@ -50,3 +70,7 @@ const image = new URL("/og.png", Astro.site).href;
   title="RSS Feed for Diego Temkin's website"
   href="/rss.xml"
 />
+
+{Astro.url.pathname === "/" && (
+  <script is:inline type="application/ld+json" set:html={person} />
+)}

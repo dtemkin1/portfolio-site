@@ -1,9 +1,12 @@
 import {
+  type Alert,
+  alertsUrl,
   type Departure,
   nextDepartures,
   nowPlaying,
   predictionsUrl,
   recentTracksUrl,
+  relevantAlerts,
   type Song,
 } from "../lib/live";
 
@@ -15,6 +18,10 @@ async function fetchJson(url: string): Promise<unknown> {
 
 export async function fetchDepartures(): Promise<Departure[]> {
   return nextDepartures(await fetchJson(predictionsUrl()), Date.now());
+}
+
+export async function fetchAlerts(): Promise<Alert[]> {
+  return relevantAlerts(await fetchJson(alertsUrl()));
 }
 
 export async function fetchSong(

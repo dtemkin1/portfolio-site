@@ -182,3 +182,93 @@ main img {
   margin-inline: 1.5rem 0;
   font-style: italic;
 }
+
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  body {
+    display: block;
+    min-height: 0;
+  }
+
+  main,
+  main * {
+    background: none !important;
+    box-shadow: none !important;
+    color: #000 !important;
+    animation: none !important;
+  }
+
+  nav,
+  footer,
+  .skip,
+  [data-prompt],
+  [data-live],
+  .board .marker {
+    display: none !important;
+  }
+
+  .sign {
+    color: #000 !important;
+    font-size: 1.75rem !important;
+  }
+
+  .line,
+  header {
+    color: #000;
+  }
+
+  main {
+    padding-block: 0.5rem 0;
+  }
+
+  /* Dot-matrix type is hard to read on paper, and the route line needs backgrounds. */
+  main * {
+    font-family: var(--font-sign) !important;
+  }
+
+  main *::before,
+  main *::after {
+    display: none !important;
+  }
+
+  .notice,
+  main > header,
+  .board {
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    display: inline !important;
+    overflow-wrap: anywhere;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  img,
+  .board li,
+  .ridden li,
+  blockquote {
+    break-inside: avoid;
+  }
+
+  img {
+    width: auto !important;
+    max-width: 60% !important;
+    max-height: 3in !important;
+    border-radius: 0 !important;
+  }
+}

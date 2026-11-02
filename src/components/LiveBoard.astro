@@ -21,7 +21,7 @@ const lastfmUser = lastfmKey
   <div class="display" style={`--live: ${LIVE_CONFIG.color}`}>
     <ul data-live-rows></ul>
     <p class="source">
-      Predictions from the MBTA &lt;3{" "}
+      Courtesy of the MBTA &lt;3
       {lastfmKey && (
         <span data-live-credit hidden>
           , music from{" "}
@@ -77,6 +77,22 @@ const lastfmUser = lastfmKey
 
   ul :global(.detail) {
     flex: none;
+  }
+
+  ul :global(.alert) {
+    display: block;
+    color: var(--readout);
+    font-family: var(--font-sign);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.45;
+    max-width: 72ch;
+  }
+
+  ul :global(.severe) {
+    color: var(--live);
+    font-size: var(--text-body);
+    font-weight: 800;
   }
 
   .source {

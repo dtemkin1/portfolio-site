@@ -3,6 +3,38 @@ import { Image } from "astro:assets";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import portrait from "../assets/portrait.jpg";
+
+interface Ridden {
+  name: string;
+  lines?: string[];
+}
+
+const ridden: Ridden[] = [
+  {
+    name: "Amtrak",
+    lines: [
+      "Acela",
+      "California Zephyr",
+      "Lake Shore Limited",
+      "Northeast Regional",
+    ],
+  },
+  { name: "Boston", lines: ["MBTA", "EZRide"] },
+  { name: "Chicago", lines: ["CTA"] },
+  { name: "El Paso", lines: ["Sun Metro"] },
+  { name: "London", lines: ["Underground"] },
+  { name: "New York City", lines: ["Subway", "LIRR", "AirTrain JFK"] },
+  { name: "Paris", lines: ["Metro"] },
+  { name: "Rome", lines: ["Metro"] },
+  { name: "San Francisco", lines: ["BART", "Muni"] },
+  { name: "Toronto", lines: ["TTC", "UP Express"] },
+  { name: "Washington, DC", lines: ["WMATA"] },
+];
+
+const formatter = new Intl.ListFormat("en", {
+  style: "long",
+  type: "conjunction",
+});
 ---
 
 <BaseLayout title="About | Diego Temkin" description="About Diego Temkin">
@@ -121,6 +153,18 @@ import portrait from "../assets/portrait.jpg";
         Scholar with Distinction.
       </p>
     </section>
+
+    <section class="ridden">
+      <h2>Transit I've ridden</h2>
+      <ul>
+        {ridden.map(({ name, lines }) => (
+          <li>
+            <span class="system">{name}</span>
+            {lines && <span class="lines">{formatter.format(lines)}</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
   </main>
 </BaseLayout>
 
@@ -224,6 +268,40 @@ import portrait from "../assets/portrait.jpg";
   .extras {
     width: auto;
     margin-left: var(--inset);
+  }
+
+  .ridden {
+    margin: 2.5rem 0 0 var(--inset);
+  }
+
+  .ridden h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .ridden ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    gap: 0.5rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: clamp(0.875rem, 2.5vw, 1.5rem);
+    border-radius: 6px;
+    background: var(--board);
+  }
+
+  .system {
+    display: block;
+    color: var(--led-dim);
+    font-family: var(--font-led);
+    font-size: var(--text-led);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .lines {
+    display: block;
+    color: var(--readout);
+    font-size: 1rem;
   }
 
   .extras > h2 {

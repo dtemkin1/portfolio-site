@@ -1,7 +1,9 @@
 ---
 title: School Bus Network Co-Design
 publishDate: 2026-05-01 00:00:00
-description: A bus network redesign framework that weighs cost, coverage, and equity together, tested on a real school bus network in Framingham, MA.
+description: A co-design framework for bus network redesign, demonstrated through a case study of morning school bus service in Framingham, MA.
+img: ../../assets/posts/school-bus-routes.png
+img_alt: Map of Framingham's current school bus routes on a dark background. Wider white lines mark roads used by more buses, with schools in red.
 tags:
   - Network Design
   - Optimization
@@ -9,10 +11,16 @@ tags:
 when: May 2026
 ---
 
-For my SuperUROP and bachelor's thesis at MIT's Laboratory for Information and Decision Systems, I built a general-purpose framework for redesigning bus networks. It uses monotone co-design theory and mixed-integer linear programming to optimize cost, coverage, and equity together, while respecting fleet, labor, and policy constraints.
+Cities and school districts face persistent challenges in designing bus systems that are efficient, reliable, and equitable under limited fleet, staffing, budget, and accessibility constraints. For my SuperUROP at MIT's Laboratory for Information and Decision Systems and Bachelor's thesis, I developed a co-design framework for bus network redesign using the monotone theory of co-design from applied category theory.
 
-The data pipelines combine OpenStreetMap networks, estimated travel times, origin-destination demand, and American Community Survey demographics. The result is a set of transparent Pareto frontiers that show the tradeoffs a planner is choosing between.
+The framework represents routing service, fleet capacity, drivers, monitors, fuel, maintenance, policy requirements, and algorithmic choices as interconnected components, whose relationships can be compared through Pareto-front analysis. Rather than producing a single "best" routing plan, it shows the frontier between competing objectives.
 
-I applied the framework to a real school bus network in Framingham, MA, to evaluate the existing routes, generate alternative designs, and show where efficiency, coverage, and accessibility could structurally improve.
+![Scatter plot of annual emissions against unassigned students. Points fall from about 1.6 million kilograms at around 500 unassigned students to about 300,000 kilograms at around 7,000, with a black stepped line along the lowest points.](../../assets/posts/school-bus-pareto.png)
+
+_One of the thesis's Pareto fronts, comparing annual emissions and unassigned students across sampled routes and catalog configurations._
+
+I demonstrated the framework through a case study of morning bus service in Framingham, MA. Under simplified travel-time assumptions, the routing approach serves the same 4,780 currently assigned riders with 48 buses rather than 51, and reduces estimated mean ride time from 43.08 to 30.52 minutes. The map shows the current routes, with the width of each road link varying based on how many buses travel along it.
+
+These results are planning estimates rather than deployment-ready schedules, because they rely on constant-speed travel times and incomplete student-level linkage data. The current experiments also evaluate equity primarily after routing, so embedding it directly in the optimization is a direction for future work.
 
 Read the thesis, [_A Co-Design Framework for School Bus Network Redesign: Applying Category Theory to Routing, Resources, and Equity_](https://dspace.mit.edu/handle/1721.1/176348), on MIT DSpace.

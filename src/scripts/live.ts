@@ -1,13 +1,16 @@
 import {
+  type Alert,
   arrivalLines,
   type Departure,
   LIVE_CONFIG,
   type Song,
+  steadyDepartures,
 } from "../lib/live";
 
-import { fetchDepartures, fetchSong } from "./live-feeds";
+import { fetchAlerts, fetchDepartures, fetchSong } from "./live-feeds";
 
 const ARRIVALS_EVERY = 30_000;
+const ALERTS_EVERY = 60_000;
 const MUSIC_EVERY = 60_000;
 
 const live = document.querySelector<HTMLElement>("[data-live]");
@@ -20,7 +23,15 @@ if (live) {
   // Null means a feed is down, so its row goes rather than showing stale data.
   let departures: Departure[] | null = null;
   let song: Song | null = null;
+  let alerts: Alert[] = [];
   let timers: number[] = [];
+
+  const addAlert = ({ text, severe }: Alert) => {
+    const row = document.createElement("li");
+    row.className = severe ? "alert severe" : "alert";
+    row.textContent = text;
+    rows.append(row);
+  };
 
   const addRow = (title: string, detail?: string) => {
     const row = document.createElement("li");
@@ -38,19 +49,27 @@ if (live) {
 
   const render = () => {
     rows.replaceChildren();
+    alerts.filter(({ severe }) => severe).forEach(addAlert);
     if (departures?.length === 0) addRow(arrivalLines([])[0]);
     for (const { headsign, label } of departures ?? []) {
       addRow(`${LIVE_CONFIG.routeName} to ${headsign}`, label);
     }
+    alerts.filter(({ severe }) => !severe).forEach(addAlert);
     if (song) {
       addRow(`Now playing: ${song.song}${song.artist && `, ${song.artist}`}`);
     }
     if (credit) credit.hidden = !song;
-    live.hidden = departures === null && !song;
+    live.hidden = departures === null && !song && alerts.length === 0;
+  };
+
+  const updateAlerts = async () => {
+    alerts = await fetchAlerts().catch(() => []);
+    render();
   };
 
   const updateDepartures = async () => {
-    departures = await fetchDepartures().catch(() => null);
+    const next = await fetchDepartures().catch(() => null);
+    departures = next && steadyDepartures(departures, next);
     render();
   };
 
@@ -69,9 +88,11 @@ if (live) {
   const start = () => {
     stop();
     updateDepartures();
+    updateAlerts();
     updateSong();
     timers = [
       window.setInterval(updateDepartures, ARRIVALS_EVERY),
+      window.setInterval(updateAlerts, ALERTS_EVERY),
       window.setInterval(updateSong, MUSIC_EVERY),
     ];
   };
