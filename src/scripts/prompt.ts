@@ -5,16 +5,29 @@ const form = document.querySelector<HTMLFormElement>("[data-prompt]");
 if (form) {
   const input = form.querySelector("input")!;
   const output = form.querySelector<HTMLElement>("output")!;
+  const block = form.querySelector<HTMLElement>(".block")!;
   const projects: PromptProject[] = JSON.parse(form.dataset.projects ?? "[]");
 
   // Hidden in the HTML, so it never appears without this script.
   form.hidden = false;
+
+  // The input is monospace, so the cursor's offset is its column times 1ch.
+  const placeBlock = () => {
+    const column = input.selectionStart ?? input.value.length;
+    const left = column * block.offsetWidth - input.scrollLeft;
+    block.style.left = `${left}px`;
+  };
+  document.addEventListener("selectionchange", placeBlock);
+  for (const type of ["input", "focus", "scroll"]) {
+    input.addEventListener(type, placeBlock);
+  }
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const typed = input.value;
     const result = runCommand(typed, projects);
     input.value = "";
+    placeBlock();
 
     switch (result.kind) {
       case "print":
@@ -50,6 +63,7 @@ if (form) {
     if (completed !== input.value) {
       event.preventDefault();
       input.value = completed;
+      placeBlock();
     }
   });
 }

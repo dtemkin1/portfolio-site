@@ -2,7 +2,6 @@
 const currentYear = new Date().getFullYear();
 
 const links = [
-  { label: "All stops", href: "/work/" },
   { label: "Bluesky", href: "https://bsky.app/profile/dtemkin1.bsky.social" },
   { label: "Twitter", href: "https://twitter.com/dtemkin1" },
   { label: "Instagram", href: "https://www.instagram.com/dtemkin1/" },
@@ -61,5 +60,19 @@ const links = [
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    ul {
+      gap: 0 1rem;
+    }
+
+    li a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 44px;
+      min-height: 44px;
+    }
   }
 </style>

@@ -95,8 +95,7 @@ a:hover {
   outline-offset: 3px;
 }
 
-/* Yellow focus would disappear against the yellow platform edge's neighbor text
-   only in forced colors, where the system chooses its own outline color. */
+/* In forced colors, the system's highlight is the color it guarantees is visible. */
 @media (forced-colors: active) {
   :focus-visible {
     outline-color: Highlight;
@@ -113,9 +112,52 @@ a:hover {
 main {
   flex: 1;
   padding-block: 1.5rem 4rem;
+  outline: none;
 }
 
-.prose {
+.skip {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  background: var(--board);
+  color: var(--yellow);
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+/* A posted service notice: long text reads better here than on saturated blue. */
+.notice {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--board);
+}
+
+.notice a {
+  color: var(--wall);
+}
+
+.notice a:hover {
+  color: var(--board);
+}
+
+.notice :focus-visible {
+  outline-color: var(--wall);
+}
+
+@media (forced-colors: active) {
+  .notice {
+    border: 1px solid CanvasText;
+  }
+}
+
+.prose > * {
   max-width: 65ch;
 }
 
@@ -127,18 +169,9 @@ main {
   margin-top: 2rem;
 }
 
-.prose a {
-  color: var(--yellow);
-}
-
-.prose a:hover {
-  color: var(--white);
-}
-
 .prose blockquote {
-  margin-inline: 0;
-  padding-inline-start: 1rem;
-  border-inline-start: 4px solid var(--yellow);
+  margin-inline: 1.5rem 0;
+  font-style: italic;
 }
 
 .prose img {

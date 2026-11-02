@@ -2,92 +2,108 @@
 import { Image } from "astro:assets";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import StripMap from "../components/StripMap.astro";
 import portrait from "../assets/portrait.jpg";
 ---
 
 <BaseLayout title="About | Diego Temkin" description="About Diego Temkin">
-  <main class="wrapper about">
+  <main id="content" tabindex="-1" class="wrapper">
     <h1>About</h1>
 
-    <div class="intro">
-      <div class="prose">
-        <p>
-          I'm a first-year MS Transportation student at MIT and a Graduate
-          Research Assistant in the JTL-Transit Lab. I'm interested in urban
-          mobility, transit network optimization, and transit data systems, with
-          a focus on improving access to public transportation in underserved
-          communities.
-        </p>
-        <p>
-          I'm from the Rio Grande Valley in South Texas, right along the
-          US-Mexico border. My parents both immigrated to the US from Mexico. I
-          attended the Science Academy of South Texas, a STEM magnet school, and
-          tutored children from all grades in math, including virtually through
-          the COVID-19 pandemic.
-        </p>
-      </div>
-      <Image
-        src={portrait}
-        widths={[320, 640]}
-        sizes="(max-width: 48rem) 100vw, 20rem"
-        alt="Diego Temkin smiling in a blue button-down shirt in front of a marble column"
-        loading="eager"
-      />
-    </div>
+    <ol class="route">
+      <li class="stop here">
+        <p class="label">You are here</p>
+        <h2>JTL-Transit Lab, MIT</h2>
+        <div class="notice intro">
+          <div class="prose">
+            <p>
+              I'm a first-year MS Transportation student at MIT and a Graduate
+              Research Assistant in the JTL-Transit Lab. I'm interested in urban
+              mobility, transit network optimization, and transit data systems,
+              with a focus on improving access to public transportation in
+              underserved communities.
+            </p>
+            <p>
+              <a href="/work/jtl-k12-ridership/">See my current research</a>
+            </p>
+          </div>
+          <Image
+            src={portrait}
+            widths={[320, 640]}
+            sizes="(max-width: 48rem) 100vw, 14rem"
+            alt="Diego Temkin smiling in a blue button-down shirt in front of a marble column"
+            loading="eager"
+          />
+        </div>
+      </li>
 
-    <section>
-      <h2>The route so far</h2>
-      <StripMap />
-    </section>
+      <li class="stop">
+        <h2>WMATA and U.S. DOT Volpe Center</h2>
+        <div class="notice prose">
+          <p>
+            In the summer of 2025, I worked on{" "}
+            <a href="/work/wmata/">
+              reliability engineering and asset management
+            </a>{" "}
+            at WMATA. Before that, from 2024 to 2025, I built{" "}
+            <a href="/work/volpe/">
+              data validation pipelines and modeling tools
+            </a>{" "}
+            at the Volpe Center.
+          </p>
+        </div>
+      </li>
 
-    <section class="prose">
-      <h2>Education</h2>
-      <p>MS in Transportation, MIT, expected 2028.</p>
-      <p>
-        BS in Computer Science and Engineering and in Planning, MIT, 2026. My
-        thesis received the MIT DUSP Best Undergraduate Thesis award.
-      </p>
-      <p>The Science Academy of South Texas, 2022.</p>
-    </section>
+      <li class="stop">
+        <h2>MIT, Cambridge</h2>
+        <div class="notice prose">
+          <p>
+            BS in Computer Science and Engineering and in Planning, 2026. MS in
+            Transportation, expected 2028. My thesis received the MIT DUSP Best
+            Undergraduate Thesis award.
+          </p>
+          <p>
+            <a href="https://dspace.mit.edu/handle/1721.1/176348">
+              <cite>
+                A Co-Design Framework for School Bus Network Redesign: Applying
+                Category Theory to Routing, Resources, and Equity
+              </cite>
+            </a>{" "}
+            (bachelor's thesis, May 2026)
+          </p>
+          <p>
+            <a href="https://doi.org/10.1016/B978-0-443-21782-1.00008-7">
+              NbS and policy communication
+            </a>{" "}
+            (with Cong Cong), in{" "}
+            <cite>
+              Nature-Based Solutions in Supporting Sustainable Development Goals
+            </cite>{" "}
+            (November 2024)
+          </p>
+          <p>
+            I'm a Student Developer and Member-at-Large at SIPB, MIT's student
+            computing club, and I help maintain Hydrant and CourseRoad, which
+            students use to plan their classes. I was President of Dormitory
+            Council from 2025 to 2026, representing over 3,500 undergraduates.
+          </p>
+        </div>
+      </li>
 
-    <section class="prose">
-      <h2>Publications</h2>
-      <p>
-        <a href="https://dspace.mit.edu/handle/1721.1/176348">
-          <cite>
-            A Co-Design Framework for School Bus Network Redesign: Applying
-            Category Theory to Routing, Resources, and Equity
-          </cite>
-        </a>
-        (bachelor's thesis, MIT, May 2026)
-      </p>
-      <p>
-        <a href="https://doi.org/10.1016/B978-0-443-21782-1.00008-7">
-          NbS and policy communication
-        </a>
-        (with Cong Cong), in
-        <cite>
-          Nature-Based Solutions in Supporting Sustainable Development Goals
-        </cite>
-        (November 2024)
-      </p>
-    </section>
+      <li class="stop">
+        <h2>McAllen, Texas</h2>
+        <div class="notice prose">
+          <p>
+            I'm from the Rio Grande Valley in South Texas, right along the
+            US-Mexico border. My parents both immigrated to the US from Mexico.
+            I attended the Science Academy of South Texas, a STEM magnet school,
+            and tutored children from all grades in math, including virtually
+            through the COVID-19 pandemic.
+          </p>
+        </div>
+      </li>
+    </ol>
 
-    <section class="prose">
-      <h2>On campus</h2>
-      <p>
-        I'm a Student Developer and Member-at-Large at SIPB, MIT's student
-        computing club, and I help maintain Hydrant and CourseRoad, which
-        students use to plan their classes.
-      </p>
-      <p>
-        I was President of Dormitory Council from 2025 to 2026, representing
-        over 3,500 undergraduates.
-      </p>
-    </section>
-
-    <section class="prose">
+    <section class="notice prose extras">
       <h2>Skills and honors</h2>
       <p>
         Python, TypeScript, Java, C, C#, SQL, Go, and GIS. English and Spanish,
@@ -103,34 +119,111 @@ import portrait from "../assets/portrait.jpg";
 </BaseLayout>
 
 <style>
-  .about {
-    display: grid;
-    gap: 3rem;
+  h1 {
+    margin-top: 1.5rem;
+  }
+
+  main {
+    --inset: 2.25rem;
+  }
+
+  .route {
+    --dot: 1.25rem;
+    --track: 0.5rem;
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+  }
+
+  .stop {
+    position: relative;
+    padding: 0 0 2.5rem var(--inset);
+  }
+
+  /* The line runs on to the next stop, and ends at the last one. */
+  .stop::before {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    bottom: -0.25rem;
+    left: calc((var(--dot) - var(--track)) / 2);
+    width: var(--track);
+    background: var(--yellow);
+  }
+
+  .stop:last-child::before {
+    bottom: auto;
+    height: var(--dot);
+  }
+
+  .stop::after {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    left: 0;
+    width: var(--dot);
+    height: var(--dot);
+    border: 3px solid var(--board);
+    border-radius: 50%;
+    background: var(--white);
+  }
+
+  .here::after {
+    top: 0;
+    left: -0.25rem;
+    width: calc(var(--dot) + 0.5rem);
+    height: calc(var(--dot) + 0.5rem);
+    border-width: 4px;
+    background: var(--yellow);
+  }
+
+  .label {
+    color: var(--yellow);
+    font-family: var(--font-led);
+    font-size: var(--text-led);
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .stop h2 {
+    margin-bottom: 0.75rem;
   }
 
   .intro {
     display: grid;
-    gap: 2rem;
+    gap: 1.25rem;
     align-items: start;
   }
 
   img {
     width: 100%;
-    max-width: 20rem;
-    border-radius: 6px;
+    max-width: 14rem;
+    border-radius: 4px;
   }
 
-  section > h2 {
-    margin-bottom: 1rem;
+  .extras {
+    width: auto;
+    margin-left: var(--inset);
   }
 
-  section.prose > h2 {
+  .extras > h2 {
     margin-top: 0;
   }
 
   @media (min-width: 48rem) {
     .intro {
-      grid-template-columns: 1fr 20rem;
+      grid-template-columns: minmax(0, 1fr) 14rem;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .stop::before {
+      background: CanvasText;
+    }
+
+    .stop::after {
+      border-color: CanvasText;
+      background: Canvas;
     }
   }
 </style>

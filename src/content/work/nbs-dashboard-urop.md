@@ -1,8 +1,8 @@
 ---
 title: Nature-Based Solutions Dashboard
 publishDate: 2024-06-01 00:00:00
-img: ../../assets/posts/nbs.png
-img_alt: A generated view of the nature-based solutions implementations
+img: ../../assets/posts/nbs-dashboard.png
+img_alt: The Nature-Based Solutions Dashboard showing a satellite map of Stockholm, with options to locate green roofs, street trees, and other solutions.
 description: Built a digital platform on nature-based urban infrastructure solutions for use in community outreach.
 tags:
   - Web Development

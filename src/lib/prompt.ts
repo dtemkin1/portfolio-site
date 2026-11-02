@@ -7,19 +7,20 @@ export type PromptResult =
   | { kind: "clear" }
   | { kind: "none" };
 
-const PAGES: Record<string, string> = {
-  "~": "/",
-  home: "/",
-  about: "/about/",
-  work: "/work/",
-};
+const PAGES = new Map([
+  ["~", "/"],
+  ["home", "/"],
+  ["about", "/about/"],
+  ["work", "/work/"],
+]);
 
-const TREATS: Record<string, string[]> = {
-  "skateboard.txt": [
+const TREATS = new Map([
+  [
+    "skateboard.txt",
     'Skateboard is an orange cat who "likes to step on my keyboard when I do my problem sets."',
   ],
-  "typewriters.txt": ["A typewriter collection, started during Covid."],
-};
+  ["typewriters.txt", "A typewriter collection, started during Covid."],
+]);
 
 const HELP = [
   "ls               list projects",
@@ -57,7 +58,7 @@ export function runCommand(
     case "clear":
       return { kind: "clear" };
     case "cd": {
-      const href = PAGES[argument ?? "~"];
+      const href = PAGES.get(argument ?? "~");
       return href
         ? { kind: "navigate", href }
         : print(`cd: no page called ${argument}. Try about, work, or ~.`);
@@ -65,9 +66,8 @@ export function runCommand(
     case "cat":
     case "open": {
       if (!argument) return print(`${command}: name a project. Try ls.`);
-      if (command === "cat" && TREATS[argument]) {
-        return print(...TREATS[argument]);
-      }
+      const treat = command === "cat" && TREATS.get(argument);
+      if (treat) return print(treat);
       const project = findProject(argument, projects);
       if (!project)
         return print(`${command}: no project called ${argument}. Try ls.`);

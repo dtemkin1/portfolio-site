@@ -12,14 +12,18 @@ const { projects } = Astro.props;
   <output aria-live="polite"></output>
   <div class="line">
     <label for="prompt-input">dtemkin@kendall-mit:~$</label>
-    <input
-      id="prompt-input"
-      type="text"
-      autocomplete="off"
-      autocapitalize="off"
-      spellcheck="false"
-      placeholder="type help"
-    />
+    <span class="field">
+      <input
+        id="prompt-input"
+        type="text"
+        aria-label="Command prompt. Type help for a list of commands."
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="type help"
+      />
+      <span class="block" aria-hidden="true"></span>
+    </span>
   </div>
 </form>
 
@@ -62,19 +66,86 @@ const { projects } = Astro.props;
     color: var(--yellow);
   }
 
-  input {
+  .field {
+    position: relative;
+    display: block;
     flex: 1 1 8rem;
     min-width: 0;
+    overflow: hidden;
+  }
+
+  input {
+    display: block;
+    width: 100%;
     padding: 0.25rem 0;
     border: 0;
+    border-bottom: 1px solid var(--placeholder);
+    border-radius: 0;
     background: none;
     color: var(--white);
-    caret-color: var(--yellow);
+    caret-color: transparent;
     font: inherit;
   }
 
   input::placeholder {
     color: var(--placeholder);
     opacity: 1;
+  }
+
+  /* The yellow line and block cursor replace the outline as the focus indicator. */
+  input:focus-visible {
+    border-bottom: 2px solid var(--yellow);
+    padding-bottom: calc(0.25rem - 1px);
+    outline: none;
+  }
+
+  input:focus::placeholder {
+    color: transparent;
+  }
+
+  .block {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: none;
+    width: 1ch;
+    height: 1.15em;
+    background: var(--yellow);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  input:focus + .block {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    input:focus + .block {
+      animation: block-blink 1.1s steps(1) infinite;
+    }
+  }
+
+  @keyframes block-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    input {
+      min-height: 44px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    input,
+    input:focus-visible {
+      caret-color: auto;
+      outline: 3px solid Highlight;
+    }
+
+    .block {
+      display: none !important;
+    }
   }
 </style>

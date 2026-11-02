@@ -22,7 +22,9 @@ const { projects } = Astro.props;
         </a>
         <div class="readout" id={`readout-${id}`} hidden>
           <p class="command">$ cat {id}.md</p>
-          {data.status === "in-development" && <p>status: in development</p>}
+          {data.status === "in-development" && (
+            <p class="command-text">status: in development</p>
+          )}
           <p>{data.description}</p>
           <p>
             <a href={`/work/${id}/`}>Read the full page</a>
@@ -57,10 +59,10 @@ const { projects } = Astro.props;
   }
 
   .board .row {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: baseline;
-    gap: 1.5rem;
+    column-gap: 1.25rem;
     width: 100%;
     padding: 0.2rem 0.25rem;
     border: 0;
@@ -85,6 +87,19 @@ const { projects } = Astro.props;
     color: var(--white);
   }
 
+  .board .row:active {
+    background: var(--panel);
+    color: var(--white);
+  }
+
+  .board .marker::before {
+    content: "+";
+  }
+
+  .board .row[aria-expanded="true"] .marker::before {
+    content: "\2212";
+  }
+
   .board .time {
     flex: none;
     white-space: nowrap;
@@ -98,12 +113,13 @@ const { projects } = Astro.props;
   /* Doto is wide, so on phones the time sits under the title. */
   @media (max-width: 36rem) {
     .board .row {
-      flex-direction: column;
-      gap: 0;
+      grid-template-columns: minmax(0, 1fr) auto;
       padding-block: 0.4rem;
     }
 
     .board .time {
+      grid-row: 2;
+      grid-column: 1;
       font-size: 1.125rem;
     }
   }
@@ -111,10 +127,9 @@ const { projects } = Astro.props;
   .readout {
     margin: 0.25rem 0 0.75rem;
     padding: 0.5rem 0.875rem;
-    border-inline-start: 5px solid var(--yellow);
+    border-radius: 4px;
     background: var(--panel);
     color: var(--readout);
-    font-family: var(--font-mono);
     font-size: 1rem;
     line-height: 1.55;
   }
@@ -129,6 +144,19 @@ const { projects } = Astro.props;
 
   .readout .command {
     color: var(--yellow);
+    font-family: var(--font-mono);
+  }
+
+  .readout .command-text {
+    font-family: var(--font-mono);
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    .readout a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
   }
 
   .readout a:hover {

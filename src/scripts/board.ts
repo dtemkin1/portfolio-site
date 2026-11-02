@@ -20,6 +20,10 @@ function setUpBoard(board: HTMLElement) {
     button.setAttribute("aria-expanded", "false");
     button.setAttribute("aria-controls", readout.id);
     button.append(...link.childNodes);
+    const marker = document.createElement("span");
+    marker.className = "marker";
+    marker.setAttribute("aria-hidden", "true");
+    button.append(marker);
     link.replaceWith(button);
 
     rows.set(slug, { button, readout });
@@ -53,7 +57,11 @@ function setUpBoard(board: HTMLElement) {
   window.addEventListener("board:open", (event) => {
     const { slug } = (event as CustomEvent<{ slug: string }>).detail;
     open(slug);
-    rows.get(slug)?.button.scrollIntoView({ block: "nearest" });
+    const motion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    rows.get(slug)?.button.parentElement?.scrollIntoView({
+      block: "nearest",
+      behavior: motion ? "auto" : "smooth",
+    });
   });
 }
 

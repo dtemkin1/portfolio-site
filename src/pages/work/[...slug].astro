@@ -28,7 +28,7 @@ const hasBody = Boolean(entry.body?.trim());
   title={`${data.title} | Diego Temkin`}
   description={data.description}
 >
-  <main class="wrapper">
+  <main id="content" tabindex="-1" class="wrapper">
     <header>
       <div class="heading">
         <h1>{data.title}</h1>
@@ -50,7 +50,7 @@ const hasBody = Boolean(entry.body?.trim());
     )}
 
     {hasBody && (
-      <div class="prose body">
+      <div class="notice prose body">
         <Content />
       </div>
     )}
@@ -67,7 +67,6 @@ const hasBody = Boolean(entry.body?.trim());
     border-radius: 6px;
     background: var(--board);
     color: var(--readout);
-    font-family: var(--font-mono);
     font-size: 1rem;
   }
 
@@ -119,6 +118,14 @@ const hasBody = Boolean(entry.body?.trim());
   }
 
   .back {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    .back a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
   }
 </style>

@@ -16,15 +16,31 @@ const {
   title = "Diego Temkin",
   description = "Diego Temkin is an MS Transportation student at MIT and a graduate research assistant in the JTL-Transit Lab.",
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const image = new URL("/og.png", Astro.site).href;
 ---
 
 <meta charset="UTF-8" />
-<meta name="description" property="og:description" content={description} />
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta
+  property="og:image:alt"
+  content="Diego Temkin's site: a station sign above a countdown board listing research projects"
+/>
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
 <meta name="theme-color" content="#003da5" />
 <title>{title}</title>
 
+<link rel="canonical" href={canonical} />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
 <link rel="sitemap" href="/sitemap-index.xml" />

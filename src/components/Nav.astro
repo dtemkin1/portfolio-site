@@ -10,7 +10,7 @@ const links = [
 ];
 ---
 
-<header class="wrapper station">
+<header class:list={["wrapper station", { compact: !isHome }]}>
   {isHome ? (
     <h1 class="sign">Diego Temkin</h1>
   ) : (
@@ -18,7 +18,9 @@ const links = [
       Diego Temkin
     </a>
   )}
-  <p class="line">MS Transportation student at MIT, JTL-Transit Lab</p>
+  {isHome && (
+    <p class="line">MS Transportation student at MIT, JTL-Transit Lab</p>
+  )}
   <nav aria-label="Main">
     <ul>
       {links.map(({ label, href }) => (
@@ -59,7 +61,51 @@ const links = [
   }
 
   li a {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     padding-block: 0.25rem;
+  }
+
+  .compact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.25rem 1.5rem;
+    padding-block: 1rem 0;
+  }
+
+  .compact .sign {
+    font-size: var(--text-h2);
+    letter-spacing: 0;
+  }
+
+  .compact ul {
+    margin-top: 0;
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    ul {
+      gap: 0 0.5rem;
+    }
+
+    li a {
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    .compact .sign {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+  }
+
+  @media (max-width: 22.5rem) {
+    ul {
+      gap: 0 0.25rem;
+      font-size: 1rem;
+    }
   }
 </style>

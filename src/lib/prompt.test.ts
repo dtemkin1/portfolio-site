@@ -78,3 +78,19 @@ test("leaves ambiguous input alone", () =>
 
 test("leaves other commands alone", () =>
   expect(complete("ls vol", p)).toBe("ls vol"));
+
+test.each(["constructor", "__proto__", "toString", "hasOwnProperty"])(
+  "built-in name %s is just an unknown project",
+  (name) => expect(printed(`cat ${name}`)).toContain(name.toLowerCase()),
+);
+
+test.each(["constructor", "__proto__", "toString"])(
+  "built-in name %s is just an unknown page",
+  (name) =>
+    expect(runCommand(`cd ${name}`, p)).toEqual({
+      kind: "print",
+      lines: [
+        `cd: no page called ${name.toLowerCase()}. Try about, work, or ~.`,
+      ],
+    }),
+);
