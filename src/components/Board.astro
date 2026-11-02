@@ -137,6 +137,13 @@ const { projects } = Astro.props;
     color: var(--yellow);
   }
 
+  /* Color alone can't show the open row when the system picks the colors. */
+  @media (forced-colors: active) {
+    .board .row[aria-expanded="true"] {
+      text-decoration: underline;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .readout:not([hidden]) {
       animation: readout-open 180ms ease-out;

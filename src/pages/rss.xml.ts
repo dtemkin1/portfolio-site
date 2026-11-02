@@ -25,7 +25,9 @@ export const GET: APIRoute = async (context) => {
       // Compute RSS link from post `slug`
       // This example assumes all posts are rendered as `/blog/[slug]` routes
       link: `/work/${post.id}/`,
-      content: sanitizeHtml(parser.render(post.body ?? "")),
+      content: post.body?.trim()
+        ? sanitizeHtml(parser.render(post.body))
+        : undefined,
       customData: post.data.img
         ? `<media:content
         type="image/${post.data.img.format == "jpg" ? "jpeg" : "png"}"

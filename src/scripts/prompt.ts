@@ -24,7 +24,7 @@ if (form) {
         location.assign(result.href);
         break;
       case "open":
-        output.textContent = "";
+        output.textContent = `opened ${result.slug}.md`;
         window.dispatchEvent(
           new CustomEvent("board:open", { detail: { slug: result.slug } }),
         );
