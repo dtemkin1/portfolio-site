@@ -3,6 +3,8 @@ import type { CollectionEntry } from "astro:content";
 
 import { timeLabel } from "../lib/work";
 
+import Prompt from "./Prompt.astro";
+
 interface Props {
   projects: CollectionEntry<"work">[];
 }
@@ -31,7 +33,9 @@ const { projects } = Astro.props;
       ))
     }
   </ol>
-  <slot />
+  <Prompt
+    projects={projects.map(({ id, data }) => ({ slug: id, title: data.title }))}
+  />
 </section>
 
 <script>

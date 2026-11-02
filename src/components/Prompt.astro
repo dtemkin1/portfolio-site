@@ -1,0 +1,80 @@
+---
+import type { PromptProject } from "../lib/prompt";
+
+interface Props {
+  projects: PromptProject[];
+}
+
+const { projects } = Astro.props;
+---
+
+<form data-prompt data-projects={JSON.stringify(projects)} hidden>
+  <output aria-live="polite"></output>
+  <div class="line">
+    <label for="prompt-input">dtemkin@kendall-mit:~$</label>
+    <input
+      id="prompt-input"
+      type="text"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      placeholder="type help"
+    />
+  </div>
+</form>
+
+<script>
+  import "../scripts/prompt";
+</script>
+
+<style>
+  form {
+    margin-top: 0.75rem;
+    padding: 0.75rem 0.25rem 0;
+    border-top: 2px solid #4a3d1c;
+    color: var(--readout);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+  }
+
+  form[hidden] {
+    display: none;
+  }
+
+  output {
+    display: block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  output:not(:empty) {
+    margin-bottom: 0.5rem;
+  }
+
+  .line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 0.625rem;
+  }
+
+  label {
+    color: var(--yellow);
+  }
+
+  input {
+    flex: 1 1 8rem;
+    min-width: 0;
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    color: var(--white);
+    caret-color: var(--yellow);
+    font: inherit;
+  }
+
+  input::placeholder {
+    color: #b3b8c2;
+    opacity: 1;
+  }
+</style>
