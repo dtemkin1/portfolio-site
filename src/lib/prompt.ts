@@ -27,6 +27,10 @@ const TREATS = new Map([
     "building13.txt",
     "Each floor of MIT's Building 13 is painted as a different MBTA subway line.",
   ],
+  [
+    "amtrak.txt",
+    "Cross-country Amtrak: completed. Would ride again."
+  ]
 ]);
 
 const HELP = [
@@ -38,7 +42,13 @@ const HELP = [
   ["clear", "clear this output"],
 ];
 
-const formatHelp = 
+const formatHelp = (helpText: typeof HELP) => {
+  const spacing = helpText.reduce((acc, [command]) => Math.max(acc, command.length), 0);
+  return helpText.map(
+    ([command, description]) =>
+      `${command.padEnd(spacing + 2)}${description}`,
+  );
+}
 
 const print = (...lines: string[]): PromptResult => ({ kind: "print", lines });
 
@@ -57,7 +67,7 @@ export function runCommand(
     case "":
       return { kind: "none" };
     case "help":
-      return print(...HELP);
+      return print(...formatHelp(HELP));
     case "ls":
       return print(...projects.map(({ slug }) => `${slug}.md`));
     case "whoami":
