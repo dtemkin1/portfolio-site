@@ -5,6 +5,7 @@ export type PromptResult =
   | { kind: "navigate"; href: string }
   | { kind: "open"; slug: string }
   | { kind: "clear" }
+  | { kind: "arrivals" }
   | { kind: "none" };
 
 const PAGES = new Map([
@@ -27,10 +28,7 @@ const TREATS = new Map([
     "building13.txt",
     "Each floor of MIT's Building 13 is painted as a different MBTA subway line.",
   ],
-  [
-    "amtrak.txt",
-    "Cross-country Amtrak: completed. Would ride again."
-  ]
+  ["amtrak.txt", "Cross-country Amtrak: completed. Would ride again."],
 ]);
 
 const HELP = [
@@ -38,17 +36,20 @@ const HELP = [
   ["cat <project>", "open a project on the board"],
   ["open <project>", "go to a project's page"],
   ["cd <page>", "go to about, work, or ~"],
+  ["arrivals", "next Red Line trains at Kendall/MIT"],
   ["whoami", "who runs this station"],
   ["clear", "clear this output"],
 ];
 
 const formatHelp = (helpText: typeof HELP) => {
-  const spacing = helpText.reduce((acc, [command]) => Math.max(acc, command.length), 0);
-  return helpText.map(
-    ([command, description]) =>
-      `${command.padEnd(spacing + 2)}${description}`,
+  const spacing = helpText.reduce(
+    (acc, [command]) => Math.max(acc, command.length),
+    0,
   );
-}
+  return helpText.map(
+    ([command, description]) => `${command.padEnd(spacing + 2)}${description}`,
+  );
+};
 
 const print = (...lines: string[]): PromptResult => ({ kind: "print", lines });
 
@@ -76,6 +77,8 @@ export function runCommand(
       );
     case "clear":
       return { kind: "clear" };
+    case "arrivals":
+      return { kind: "arrivals" };
     case "exit":
       return print("End of the line. Please take all belongings with you.");
     case "sudo":

@@ -120,3 +120,9 @@ test.each(["constructor", "__proto__", "toString"])(
       ],
     }),
 );
+
+test("arrivals asks for live departures", () =>
+  expect(runCommand("  ARRIVALS ", p)).toEqual({ kind: "arrivals" }));
+
+test("help lists arrivals", () =>
+  expect(printed("help")).toContain("arrivals"));

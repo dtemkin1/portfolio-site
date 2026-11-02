@@ -2,6 +2,7 @@ import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
 import { getImage } from "astro:assets";
 
+import { feedMarkdown } from "../lib/feed";
 import { getPublishedWork } from "../lib/work-data";
 
 import sanitizeHtml from "sanitize-html";
@@ -40,18 +41,19 @@ export const GET: APIRoute = async (context) => {
     },
     customData: `<language>en-us</language><atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml" />`,
     items: await Promise.all(
-      work.map(async (post) => ({
-        title: post.data.title,
-        pubDate: post.data.publishDate,
-        description: post.data.description,
-        link: `/work/${post.id}/`,
-        content: post.body?.trim()
-          ? sanitizeHtml(parser.render(post.body))
-          : undefined,
-        customData: post.data.img
-          ? await mediaContent(post.data.img, context.site)
-          : "",
-      })),
+      work.map(async (post) => {
+        const markdown = feedMarkdown(post.data, post.body);
+        return {
+          title: post.data.title,
+          pubDate: post.data.publishDate,
+          description: post.data.description,
+          link: `/work/${post.id}/`,
+          content: markdown ? sanitizeHtml(parser.render(markdown)) : undefined,
+          customData: post.data.img
+            ? await mediaContent(post.data.img, context.site)
+            : "",
+        };
+      }),
     ),
   });
 };

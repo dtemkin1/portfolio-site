@@ -1,0 +1,92 @@
+---
+import { LIVE_CONFIG } from "../lib/live";
+
+const lastfmKey = LIVE_CONFIG.music
+  ? import.meta.env.LAST_FM_KEY || undefined
+  : undefined;
+const lastfmUser = lastfmKey
+  ? import.meta.env.LAST_FM_USERNAME || LIVE_CONFIG.lastfmUser
+  : undefined;
+---
+
+<section
+  class="live"
+  data-live
+  data-lastfm-key={lastfmKey}
+  data-lastfm-user={lastfmUser}
+  aria-labelledby="live-title"
+  hidden
+>
+  <h2 id="live-title">{LIVE_CONFIG.title}</h2>
+  <div class="display" style={`--live: ${LIVE_CONFIG.color}`}>
+    <ul data-live-rows></ul>
+    <p class="source">
+      Predictions from the MBTA &lt;3{" "}
+      {lastfmKey && (
+        <span data-live-credit hidden>
+          , music from{" "}
+          <a href={`https://www.last.fm/user/${lastfmUser}`}>Last.fm</a>.
+        </span>
+      )}
+    </p>
+  </div>
+</section>
+
+<script>
+  import "../scripts/live";
+</script>
+
+<style>
+  .live {
+    margin-top: 1.5rem;
+  }
+
+  .live[hidden] {
+    display: none;
+  }
+
+  h2 {
+    margin-bottom: 0.5rem;
+    font-size: var(--text-body);
+  }
+
+  .display {
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+    border-radius: 6px;
+    background: var(--board);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: var(--live);
+    font-family: var(--font-led);
+    font-size: var(--text-led);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  ul :global(li) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 0.2rem 0.25rem;
+  }
+
+  ul :global(.detail) {
+    flex: none;
+  }
+
+  .source {
+    margin-top: 0.75rem;
+    padding-inline: 0.25rem;
+    color: var(--placeholder);
+    font-size: var(--text-small);
+  }
+
+  .source span[hidden] {
+    display: none;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Board from "../components/Board.astro";
+import LiveBoard from "../components/LiveBoard.astro";
 import { getPublishedWork } from "../lib/work-data";
 
 const projects = await getPublishedWork();
@@ -9,5 +10,6 @@ const projects = await getPublishedWork();
 <BaseLayout>
   <main id="content" class="wrapper">
     <Board projects={projects} openFirst />
+    <LiveBoard />
   </main>
 </BaseLayout>
