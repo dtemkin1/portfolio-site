@@ -19,17 +19,26 @@ const TREATS = new Map([
     "skateboard.txt",
     'Skateboard is an orange cat who "likes to step on my keyboard when I do my problem sets."',
   ],
-  ["typewriters.txt", "A typewriter collection, started during Covid."],
+  [
+    "typewriters.txt",
+    "A typewriter collection, started during Covid. My favorite key is the 1: early typewriters didn't have one, so people typed a lowercase l.",
+  ],
+  [
+    "building13.txt",
+    "Each floor of MIT's Building 13 is painted as a different MBTA subway line.",
+  ],
 ]);
 
 const HELP = [
-  "ls               list projects",
-  "cat <project>    open a project on the board",
-  "open <project>   go to a project's page",
-  "cd <page>        go to about, work, or ~",
-  "whoami           who runs this station",
-  "clear            clear this output",
+  ["ls", "list projects"],
+  ["cat <project>", "open a project on the board"],
+  ["open <project>", "go to a project's page"],
+  ["cd <page>", "go to about, work, or ~"],
+  ["whoami", "who runs this station"],
+  ["clear", "clear this output"],
 ];
+
+const formatHelp = 
 
 const print = (...lines: string[]): PromptResult => ({ kind: "print", lines });
 
@@ -57,6 +66,10 @@ export function runCommand(
       );
     case "clear":
       return { kind: "clear" };
+    case "exit":
+      return print("End of the line. Please take all belongings with you.");
+    case "sudo":
+      return print("Only authorized personnel beyond this point.");
     case "cd": {
       const href = PAGES.get(argument ?? "~");
       return href
@@ -65,7 +78,13 @@ export function runCommand(
     }
     case "cat":
     case "open": {
-      if (!argument) return print(`${command}: name a project. Try ls.`);
+      if (!argument) {
+        return print(
+          command === "cat"
+            ? "cat: Skateboard is stepping on the keyboard. Name a project, or try ls."
+            : "open: name a project. Try ls.",
+        );
+      }
       const treat = command === "cat" && TREATS.get(argument);
       if (treat) return print(treat);
       const project = findProject(argument, projects);

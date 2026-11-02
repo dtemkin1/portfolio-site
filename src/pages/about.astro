@@ -10,6 +10,11 @@ import portrait from "../assets/portrait.jpg";
     <h1>About</h1>
 
     <ol class="route">
+      <li class="stop planned">
+        <p class="label">Planned service</p>
+        <h2>MS in Transportation, May 2028</h2>
+      </li>
+
       <li class="stop here">
         <p class="label">You are here</p>
         <h2>JTL-Transit Lab, MIT</h2>
@@ -178,6 +183,22 @@ import portrait from "../assets/portrait.jpg";
     background: var(--yellow);
   }
 
+  .planned {
+    padding-bottom: 1.75rem;
+  }
+
+  .planned::before {
+    background: repeating-linear-gradient(
+      var(--yellow) 0 0.5rem,
+      transparent 0.5rem 0.875rem
+    );
+  }
+
+  .planned::after {
+    border-color: var(--yellow);
+    background: var(--wall);
+  }
+
   .label {
     color: var(--yellow);
     font-weight: 800;
@@ -223,6 +244,12 @@ import portrait from "../assets/portrait.jpg";
     .stop::after {
       border-color: CanvasText;
       background: Canvas;
+    }
+
+    .planned::before {
+      width: 0;
+      border-left: 3px dashed CanvasText;
+      background: none;
     }
   }
 </style>

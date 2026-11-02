@@ -64,6 +64,32 @@ test("unknown project says so", () =>
 test("cat with no project asks for one", () =>
   expect(printed("cat")).toContain("ls"));
 
+test("cat with no project blames Skateboard", () =>
+  expect(printed("cat")).toContain("Skateboard is stepping on the keyboard"));
+
+test("open with no project stays plain", () =>
+  expect(printed("open")).toBe("open: name a project. Try ls."));
+
+test("exit announces the end of the line", () =>
+  expect(printed("exit")).toBe(
+    "End of the line. Please take all belongings with you.",
+  ));
+
+test.each(["sudo", "sudo rm -rf /", "SUDO ls"])("%s is refused", (input) =>
+  expect(printed(input)).toBe("Only authorized personnel beyond this point."),
+);
+
+test("building 13", () =>
+  expect(printed("cat building13.txt")).toContain("MBTA subway line"));
+
+test("typewriters explain the 1 key", () =>
+  expect(printed("cat typewriters.txt")).toContain("lowercase l"));
+
+test("help keeps the jokes hidden", () => {
+  for (const hidden of ["exit", "sudo", "building13"])
+    expect(printed("help")).not.toContain(hidden);
+});
+
 test("skateboard", () =>
   expect(printed("cat skateboard.txt")).toContain("step on my keyboard"));
 

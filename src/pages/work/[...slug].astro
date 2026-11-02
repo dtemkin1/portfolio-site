@@ -40,7 +40,12 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
       {data.tags.length > 0 && <p class="tags">{data.tags.join(", ")}</p>}
     </header>
 
-    <div class:list={["content", { split: isPortrait && hasBody }]}>
+    <div
+      class:list={[
+        "content",
+        { split: isPortrait && hasBody, solo: isPortrait && !hasBody },
+      ]}
+    >
       {data.img && (
         <Image
           src={data.img}
@@ -119,9 +124,14 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
   }
 
   img {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  /* A portrait photo with no text beside it would be huge at full width. */
+  .solo img {
     width: auto;
     max-height: 36rem;
-    margin-top: 1.5rem;
   }
 
   .body {
