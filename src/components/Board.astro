@@ -14,24 +14,22 @@ const { projects } = Astro.props;
 
 <section class="board" data-board aria-label="Projects, newest first">
   <ol>
-    {
-      projects.map(({ id, data }, i) => (
-        <li data-slug={id} id={id} style={`--i: ${i}`}>
-          <a class="row" href={`/work/${id}/`}>
-            <span class="title">{data.title}</span>
-            <span class="time">{timeLabel(data)}</span>
-          </a>
-          <div class="readout" id={`readout-${id}`} hidden>
-            <p class="command">$ cat {id}.md</p>
-            {data.status === "in-development" && <p>status: in development</p>}
-            <p>{data.description}</p>
-            <p>
-              <a href={`/work/${id}/`}>Read the full page</a>
-            </p>
-          </div>
-        </li>
-      ))
-    }
+    {projects.map(({ id, data }, i) => (
+      <li data-slug={id} id={id} style={`--i: ${i}`}>
+        <a class="row" href={`/work/${id}/`}>
+          <span class="title">{data.title}</span>
+          <span class="time">{timeLabel(data)}</span>
+        </a>
+        <div class="readout" id={`readout-${id}`} hidden>
+          <p class="command">$ cat {id}.md</p>
+          {data.status === "in-development" && <p>status: in development</p>}
+          <p>{data.description}</p>
+          <p>
+            <a href={`/work/${id}/`}>Read the full page</a>
+          </p>
+        </div>
+      </li>
+    ))}
   </ol>
   <Prompt
     projects={projects.map(({ id, data }) => ({ slug: id, title: data.title }))}

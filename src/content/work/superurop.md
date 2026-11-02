@@ -15,4 +15,4 @@ The data pipelines combine OpenStreetMap networks, estimated travel times, origi
 
 I applied the framework to a real school bus network in Framingham, MA, to evaluate the existing routes, generate alternative designs, and show where efficiency, coverage, and accessibility could structurally improve.
 
-Read the thesis, [*A Co-Design Framework for School Bus Network Redesign: Applying Category Theory to Routing, Resources, and Equity*](https://dspace.mit.edu/handle/1721.1/176348), on MIT DSpace.
+Read the thesis, [_A Co-Design Framework for School Bus Network Redesign: Applying Category Theory to Routing, Resources, and Equity_](https://dspace.mit.edu/handle/1721.1/176348), on MIT DSpace.

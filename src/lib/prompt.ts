@@ -69,7 +69,8 @@ export function runCommand(
         return print(...TREATS[argument]);
       }
       const project = findProject(argument, projects);
-      if (!project) return print(`${command}: no project called ${argument}. Try ls.`);
+      if (!project)
+        return print(`${command}: no project called ${argument}. Try ls.`);
       return command === "cat"
         ? { kind: "open", slug: project.slug }
         : { kind: "navigate", href: `/work/${project.slug}/` };

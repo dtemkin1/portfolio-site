@@ -24,7 +24,10 @@ const { Content } = await render(entry);
 const hasBody = Boolean(entry.body?.trim());
 ---
 
-<BaseLayout title={`${data.title} | Diego Temkin`} description={data.description}>
+<BaseLayout
+  title={`${data.title} | Diego Temkin`}
+  description={data.description}
+>
   <main class="wrapper">
     <header>
       <div class="heading">
@@ -36,27 +39,25 @@ const hasBody = Boolean(entry.body?.trim());
       {data.tags.length > 0 && <p class="tags">{data.tags.join(", ")}</p>}
     </header>
 
-    {
-      data.img && (
-        <Image
-          src={data.img}
-          alt={data.img_alt || ""}
-          widths={[540, 720, 992]}
-          sizes="(max-width: 62rem) 100vw, 62rem"
-          loading="eager"
-        />
-      )
-    }
+    {data.img && (
+      <Image
+        src={data.img}
+        alt={data.img_alt || ""}
+        widths={[540, 720, 992]}
+        sizes="(max-width: 62rem) 100vw, 62rem"
+        loading="eager"
+      />
+    )}
 
-    {
-      hasBody && (
-        <div class="prose body">
-          <Content />
-        </div>
-      )
-    }
+    {hasBody && (
+      <div class="prose body">
+        <Content />
+      </div>
+    )}
 
-    <p class="back"><a href={`/#${entry.id}`}>Back to the board</a></p>
+    <p class="back">
+      <a href={`/#${entry.id}`}>Back to the board</a>
+    </p>
   </main>
 </BaseLayout>
 

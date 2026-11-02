@@ -11,25 +11,21 @@ const links = [
 ---
 
 <header class="wrapper station">
-  {
-    isHome ? (
-      <h1 class="sign">Diego Temkin</h1>
-    ) : (
-      <a class="sign" href="/">
-        Diego Temkin
-      </a>
-    )
-  }
+  {isHome ? (
+    <h1 class="sign">Diego Temkin</h1>
+  ) : (
+    <a class="sign" href="/">
+      Diego Temkin
+    </a>
+  )}
   <p class="line">MS Transportation student at MIT, JTL-Transit Lab</p>
   <nav aria-label="Main">
     <ul>
-      {
-        links.map(({ label, href }) => (
-          <li>
-            <a href={href}>{label}</a>
-          </li>
-        ))
-      }
+      {links.map(({ label, href }) => (
+        <li>
+          <a href={href}>{label}</a>
+        </li>
+      ))}
     </ul>
   </nav>
 </header>

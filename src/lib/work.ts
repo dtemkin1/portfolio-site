@@ -11,7 +11,9 @@ const monthYear = new Intl.DateTimeFormat("en-US", {
 export function publishedNewestFirst<T extends WorkLike>(entries: T[]): T[] {
   return entries
     .filter((entry) => !entry.data.draft)
-    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+    .sort(
+      (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+    );
 }
 
 export function timeLabel(data: { publishDate: Date; when?: string }): string {

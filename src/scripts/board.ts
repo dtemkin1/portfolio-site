@@ -3,7 +3,10 @@ import { slugFromHash } from "../lib/hash";
 const SEEN_KEY = "board-lit";
 
 function setUpBoard(board: HTMLElement) {
-  const rows = new Map<string, { button: HTMLButtonElement; readout: HTMLElement }>();
+  const rows = new Map<
+    string,
+    { button: HTMLButtonElement; readout: HTMLElement }
+  >();
 
   // Rows are links until now, so the board works without this script.
   for (const li of board.querySelectorAll<HTMLElement>("li[data-slug]")) {

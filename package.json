@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "private": true,
-  "description": "TO-DO: DOCUMENT WHAT I DID IN THIS REPO",
+  "description": "Personal site of Diego Temkin, built as a station platform.",
   "main": "index.js",
   "keywords": [],
   "author": "Diego Temkin",

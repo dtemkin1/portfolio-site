@@ -17,13 +17,11 @@ const links = [
   <div class="wrapper inner">
     <p>&copy; {currentYear} Diego Temkin. Built with Astro in Cambridge, MA.</p>
     <ul>
-      {
-        links.map(({ label, href }) => (
-          <li>
-            <a href={href}>{label}</a>
-          </li>
-        ))
-      }
+      {links.map(({ label, href }) => (
+        <li>
+          <a href={href}>{label}</a>
+        </li>
+      ))}
     </ul>
   </div>
 </footer>

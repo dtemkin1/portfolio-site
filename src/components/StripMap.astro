@@ -4,7 +4,9 @@ const stops = ["McAllen, TX", "MIT", "WMATA", "JTL-Transit Lab"];
 
 <figure>
   <ol aria-label="Route so far, from McAllen, Texas to the JTL-Transit Lab">
-    {stops.map((stop) => <li>{stop}</li>)}
+    {stops.map((stop) => (
+      <li>{stop}</li>
+    ))}
   </ol>
 </figure>
 
