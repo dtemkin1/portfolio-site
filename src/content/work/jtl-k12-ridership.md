@@ -1,5 +1,5 @@
 ---
-title: "JTL-Transit Lab: K-12 student ridership"
+title: "JTL-Transit Lab: K-12 Student Ridership"
 publishDate: 2026-08-01 00:00:00
 when: Now
 status: in-development
