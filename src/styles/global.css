@@ -8,6 +8,7 @@
   --panel: #221c10;
   --rule: #4a3d1c;
   --placeholder: #b3b8c2;
+  --sign-ink: #000000;
 
   --font-system:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
@@ -130,11 +131,17 @@ main {
   transform: none;
 }
 
-/* A posted service notice: long text reads better here than on saturated blue. */
+/* Regulatory sign: the white margin outside the inset line is what makes it read as one. */
 .notice {
-  padding: clamp(1rem, 3vw, 1.75rem);
+  --sign-margin: clamp(3px, 0.8vw, 5px);
+  --sign-line: clamp(2px, 0.4vw, 3px);
+  padding: clamp(1.375rem, 3.5vw, 2.25rem);
+  border-radius: 10px;
   background: var(--white);
-  color: var(--board);
+  box-shadow:
+    inset 0 0 0 var(--sign-margin) var(--white),
+    inset 0 0 0 calc(var(--sign-margin) + var(--sign-line)) var(--sign-ink);
+  color: var(--sign-ink);
 }
 
 .notice a {
@@ -142,7 +149,7 @@ main {
 }
 
 .notice a:hover {
-  color: var(--board);
+  color: var(--sign-ink);
 }
 
 .notice :focus-visible {

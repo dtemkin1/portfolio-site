@@ -1,5 +1,5 @@
 ---
-title: School bus network co-design
+title: School Bus Network Co-Design
 publishDate: 2026-05-01 00:00:00
 description: A bus network redesign framework that weighs cost, coverage, and equity together, tested on a real school bus network in Framingham, MA.
 tags:
