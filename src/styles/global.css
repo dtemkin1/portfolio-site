@@ -131,6 +131,10 @@ main {
   transform: none;
 }
 
+main img {
+  border-radius: 10px;
+}
+
 /* Regulatory sign: the white margin outside the inset line is what makes it read as one. */
 .notice {
   --sign-margin: clamp(3px, 0.8vw, 5px);
