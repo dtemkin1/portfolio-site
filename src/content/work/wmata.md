@@ -1,5 +1,5 @@
 ---
-title: Washington Metropolitan Area Transit Authority
+title: "WMATA: reliability engineering"
 publishDate: 2025-08-01 00:00:00
 description: Integrated information from multiple sources to create a comprehensive asset management dashboard, enabling real-time monitoring and decision-making.
 img: ../../assets/posts/wmata.jpg
