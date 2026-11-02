@@ -2,10 +2,7 @@ import { expect, test } from "vitest";
 
 import { complete, runCommand } from "./prompt";
 
-const p = [
-  { slug: "volpe", title: "Volpe" },
-  { slug: "wmata", title: "WMATA" },
-];
+const p = [{ slug: "volpe" }, { slug: "wmata" }];
 
 const printed = (input: string) => {
   const r = runCommand(input, p);

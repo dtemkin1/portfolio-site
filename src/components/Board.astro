@@ -31,9 +31,7 @@ const { projects } = Astro.props;
       </li>
     ))}
   </ol>
-  <Prompt
-    projects={projects.map(({ id, data }) => ({ slug: id, title: data.title }))}
-  />
+  <Prompt projects={projects.map(({ id }) => ({ slug: id }))} />
 </section>
 
 <script>
@@ -114,7 +112,7 @@ const { projects } = Astro.props;
     margin: 0.25rem 0 0.75rem;
     padding: 0.5rem 0.875rem;
     border-inline-start: 5px solid var(--yellow);
-    background: #221c10;
+    background: var(--panel);
     color: var(--readout);
     font-family: var(--font-mono);
     font-size: 1rem;

@@ -5,6 +5,9 @@
   --led-dim: #e0a93a;
   --white: #ffffff;
   --readout: #d6dbe5;
+  --panel: #221c10;
+  --rule: #4a3d1c;
+  --placeholder: #b3b8c2;
 
   --font-system:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;

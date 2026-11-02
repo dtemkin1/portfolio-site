@@ -1,4 +1,4 @@
-export type PromptProject = { slug: string; title: string };
+export type PromptProject = { slug: string };
 
 export type PromptResult =
   | { kind: "print"; lines: string[] }

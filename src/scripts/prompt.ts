@@ -36,7 +36,15 @@ if (form) {
   });
 
   input.addEventListener("keydown", (event) => {
-    if (event.key !== "Tab" || event.shiftKey) return;
+    if (
+      event.key !== "Tab" ||
+      event.shiftKey ||
+      event.ctrlKey ||
+      event.altKey ||
+      event.metaKey
+    ) {
+      return;
+    }
     const completed = complete(input.value, projects);
     // With nothing to complete, Tab keeps moving focus as usual.
     if (completed !== input.value) {

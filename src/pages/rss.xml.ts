@@ -34,7 +34,7 @@ export const GET: APIRoute = async (context) => {
         width="${post.data.img.width}"
         height="${post.data.img.height}"
         medium="image"
-        url="${context.site + post.data.img.src}" />
+        url="${new URL(post.data.img.src, context.site).href}" />
     `
         : "",
     })),

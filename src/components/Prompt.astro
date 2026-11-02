@@ -31,7 +31,7 @@ const { projects } = Astro.props;
   form {
     margin-top: 0.75rem;
     padding: 0.75rem 0.25rem 0;
-    border-top: 2px solid #4a3d1c;
+    border-top: 2px solid var(--rule);
     color: var(--readout);
     font-family: var(--font-mono);
     font-size: 1rem;
@@ -74,7 +74,7 @@ const { projects } = Astro.props;
   }
 
   input::placeholder {
-    color: #b3b8c2;
+    color: var(--placeholder);
     opacity: 1;
   }
 </style>
