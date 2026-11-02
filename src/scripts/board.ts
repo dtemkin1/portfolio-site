@@ -52,7 +52,9 @@ function setUpBoard(board: HTMLElement) {
   }
 
   const fromHash = slugFromHash(location.hash, [...rows.keys()]);
+  const [first] = rows.keys();
   if (fromHash) open(fromHash);
+  else if (first && "openFirst" in board.dataset) setOpen(first, true);
 
   window.addEventListener("board:open", (event) => {
     const { slug } = (event as CustomEvent<{ slug: string }>).detail;

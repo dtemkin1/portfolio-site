@@ -9,4 +9,4 @@ tags:
   - Student Ridership
 ---
 
-Why did student transit ridership fall so sharply after the pandemic, and what would help students ride again? With the Chicago Transit Authority, I'm working to understand how service, reliability, fares, and family routines shape the trip to school.
+With the Chicago Transit Authority, I'm working to understand how service, reliability, fares, and family routines shape the trip to school.

@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Board from "../components/Board.astro";
+import { getPublishedWork } from "../lib/work-data";
+
+const projects = await getPublishedWork();
 ---
 
 <BaseLayout
@@ -7,15 +11,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="This page was not found."
 >
   <main id="content" class="wrapper">
-    <h1>This stop is not in service</h1>
-    <p>
-      This page doesn't exist or has moved. <a href="/">Back to the board</a>
-    </p>
+    <Board projects={projects}>
+      <Fragment slot="top">
+        <h1 class="alert">This stop is not in service</h1>
+        <p class="alert-note">
+          This page doesn't exist or has moved. Choose another stop below.
+        </p>
+      </Fragment>
+    </Board>
   </main>
 </BaseLayout>
-
-<style>
-  p {
-    margin-top: 1rem;
-  }
-</style>

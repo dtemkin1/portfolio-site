@@ -133,7 +133,6 @@ main {
 /* A posted service notice: long text reads better here than on saturated blue. */
 .notice {
   padding: clamp(1rem, 3vw, 1.75rem);
-  border-radius: 6px;
   background: var(--white);
   color: var(--board);
 }
@@ -171,8 +170,4 @@ main {
 .prose blockquote {
   margin-inline: 1.5rem 0;
   font-style: italic;
-}
-
-.prose img {
-  border-radius: 4px;
 }
