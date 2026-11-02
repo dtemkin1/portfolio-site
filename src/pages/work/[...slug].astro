@@ -45,8 +45,13 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
         <Image
           src={data.img}
           alt={data.img_alt || ""}
-          widths={[540, 720, 992]}
-          sizes="(max-width: 62rem) 100vw, 62rem"
+          width={Math.min(data.img.width, isPortrait ? 720 : 992)}
+          widths={isPortrait ? [320, 540, 720] : [540, 720, 992]}
+          sizes={
+            isPortrait && hasBody
+              ? "(min-width: 48rem) 18rem, 100vw"
+              : "(max-width: 62rem) 100vw, 62rem"
+          }
           loading="eager"
         />
       )}
