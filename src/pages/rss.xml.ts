@@ -31,7 +31,8 @@ export const GET: APIRoute = async (context) => {
   const work = await getPublishedWork();
   return rss({
     title: "Diego Temkin",
-    description: "The personal site of Diego Temkin",
+    description:
+      "The personal site of Diego Temkin, an MS in Transportation student at MIT, researching how students ride transit.",
     site: context.site ?? "",
     xmlns: {
       media: "http://search.yahoo.com/mrss/",
