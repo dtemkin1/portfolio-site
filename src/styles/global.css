@@ -112,7 +112,6 @@ a:hover {
 main {
   flex: 1;
   padding-block: 1.5rem 4rem;
-  outline: none;
 }
 
 .skip {
