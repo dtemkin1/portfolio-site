@@ -51,7 +51,9 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
           src={data.img}
           alt={data.img_alt || ""}
           width={Math.min(data.img.width, isPortrait ? 720 : 992)}
-          widths={isPortrait ? [320, 540, 720] : [540, 720, 992]}
+          widths={isPortrait ? [320, 540, 720] : [400, 540, 800, 992]}
+          quality={70}
+          fetchpriority="high"
           sizes={
             isPortrait && hasBody
               ? "(min-width: 48rem) 18rem, 100vw"

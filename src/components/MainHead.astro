@@ -68,8 +68,8 @@ const person = JSON.stringify({
 />
 
 <Font cssVariable="--font-overpass" preload />
-<Font cssVariable="--font-overpass-mono" preload />
-<Font cssVariable="--font-doto" preload />
+<Font cssVariable="--font-overpass-mono" />
+<Font cssVariable="--font-doto" />
 
 {Astro.url.pathname === "/" && (
   <script is:inline type="application/ld+json" set:html={person} />
