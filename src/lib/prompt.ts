@@ -18,7 +18,7 @@ const PAGES = new Map([
 const TREATS = new Map([
   [
     "skateboard.txt",
-    'Skateboard is an orange cat who likes to step on my keyboard when I do my problem sets :3',
+    "Skateboard is an orange cat who likes to step on my keyboard when I do my problem sets :3",
   ],
   [
     "typewriters.txt",

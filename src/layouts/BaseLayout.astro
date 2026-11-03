@@ -6,14 +6,15 @@ import Footer from "../components/Footer.astro";
 interface Props {
   title?: string | undefined;
   description?: string | undefined;
+  image?: { src: string; alt: string } | undefined;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image } = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <MainHead title={title} description={description} />
+    <MainHead title={title} description={description} image={image} />
   </head>
   <body>
     <a class="skip" href="#content">

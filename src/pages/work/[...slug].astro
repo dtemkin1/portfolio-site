@@ -28,6 +28,10 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
 <BaseLayout
   title={`${data.title} | Diego Temkin`}
   description={data.description}
+  image={{
+    src: `/og/${entry.id}.png`,
+    alt: `Diego Temkin's site: the countdown board showing ${data.title}, ${timeLabel(data)}`,
+  }}
 >
   <main id="content" class="wrapper">
     <header>

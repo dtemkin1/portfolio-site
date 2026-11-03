@@ -12,6 +12,7 @@ export default defineConfig({
       name: "Overpass",
       cssVariable: "--font-overpass",
       weights: [500, 800],
+      formats: ["woff2", "woff"],
     },
     {
       provider: fontProviders.fontsource(),
@@ -24,6 +25,7 @@ export default defineConfig({
       name: "Doto",
       cssVariable: "--font-doto",
       weights: [700, 900],
+      formats: ["woff2", "woff"],
     },
   ],
   env: {

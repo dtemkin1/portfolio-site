@@ -7,6 +7,9 @@
   "keywords": [],
   "author": "Diego Temkin",
   "license": "ISC",
+  "engines": {
+    "node": ">=24"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dtemkin1/portfolio-site.git"
@@ -27,12 +30,10 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
-    "@fontsource/doto": "^5.3.0",
-    "@fontsource/overpass": "^5.3.0",
-    "@fontsource/overpass-mono": "^5.3.0",
     "astro": "^7.4.5",
     "markdown-it": "^15.0.3",
     "sanitize-html": "^2.18.1",
+    "satori": "^0.63.2",
     "sharp": "^0.35.5"
   },
   "devDependencies": {

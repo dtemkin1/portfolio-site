@@ -48,7 +48,11 @@ export const GET: APIRoute = async (context) => {
           pubDate: post.data.publishDate,
           description: post.data.description,
           link: `/work/${post.id}/`,
-          content: markdown ? sanitizeHtml(parser.render(markdown)) : undefined,
+          content: markdown
+            ? sanitizeHtml(parser.render(markdown), {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+              })
+            : undefined,
           customData: post.data.img
             ? await mediaContent(post.data.img, context.site)
             : "",

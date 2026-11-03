@@ -6,15 +6,20 @@ import "../styles/global.css";
 interface Props {
   title?: string | undefined;
   description?: string | undefined;
+  image?: { src: string; alt: string } | undefined;
 }
 
 const {
   title = "Diego Temkin",
   description = "Diego Temkin is an MS in Transportation student at MIT and a graduate research assistant in the JTL-Transit Lab.",
+  image = {
+    src: "/og.png",
+    alt: "Diego Temkin's site: a station sign above a countdown board listing research projects",
+  },
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const image = new URL("/og.png", Astro.site).href;
+const imageUrl = new URL(image.src, Astro.site).href;
 
 const mit = {
   "@type": "CollegeOrUniversity",
@@ -43,13 +48,10 @@ const person = JSON.stringify({
 <meta property="og:description" content={description} />
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonical} />
-<meta property="og:image" content={image} />
+<meta property="og:image" content={imageUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta
-  property="og:image:alt"
-  content="Diego Temkin's site: a station sign above a countdown board listing research projects"
-/>
+<meta property="og:image:alt" content={image.alt} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
@@ -64,7 +66,7 @@ const person = JSON.stringify({
   rel="alternate"
   type="application/rss+xml"
   title="RSS Feed for Diego Temkin's website"
-  href="/rss.xml"
+  href={new URL("rss.xml", Astro.site)}
 />
 
 <Font cssVariable="--font-overpass" preload />
