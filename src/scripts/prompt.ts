@@ -1,7 +1,7 @@
-import { arrivalLines } from "../lib/live";
+import { arrivalLines, departuresAt } from "../lib/live";
 import { complete, type PromptProject, runCommand } from "../lib/prompt";
 
-import { fetchAlerts, fetchDepartures } from "./live-feeds";
+import { fetchLive } from "./live";
 
 const form = document.querySelector<HTMLFormElement>("[data-prompt]");
 
@@ -50,8 +50,11 @@ if (form) {
         break;
       case "arrivals":
         output.textContent = "$ arrivals\nChecking the MBTA...";
-        Promise.all([fetchDepartures(), fetchAlerts().catch(() => [])])
-          .then(([departures, alerts]) => arrivalLines(departures, alerts))
+        fetchLive()
+          .then(({ at, trains, alerts }) => {
+            if (!trains) throw new Error("No train data");
+            return arrivalLines(departuresAt(trains, at), alerts ?? []);
+          })
           .catch(() => ["arrivals: can't reach the MBTA. Try again soon."])
           .then((lines) => {
             output.textContent = ["$ arrivals", ...lines].join("\n");

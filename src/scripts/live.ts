@@ -1,30 +1,39 @@
+import { PUBLIC_LIVE_API } from "astro:env/client";
+
 import {
   type Alert,
   arrivalLines,
+  credits,
   type Departure,
+  departuresAt,
   LIVE_CONFIG,
-  type Song,
+  type LiveFeed,
   steadyDepartures,
 } from "../lib/live";
 
-import { fetchAlerts, fetchDepartures, fetchSong } from "./live-feeds";
-
-const ARRIVALS_EVERY = 30_000;
-const ALERTS_EVERY = 60_000;
-const MUSIC_EVERY = 60_000;
+const LIVE_API = PUBLIC_LIVE_API || "https://api.diegotemkin.com/live";
+const REFRESH_EVERY = 30_000;
 
 const live = document.querySelector<HTMLElement>("[data-live]");
 
+// The Worker holds the API keys and caches each source, so the site never talks to them directly.
+export async function fetchLive(): Promise<LiveFeed> {
+  const response = await fetch(LIVE_API, {
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+  return response.json();
+}
+
 if (live) {
   const rows = live.querySelector<HTMLElement>("[data-live-rows]")!;
-  const credit = live.querySelector<HTMLElement>("[data-live-credit]");
-  const { lastfmKey, lastfmUser } = live.dataset;
+  const sources = live.querySelector<HTMLElement>("[data-live-sources]")!;
+  const credit = live.querySelector<HTMLElement>("[data-live-credit]")!;
 
-  // Null means a feed is down, so its row goes rather than showing stale data.
+  let feed: LiveFeed | null = null;
   let departures: Departure[] | null = null;
-  let song: Song | null = null;
-  let alerts: Alert[] = [];
-  let timers: number[] = [];
+  let shown = false;
+  let timer: number | undefined;
 
   const addAlert = ({ text, severe }: Alert) => {
     const row = document.createElement("li");
@@ -50,54 +59,65 @@ if (live) {
 
   const render = () => {
     rows.replaceChildren();
+    // Once the panel has shown, a failed refresh says so instead of making it blink away.
+    if (!feed) {
+      if (shown) addRow("Live times unavailable");
+      credit.hidden = true;
+      live.hidden = !shown;
+      return;
+    }
+
+    const alerts = feed.alerts ?? [];
+    const song = LIVE_CONFIG.music ? feed.song : null;
+    const radio = feed.radio;
+
     alerts.filter(({ severe }) => severe).forEach(addAlert);
-    if (departures?.length === 0) addRow(arrivalLines([])[0]);
+    if (departures === null) addRow("Train times unavailable");
+    else if (departures.length === 0) addRow(arrivalLines([])[0]);
     for (const { headsign, label } of departures ?? []) {
       addRow(`${LIVE_CONFIG.routeName} to ${headsign}`, label);
     }
     alerts.filter(({ severe }) => !severe).forEach(addAlert);
+    if (radio) {
+      addRow(`Live on WMBR 88.1: ${radio.show}`).classList.add("music");
+      if (radio.track) addRow(radio.track).classList.add("music");
+    }
     if (song) {
       addRow(
         `Now playing: ${song.song}${song.artist && `, ${song.artist}`}`,
       ).classList.add("music");
     }
-    if (credit) credit.hidden = !song;
-    live.hidden = departures === null && !song && alerts.length === 0;
+
+    sources.textContent = credits({
+      mbta: departures !== null || alerts.length > 0,
+      song: Boolean(song),
+      radio: Boolean(radio),
+    });
+    credit.hidden = !sources.textContent;
+    shown = true;
+    live.hidden = false;
   };
 
-  const updateAlerts = async () => {
-    alerts = await fetchAlerts().catch(() => []);
+  // Each refresh gets a number, so a slow older response can't overwrite a newer one.
+  let latest = 0;
+  const update = async () => {
+    const request = ++latest;
+    const next = await fetchLive().catch(() => null);
+    if (request !== latest) return;
+    feed = next;
+    // Countdowns use the Worker's clock, so a visitor's wrong clock can't shift them.
+    departures = feed?.trains
+      ? steadyDepartures(departures, departuresAt(feed.trains, feed.at))
+      : null;
     render();
   };
 
-  const updateDepartures = async () => {
-    const next = await fetchDepartures().catch(() => null);
-    departures = next && steadyDepartures(departures, next);
-    render();
-  };
-
-  const updateSong = async () => {
-    if (!lastfmKey || !lastfmUser) return;
-    song = await fetchSong(lastfmKey, lastfmUser).catch(() => null);
-    render();
-  };
-
-  // Polling only while the tab is visible keeps visitors well under the API limits.
-  const stop = () => {
-    timers.forEach(clearInterval);
-    timers = [];
-  };
-
+  // Polling only while the tab is visible keeps the Worker and its sources quiet.
+  const stop = () => window.clearInterval(timer);
   const start = () => {
     stop();
-    updateDepartures();
-    updateAlerts();
-    updateSong();
-    timers = [
-      window.setInterval(updateDepartures, ARRIVALS_EVERY),
-      window.setInterval(updateAlerts, ALERTS_EVERY),
-      window.setInterval(updateSong, MUSIC_EVERY),
-    ];
+    update();
+    timer = window.setInterval(update, REFRESH_EVERY);
   };
 
   document.addEventListener("visibilitychange", () => {

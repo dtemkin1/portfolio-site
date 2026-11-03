@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE wmbrinfo [
+  <!ENTITY deg "&#176;">
+  <!ELEMENT wmbrinfo   (time,showname?,showname_ascii?,showhosts?,showhosts_ascii,showid?,showurl?,temp?,wx?)>
+  <!ELEMENT time       (#PCDATA)>
+  <!ELEMENT showname   (#PCDATA)>
+  <!ELEMENT showname_ascii   (#PCDATA)>
+  <!ELEMENT showhosts  (#PCDATA)>
+  <!ELEMENT showhosts_ascii  (#PCDATA)>
+  <!ELEMENT showid     (#PCDATA)>
+  <!ELEMENT showurl    (#PCDATA)>
+  <!ELEMENT temp       (#PCDATA)>
+  <!ELEMENT wx         (#PCDATA)>
+]>
+
+<wmbrinfo>
+ <time>Mon 10:15 PM</time>
+ <showname>The Willows</showname>
+ <showname_ascii>The Willows</showname_ascii>
+ <showname_abrev></showname_abrev>
+ <showhosts>Jay Sitter</showhosts>
+ <showhosts_ascii>Jay Sitter</showhosts_ascii>
+ <showid>9573</showid>
+ <showurl></showurl>
+ <temp>58°F</temp>
+ <wx>mostly cloudy</wx>
+</wmbrinfo>

@@ -4,10 +4,10 @@ import {
   alertsUrl,
   arrivalLines,
   countdownLabel,
+  credits,
+  departuresAt,
   nextDepartures,
-  nowPlaying,
   predictionsUrl,
-  recentTracksUrl,
   relevantAlerts,
   steadyDepartures,
 } from "./live";
@@ -76,10 +76,9 @@ const included = [
 ];
 
 const labels = (...data: ReturnType<typeof prediction>[]) =>
-  nextDepartures({ data, included }, now).map(({ headsign, label }) => [
-    headsign,
-    label,
-  ]);
+  departuresAt(nextDepartures({ data, included }, now), now).map(
+    ({ headsign, label }) => [headsign, label],
+  );
 const label = (options: Options) => labels(prediction(options))[0]?.[1];
 
 test.each([
@@ -209,48 +208,6 @@ test("arrival lines print each direction", () =>
 test("arrival lines say when nothing is predicted", () =>
   expect(arrivalLines([])).toEqual(["No trains predicted"]));
 
-test("reads the song only while it is playing", () =>
-  expect(
-    nowPlaying({
-      recenttracks: {
-        track: [
-          {
-            name: "Song",
-            artist: { "#text": "Artist" },
-            "@attr": { nowplaying: "true" },
-          },
-        ],
-      },
-    }),
-  ).toEqual({ song: "Song", artist: "Artist" }));
-
-test("a finished song is not shown", () =>
-  expect(
-    nowPlaying({
-      recenttracks: {
-        track: [{ name: "Old Song", artist: { "#text": "Artist" } }],
-      },
-    }),
-  ).toBeNull());
-
-test("a single track object is handled", () =>
-  expect(
-    nowPlaying({
-      recenttracks: {
-        track: {
-          name: "Song",
-          artist: { "#text": "Artist" },
-          "@attr": { nowplaying: "true" },
-        },
-      },
-    }),
-  ).toEqual({ song: "Song", artist: "Artist" }));
-
-test.each([[{}], [null], [{ error: 10, message: "Invalid API key" }]])(
-  "a bad Last.fm response shows nothing (%j)",
-  (body) => expect(nowPlaying(body)).toBeNull(),
-);
-
 test("predictions URL asks only for what the display needs", () => {
   const url = new URL(predictionsUrl());
   expect(url.origin).toBe("https://api-v3.mbta.com");
@@ -262,14 +219,6 @@ test("predictions URL asks only for what the display needs", () => {
   );
   expect(url.searchParams.get("fields[trip]")).toBe("headsign");
   expect(url.searchParams.get("fields[vehicle]")).toBe("current_status");
-});
-
-test("recent tracks URL asks for one track for the given user", () => {
-  const url = new URL(recentTracksUrl("KEY", "dtemkin1"));
-  expect(url.origin).toBe("https://ws.audioscrobbler.com");
-  expect(url.searchParams.get("user")).toBe("dtemkin1");
-  expect(url.searchParams.get("api_key")).toBe("KEY");
-  expect(url.searchParams.get("limit")).toBe("1");
 });
 
 const alert = (
@@ -419,4 +368,112 @@ test.each([
 ])("%s URL works without a key", (_, url) => {
   expect(new URL(url()).searchParams.has("api_key")).toBe(false);
   expect(new URL(url("")).searchParams.has("api_key")).toBe(false);
+});
+
+test("the countdown is worked out from the train's time, not when it was fetched", () => {
+  const trains = nextDepartures(
+    { data: [prediction({ arrival: 300, departure: 360 })], included },
+    now,
+  );
+  expect(departuresAt(trains, now + 120_000)[0].label).toBe("3 min");
+});
+
+test("a train that left after it was fetched is dropped", () => {
+  const trains = nextDepartures(
+    { data: [prediction({ arrival: 60, departure: 90 })], included },
+    now,
+  );
+  expect(departuresAt(trains, now + 100_000)).toEqual([]);
+});
+
+test("boarding and status labels stay as they were", () => {
+  const trains = nextDepartures(
+    {
+      data: [
+        prediction({ arrival: 60, departure: 120, vehicle: "train" }),
+        prediction({
+          arrival: 900,
+          departure: 960,
+          direction: 0,
+          trip: "south",
+          status: "Stopped 2 stops away",
+        }),
+      ],
+      included,
+    },
+    now,
+  );
+  expect(departuresAt(trains, now + 20_000).map(({ label }) => label)).toEqual([
+    "Boarding",
+    "Stopped 2 stops away",
+  ]);
+});
+
+test("trains survive a round trip through JSON", () => {
+  const trains = nextDepartures(
+    {
+      data: [prediction({ status: "Delayed", direction: 0, trip: "south" })],
+      included,
+    },
+    now,
+  );
+  const copy = JSON.parse(JSON.stringify(trains));
+  expect(departuresAt(copy, now)[0].label).toBe("Delayed");
+});
+
+test("keeps the next two trains each way, so one leaving doesn't empty a direction", () => {
+  const trains = nextDepartures(
+    {
+      data: [
+        prediction({ arrival: 60, departure: 90 }),
+        prediction({ arrival: 400, departure: 450, trip: "south2" }),
+        prediction({ arrival: 900, departure: 950, trip: "south" }),
+      ],
+      included,
+    },
+    now,
+  );
+  expect(trains.filter(({ direction }) => direction === 1)).toHaveLength(2);
+  expect(departuresAt(trains, now + 100_000)).toEqual([
+    { tripId: "south2", headsign: "Braintree", label: "5 min", minutes: 5 },
+  ]);
+});
+
+test("only the soonest train each way is shown", () => {
+  const trains = nextDepartures(
+    {
+      data: [
+        prediction({ arrival: 60, departure: 90 }),
+        prediction({ arrival: 400, departure: 450, trip: "south2" }),
+      ],
+      included,
+    },
+    now,
+  );
+  expect(departuresAt(trains, now).map(({ tripId }) => tripId)).toEqual([
+    "north",
+  ]);
+});
+
+test("countdowns use the time the Worker sent, not the visitor's clock", () => {
+  const trains = nextDepartures(
+    { data: [prediction({ arrival: 300, departure: 360 })], included },
+    now,
+  );
+  const workerAt = now + 60_000;
+  expect(departuresAt(trains, workerAt)[0].label).toBe("4 min");
+});
+
+test("the credit names only the sources being shown", () => {
+  expect(credits({ mbta: true, song: false, radio: false })).toBe("the MBTA");
+  expect(credits({ mbta: true, song: true, radio: false })).toBe(
+    "the MBTA and Spotify",
+  );
+  expect(credits({ mbta: true, song: true, radio: true })).toBe(
+    "the MBTA, Spotify, and WMBR",
+  );
+  expect(credits({ mbta: false, song: true, radio: false })).toBe("Spotify");
+  expect(credits({ mbta: false, song: true, radio: true })).toBe(
+    "Spotify and WMBR",
+  );
 });

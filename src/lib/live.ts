@@ -6,7 +6,6 @@ export const LIVE_CONFIG = {
   route: "Red",
   routeName: "Red Line",
   music: true,
-  lastfmUser: "",
 };
 
 export type Departure = {
@@ -18,6 +17,16 @@ export type Departure = {
 };
 export type Song = { song: string; artist: string };
 export type Alert = { text: string; severe: boolean };
+export type Radio = { show: string; track: string | null };
+
+// null means source failed
+export type LiveFeed = {
+  at: number;
+  trains: Train[] | null;
+  alerts: Alert[] | null;
+  song: Song | null;
+  radio: Radio | null;
+};
 
 type RawAlert = {
   effect?: string;
@@ -65,19 +74,6 @@ export function predictionsUrl(apiKey?: string): string {
   return url.href;
 }
 
-export function recentTracksUrl(
-  apiKey: string,
-  user: string = LIVE_CONFIG.lastfmUser,
-): string {
-  const url = new URL("https://ws.audioscrobbler.com/2.0/");
-  url.searchParams.set("method", "user.getrecenttracks");
-  url.searchParams.set("user", user);
-  url.searchParams.set("api_key", apiKey);
-  url.searchParams.set("format", "json");
-  url.searchParams.set("limit", "1");
-  return url.href;
-}
-
 // Wording and thresholds follow the MBTA's Real-Time Display Guidelines.
 export function countdownLabel(seconds: number): string {
   if (seconds <= 30) return "Arriving";
@@ -91,11 +87,21 @@ export function countdownLabel(seconds: number): string {
 const timeOf = (value?: string | null) =>
   value ? new Date(value).getTime() : null;
 
+// train data worker sends over
+export type Train = {
+  tripId: string;
+  headsign: string;
+  direction: number;
+  time: number | null;
+  leaves: number | null;
+  fixed?: string;
+};
+
 function readPrediction(
   prediction: Prediction,
   included: Included[],
   now: number,
-): (Departure & { direction: number; seconds: number }) | null {
+): Train | null {
   const {
     arrival_time,
     departure_time,
@@ -115,55 +121,90 @@ function readPrediction(
 
   const arrival = timeOf(arrival_time);
   const departure = timeOf(departure_time);
-  const seconds = ((arrival ?? departure ?? Infinity) - now) / 1000;
-  const shared = { tripId, headsign, direction, seconds };
+  const time = arrival ?? departure;
+  const shared = { tripId, headsign, direction, time, leaves: departure };
 
-  if (status) return { ...shared, label: status, minutes: null };
+  if (status) return { ...shared, fixed: status };
   if (departure === null) return null;
 
   const train = find("vehicle", vehicle?.data?.id);
   const stoppedHere =
     train?.attributes?.current_status === "STOPPED_AT" &&
     train.relationships?.stop?.data?.id === stop?.data?.id;
+  const seconds = ((time ?? departure) - now) / 1000;
   const waitingToLeave = arrival !== null && arrival < now && departure > now;
   if (stoppedHere && (seconds <= 90 || waitingToLeave)) {
-    return { ...shared, label: "Boarding", minutes: null };
+    return { ...shared, fixed: "Boarding" };
   }
 
   if (departure < now) return null;
-  return {
-    ...shared,
-    label: countdownLabel(seconds),
-    minutes: seconds <= 30 ? null : Math.round(seconds / 60),
-  };
+  return shared;
 }
 
-// Throws on a malformed body, so a broken response can't pass for "no trains".
-export function nextDepartures(body: unknown, now: number): Departure[] {
+// throws when body is bad, but empty array if no trains
+export function nextDepartures(body: unknown, now: number): Train[] {
   const { data, included = [] } = (body ?? {}) as {
     data?: Prediction[];
     included?: Included[];
   };
   if (!Array.isArray(data)) throw new Error("Unexpected MBTA response");
 
-  const soonest = new Map<number, ReturnType<typeof readPrediction>>();
-  for (const prediction of data) {
-    const read = readPrediction(prediction, included, now);
-    if (!read) continue;
-    const current = soonest.get(read.direction);
-    if (!current || read.seconds < current.seconds) {
-      soonest.set(read.direction, read);
-    }
-  }
+  const order = (train: Train) => train.time ?? Infinity;
+  const trains = data
+    .map((prediction) => readPrediction(prediction, included, now))
+    .filter((train): train is Train => train !== null)
+    .sort((a, b) => order(a) - order(b));
 
-  // Direction 1 is toward Alewife, so the northbound train stays on top.
-  return [...soonest.entries()]
-    .sort(([a], [b]) => b - a)
-    .flatMap(([, read]) => {
-      if (!read) return [];
-      const { tripId, headsign, label, minutes } = read;
-      return [{ tripId, headsign, label, minutes }];
-    });
+  // Two each way, so the board can fall back to the next train once the first leaves.
+  // Direction 1 is toward Alewife, so the northbound trains stay on top.
+  return [1, 0].flatMap((direction) =>
+    trains.filter((train) => train.direction === direction).slice(0, 2),
+  );
+}
+
+function departureAt(
+  { tripId, headsign, time, leaves, fixed }: Train,
+  now: number,
+): Departure | null {
+  if (fixed) return { tripId, headsign, label: fixed, minutes: null };
+  if (time === null || (leaves !== null && leaves < now)) return null;
+  const seconds = (time - now) / 1000;
+  return {
+    tripId,
+    headsign,
+    label: countdownLabel(seconds),
+    minutes: seconds <= 30 ? null : Math.round(seconds / 60),
+  };
+}
+
+// The first train each way that hasn't left yet.
+export function departuresAt(trains: Train[], now: number): Departure[] {
+  const shown: Departure[] = [];
+  const done = new Set<number>();
+  for (const train of trains) {
+    if (done.has(train.direction)) continue;
+    const departure = departureAt(train, now);
+    if (!departure) continue;
+    shown.push(departure);
+    done.add(train.direction);
+  }
+  return shown;
+}
+
+export function credits({
+  mbta,
+  song,
+  radio,
+}: {
+  mbta: boolean;
+  song: boolean;
+  radio: boolean;
+}): string {
+  const names = [mbta && "the MBTA", song && "Spotify", radio && "WMBR"].filter(
+    (name): name is string => Boolean(name),
+  );
+  if (names.length <= 2) return names.join(" and ");
+  return `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`;
 }
 
 // Holds a one-minute jump upward for one refresh, so a time near a rounding
@@ -255,18 +296,4 @@ export function arrivalLines(
     ...(trains.length > 0 ? trains : ["No trains predicted"]),
     ...alerts.filter(({ severe }) => !severe).map(({ text }) => text),
   ];
-}
-
-export function nowPlaying(body: unknown): Song | null {
-  const tracks = (body as { recenttracks?: { track?: unknown } } | null)
-    ?.recenttracks?.track;
-  const track = (Array.isArray(tracks) ? tracks[0] : tracks) as
-    | {
-        name?: string;
-        artist?: { "#text"?: string };
-        "@attr"?: { nowplaying?: string };
-      }
-    | undefined;
-  if (track?.["@attr"]?.nowplaying !== "true" || !track.name) return null;
-  return { song: track.name, artist: track.artist?.["#text"] ?? "" };
 }

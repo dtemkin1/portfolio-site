@@ -28,18 +28,8 @@ export default defineConfig({
   ],
   env: {
     schema: {
-      // be aware that until this is server side, these are public...
-      PUBLIC_LAST_FM_KEY: envField.string({
-        context: "client",
-        access: "public",
-        optional: true,
-      }),
-      PUBLIC_LAST_FM_USERNAME: envField.string({
-        context: "client",
-        access: "public",
-        optional: true,
-      }),
-      PUBLIC_MBTA_KEY: envField.string({
+      // link to worker api for live data
+      PUBLIC_LIVE_API: envField.string({
         context: "client",
         access: "public",
         optional: true,

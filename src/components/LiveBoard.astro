@@ -1,39 +1,16 @@
 ---
-import { PUBLIC_LAST_FM_KEY, PUBLIC_LAST_FM_USERNAME } from "astro:env/client";
-
 import { LIVE_CONFIG } from "../lib/live";
-
-const lastfmKey = LIVE_CONFIG.music
-  ? PUBLIC_LAST_FM_KEY || undefined
-  : undefined;
-const lastfmUser = lastfmKey
-  ? PUBLIC_LAST_FM_USERNAME || LIVE_CONFIG.lastfmUser
-  : undefined;
 ---
 
-<section
-  class="live"
-  data-live
-  data-lastfm-key={lastfmKey}
-  data-lastfm-user={lastfmUser}
-  aria-labelledby="live-title"
-  hidden
->
+<section class="live" data-live aria-labelledby="live-title" hidden>
   <h2 id="live-title">{LIVE_CONFIG.title}</h2>
   <div
     class="display"
     style={`--live: ${LIVE_CONFIG.color}; --music: ${LIVE_CONFIG.musicColor}`}
   >
     <ul data-live-rows></ul>
-    <p class="source">
-      Courtesy of the MBTA
-      {lastfmKey && (
-        <span data-live-credit hidden>
-          {" "}
-          and Last.fm
-        </span>
-      )}{" "}
-      &lt;3
+    <p class="source" data-live-credit>
+      Courtesy of <span data-live-sources>the MBTA</span> &lt;3
     </p>
   </div>
 </section>
@@ -81,8 +58,26 @@ const lastfmUser = lastfmKey
     padding: 0.2rem 0.25rem;
   }
 
+  ul :global(li > span:first-child) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   ul :global(.detail) {
     flex: none;
+  }
+
+  @media (max-width: 36rem) {
+    ul :global(li) {
+      flex-direction: column;
+      align-items: start;
+      gap: 0;
+      padding-block: 0.4rem;
+    }
+
+    ul :global(.detail) {
+      font-size: 1.125rem;
+    }
   }
 
   ul :global(.music) {
@@ -110,9 +105,5 @@ const lastfmUser = lastfmKey
     padding-inline: 0.25rem;
     color: var(--placeholder);
     font-size: var(--text-small);
-  }
-
-  .source span[hidden] {
-    display: none;
   }
 </style>
