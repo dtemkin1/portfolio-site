@@ -74,6 +74,9 @@ const env: Env = {
 let failing: string[] = [];
 let calls: string[] = [];
 
+const host = (url: string) => new URL(url).hostname;
+const toSpotify = (url: string) => host(url).endsWith(".spotify.com");
+
 beforeEach(() => {
   resetSpotifyToken();
   failing = [];
@@ -85,9 +88,9 @@ beforeEach(() => {
       ? "predictions"
       : url.includes("/alerts")
         ? "alerts"
-        : url.includes("spotify.com")
+        : toSpotify(url)
           ? "spotify"
-          : url.includes("wmbr.org")
+          : host(url) === "wmbr.org"
             ? "wmbr"
             : "other";
     if (failing.includes(source)) return new Response("down", { status: 503 });
@@ -96,7 +99,7 @@ beforeEach(() => {
       if (url.includes("cgi-bin/show")) return new Response(showPage);
       return new Response(plays);
     }
-    if (url.includes("accounts.spotify.com")) {
+    if (host(url) === "accounts.spotify.com") {
       return Response.json({
         access_token: "spotify-access",
         expires_in: 3600,
@@ -174,7 +177,7 @@ test("keys never appear in the response", async () => {
 test("keys are sent upstream", async () => {
   await ask("https://www.diegotemkin.com");
   expect(calls.some((url) => url.includes("api_key=mbta-secret"))).toBe(true);
-  expect(calls.some((url) => url.includes("api.spotify.com"))).toBe(true);
+  expect(calls.some((url) => host(url) === "api.spotify.com")).toBe(true);
 });
 
 test("a failed source only empties its own part", async () => {
@@ -202,7 +205,7 @@ test("music is skipped without Spotify settings", async () => {
     await ask("https://www.diegotemkin.com", "/live", { MBTA_KEY: "k" })
   ).json()) as LiveFeed;
   expect(body.song).toBeNull();
-  expect(calls.some((url) => url.includes("spotify.com"))).toBe(false);
+  expect(calls.some(toSpotify)).toBe(false);
 });
 
 test("turning music off stops the Spotify calls, not just the row", async () => {
@@ -212,7 +215,7 @@ test("turning music off stops the Spotify calls, not just the row", async () => 
       await ask("https://www.diegotemkin.com")
     ).json()) as LiveFeed;
     expect(body.song).toBeNull();
-    expect(calls.some((url) => url.includes("spotify.com"))).toBe(false);
+    expect(calls.some(toSpotify)).toBe(false);
   } finally {
     LIVE_CONFIG.music = true;
   }
@@ -236,14 +239,12 @@ test("someone else on WMBR means no show page or plays are fetched", async () =>
 test("after a Spotify failure, the Worker waits before asking again", async () => {
   failing = ["spotify"];
   await ask("https://www.diegotemkin.com");
-  const before = calls.filter((url) => url.includes("spotify.com")).length;
+  const before = calls.filter(toSpotify).length;
   failing = [];
   const body = (await (
     await ask("https://www.diegotemkin.com")
   ).json()) as LiveFeed;
-  expect(calls.filter((url) => url.includes("spotify.com")).length).toBe(
-    before,
-  );
+  expect(calls.filter(toSpotify).length).toBe(before);
   expect(body.song).toBeNull();
   expect(MUSIC_COOLDOWN_SECONDS).toBeGreaterThan(0);
 });

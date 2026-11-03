@@ -26,10 +26,15 @@ function decode(text: string): string {
   });
 }
 
-const clean = (html: string) =>
-  decode(html.replace(/<[^>]*>/g, ""))
-    .replace(/\s+/g, " ")
-    .trim();
+function clean(html: string): string {
+  let text = decode(html);
+  let before;
+  do {
+    before = text;
+    text = text.replace(/<[^>]*>/g, "");
+  } while (text !== before);
+  return text.replace(/\s+/g, " ").trim();
+}
 
 function tag(xml: string, name: string): string | null {
   const match = xml.match(new RegExp(`<${name}>([\\s\\S]*?)</${name}>`));

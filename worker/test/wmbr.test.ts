@@ -40,6 +40,14 @@ test("reads the show and its hosts from the info feed", () =>
     id: "9573",
   }));
 
+test("encoded tags in the feed come out as plain text", () => {
+  const tagged = info.replace(
+    /<showname>[^<]*<\/showname>/,
+    "<showname>&lt;script&gt;The Willows&lt;/script&gt;</showname>",
+  );
+  expect(readInfo(tagged)!.show).toBe("The Willows");
+});
+
 test("the DJ has to be a whole word in the hosts", () => {
   expect(hostedBy("Diego Temkin and friends", "temkin")).toBe(true);
   expect(hostedBy("Temkinson", "Temkin")).toBe(false);
