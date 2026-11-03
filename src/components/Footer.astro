@@ -1,79 +1,78 @@
 ---
-import Icon from "./Icon.astro";
 const currentYear = new Date().getFullYear();
+
+const links = [
+  { label: "Bluesky", href: "https://bsky.app/profile/dtemkin1.bsky.social" },
+  { label: "Twitter", href: "https://twitter.com/dtemkin1" },
+  { label: "Instagram", href: "https://www.instagram.com/dtemkin1/" },
+  { label: "MIT Athena", href: "https://web.mit.edu/dtemkin/www/" },
+  { label: "RSS", href: "/rss.xml" },
+  { label: "Admin", href: "/admin/" },
+];
 ---
 
 <footer>
-  <div class="group">
-    <p>
-      Designed & Developed in Cambridge, MA with <a href="https://astro.build/"
-        >{Astro.generator}</a
-      >
-      <Icon icon="rocket-launch" size="1.2em" />
-    </p>
-    <p>&copy; {currentYear} Diego Temkin</p>
+  <div class="edge" aria-hidden="true"></div>
+  <div class="wrapper inner">
+    <p>&copy; {currentYear} Diego Temkin. Built with Astro in Cambridge, MA.</p>
+    <ul>
+      {links.map(({ label, href }) => (
+        <li>
+          <a href={href}>{label}</a>
+        </li>
+      ))}
+    </ul>
   </div>
-  <p class="socials">
-    <a href="https://github.com/dtemkin1"> GitHub</a>
-    <a href="https://www.linkedin.com/in/diego-temkin/"> LinkedIn</a>
-    <a href="https://twitter.com/dtemkin1"> Twitter</a>
-    <a href="https://www.instagram.com/dtemkin1/"> Instagram</a>
-    <a href="https://web.mit.edu/dtemkin/www/"> MIT Athena</a>
-    <a href="/admin/"> Admin</a>
-  </p>
 </footer>
+
 <style>
+  /* The tactile warning strip at the edge of a train platform. */
+  .edge {
+    height: 1.5rem;
+    background-color: var(--yellow);
+    background-image: radial-gradient(
+      circle,
+      rgb(23 19 11 / 0.35) 0.25rem,
+      transparent 0.28rem
+    );
+    background-size: 1rem 1rem;
+    background-position: center;
+  }
+
   footer {
+    background: var(--board);
+    color: var(--readout);
+    font-size: var(--text-small);
+  }
+
+  .inner {
     display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    margin-top: auto;
-    padding: 3rem 2rem 3rem;
-    text-align: center;
-    color: var(--gray-400);
-    font-size: var(--text-sm);
-  }
-
-  footer a {
-    color: var(--gray-400);
-    text-decoration: 1px solid underline transparent;
-    text-underline-offset: 0.25em;
-    transition: text-decoration-color var(--theme-transition);
-  }
-
-  footer a:hover,
-  footer a:focus {
-    text-decoration-color: currentColor;
-  }
-
-  .group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .socials {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
     flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-block: 1.25rem;
   }
 
-  @media (min-width: 50em) {
-    footer {
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 2.5rem 5rem;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    ul {
+      gap: 0 1rem;
     }
 
-    .group {
-      flex-direction: row;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .socials {
-      justify-content: flex-end;
+    li a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 44px;
+      min-height: 44px;
     }
   }
 </style>

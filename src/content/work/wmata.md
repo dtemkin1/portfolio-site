@@ -1,6 +1,6 @@
 ---
-title: Washington Metropolitan Area Transit Authority
-publishDate: 2025-06-01 00:00:00
+title: "WMATA: Reliability Engineering"
+publishDate: 2025-08-01 00:00:00
 description: Integrated information from multiple sources to create a comprehensive asset management dashboard, enabling real-time monitoring and decision-making.
 img: ../../assets/posts/wmata.jpg
 img_alt: "Aerial drone shot taken during the summer while surveying near the Potomac Yard station in Arlington, VA."
@@ -8,7 +8,11 @@ tags:
   - Reliability Engineering
   - Transportation Operations
   - GIS and Web Mapping
-draft: true
+when: Aug 2025
 ---
 
-Under construction :)
+I spent the summer of 2025 as a Junior Associate Engineer in Reliability Engineering and Asset Management at the Washington Metropolitan Area Transit Authority.
+
+I supported data governance in a centralized asset management database, making analysis easier across more than 500,000 assets and work orders. I also integrated several sources into an asset management dashboard for real-time monitoring and decision-making.
+
+I designed and deployed a department-wide web application that shows, on a map, where asset rehabilitation is getting stuck. The department uses it to prioritize financial resources with data.

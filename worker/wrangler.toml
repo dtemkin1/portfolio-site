@@ -1,0 +1,7 @@
+name = "diegotemkin-live"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+routes = [{ pattern = "api.diegotemkin.com", custom_domain = true }]
+
+# secrets: MBTA_KEY, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REFRESH_TOKEN

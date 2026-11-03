@@ -1,0 +1,227 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { timeLabel } from "../lib/work";
+
+import Prompt from "./Prompt.astro";
+
+interface Props {
+  projects: CollectionEntry<"work">[];
+  openFirst?: boolean;
+}
+
+const { projects, openFirst = false } = Astro.props;
+const hasTop = Astro.slots.has("top");
+---
+
+<section
+  class:list={["board", { lead: !hasTop }]}
+  data-board
+  data-open-first={openFirst || undefined}
+  aria-label="Projects, newest first"
+>
+  <slot name="top" />
+  <ol>
+    {projects.map(({ id, data, body }, i) => (
+      <li data-slug={id} id={id} style={`--i: ${i}`}>
+        <a class="row" href={`/work/${id}/`}>
+          <span class="title">{data.title}</span>
+          <span class="time">{timeLabel(data)}</span>
+        </a>
+        <div
+          class="readout"
+          id={`readout-${id}`}
+          hidden={!(openFirst && i === 0)}
+        >
+          <p class="command">$ cat {id}.md</p>
+          {data.status === "in-development" && (
+            <p class="command-text">status: in development</p>
+          )}
+          <p>{data.description}</p>
+          {(body?.trim() || data.img) && (
+            <p>
+              <a href={`/work/${id}/`}>Read the full page</a>
+            </p>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+  <Prompt projects={projects.map(({ id }) => ({ slug: id }))} />
+</section>
+
+<script>
+  import "../scripts/board";
+</script>
+
+<!-- Global, because the script swaps row links for buttons at runtime. -->
+<style is:global>
+  .board {
+    background: var(--board);
+    border-radius: 6px;
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  .board ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .board li {
+    scroll-margin-top: 1rem;
+  }
+
+  .board .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: baseline;
+    column-gap: 1.25rem;
+    width: 100%;
+    padding: 0.2rem 0.25rem;
+    border: 0;
+    background: none;
+    color: var(--led-dim);
+    cursor: pointer;
+    font-family: var(--font-led);
+    font-size: var(--text-led);
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: start;
+    text-decoration: none;
+  }
+
+  .board .alert {
+    color: var(--yellow);
+    font-family: var(--font-led);
+    font-size: var(--text-led);
+    font-weight: 900;
+    line-height: 1.3;
+    text-wrap: wrap;
+  }
+
+  .board .alert-note {
+    margin: 0.25rem 0 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--rule);
+    color: var(--readout);
+    font-size: 1rem;
+  }
+
+  .board.lead li:first-child .row {
+    color: var(--yellow);
+    font-weight: 900;
+  }
+
+  .board .row:hover,
+  .board .row[aria-expanded="true"] {
+    color: var(--white);
+  }
+
+  .board .row:active {
+    background: var(--panel);
+    color: var(--white);
+  }
+
+  .board .marker::before {
+    content: "+";
+  }
+
+  .board .row[aria-expanded="true"] .marker::before {
+    content: "\2212";
+  }
+
+  .board .time {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .board .title {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  /* Doto is wide, so on phones the time sits under the title. */
+  @media (max-width: 36rem) {
+    .board .row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding-block: 0.4rem;
+    }
+
+    .board .time {
+      grid-row: 2;
+      grid-column: 1;
+      font-size: 1.125rem;
+    }
+  }
+
+  .readout {
+    margin: 0.25rem 0 0.75rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 4px;
+    background: var(--panel);
+    color: var(--readout);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .readout > p {
+    max-width: 72ch;
+  }
+
+  .readout > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .readout .command {
+    color: var(--yellow);
+    font-family: var(--font-mono);
+  }
+
+  .readout .command-text {
+    font-family: var(--font-mono);
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    .readout a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+  }
+
+  .readout a:hover {
+    color: var(--yellow);
+  }
+
+  /* Color alone can't show the open row when the system picks the colors. */
+  @media (forced-colors: active) {
+    .board .row[aria-expanded="true"] {
+      text-decoration: underline;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .readout:not([hidden]) {
+      animation: readout-open 180ms ease-out;
+    }
+
+    .board.lighting .row {
+      animation: row-light 240ms steps(3) backwards;
+      animation-delay: calc(var(--i) * 70ms);
+    }
+  }
+
+  @keyframes readout-open {
+    from {
+      opacity: 0;
+      transform: translateY(-0.25rem);
+    }
+  }
+
+  @keyframes row-light {
+    from {
+      opacity: 0;
+    }
+  }
+</style>

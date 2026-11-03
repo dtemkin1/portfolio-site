@@ -1,8 +1,24 @@
 ---
-import Hero from "../components/Hero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Board from "../components/Board.astro";
+import { getPublishedWork } from "../lib/work-data";
+
+const projects = await getPublishedWork();
 ---
 
-<BaseLayout title="Not Found" description="404 Error — this page was not found">
-  <Hero title="404 Error" tagline="Page not found :(" />
+<BaseLayout
+  title="Not found | Diego Temkin"
+  description="This page was not found."
+>
+  <main id="content" class="wrapper">
+    <Board projects={projects}>
+      <Fragment slot="top">
+        <h1 class="alert">This stop is not in service</h1>
+        <p class="alert-note">
+          Shuttle buses are replacing this page, which has moved or doesn't
+          exist. Choose another stop below.
+        </p>
+      </Fragment>
+    </Board>
+  </main>
 </BaseLayout>

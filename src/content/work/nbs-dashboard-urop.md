@@ -1,16 +1,14 @@
 ---
 title: Nature-Based Solutions Dashboard
-publishDate: 2023-06-12 00:00:00
-img: ../../assets/posts/nbs.png
-img_alt: A generated view of the nature-based solutions implementations
-description: Construct a digital platform regarding nature-based urban
-  infrastructure solutions that can be used in potential community outreach to
-  implement priorities.
+publishDate: 2024-06-01 00:00:00
+img: ../../assets/posts/nbs-dashboard.png
+img_alt: The Nature-Based Solutions Dashboard showing a satellite map of Stockholm, with options to locate green roofs, street trees, and other solutions.
+description: Built a digital platform on nature-based urban infrastructure solutions for use in community outreach.
 tags:
   - Web Development
   - Sustainability
   - Mapping
-draft: false
+when: Jun 2024
 ---
 
 _The following is from an article published on the MIT Department of Urban Studies and Planning (DUSP) website titled "Leveraging Nature Based Solutions to Achieve Carbon-Neutral Cities". You can view the original article [on the DUSP website][article-link]._

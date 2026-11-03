@@ -1,0 +1,109 @@
+---
+import { LIVE_CONFIG } from "../lib/live";
+---
+
+<section class="live" data-live aria-labelledby="live-title" hidden>
+  <h2 id="live-title">{LIVE_CONFIG.title}</h2>
+  <div
+    class="display"
+    style={`--live: ${LIVE_CONFIG.color}; --music: ${LIVE_CONFIG.musicColor}`}
+  >
+    <ul data-live-rows></ul>
+    <p class="source" data-live-credit>
+      Courtesy of <span data-live-sources>the MBTA</span> &lt;3
+    </p>
+  </div>
+</section>
+
+<script>
+  import "../scripts/live";
+</script>
+
+<style>
+  .live {
+    margin-top: 1.5rem;
+  }
+
+  .live[hidden] {
+    display: none;
+  }
+
+  h2 {
+    margin-bottom: 0.5rem;
+    font-size: var(--text-body);
+  }
+
+  .display {
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+    border-radius: 6px;
+    background: var(--board);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: var(--live);
+    font-family: var(--font-led);
+    font-size: var(--text-led);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  ul :global(li) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 0.2rem 0.25rem;
+  }
+
+  ul :global(li > span:first-child) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  ul :global(.detail) {
+    flex: none;
+  }
+
+  @media (max-width: 36rem) {
+    ul :global(li) {
+      flex-direction: column;
+      align-items: start;
+      gap: 0;
+      padding-block: 0.4rem;
+    }
+
+    ul :global(.detail) {
+      font-size: 1.125rem;
+    }
+  }
+
+  ul :global(.music) {
+    color: var(--music);
+  }
+
+  ul :global(.alert) {
+    display: block;
+    color: var(--readout);
+    font-family: var(--font-sign);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.45;
+    max-width: 72ch;
+  }
+
+  ul :global(.severe) {
+    color: var(--live);
+    font-size: var(--text-body);
+    font-weight: 800;
+  }
+
+  .source {
+    margin-top: 0.75rem;
+    padding-inline: 0.25rem;
+    color: var(--placeholder);
+    font-size: var(--text-small);
+  }
+</style>

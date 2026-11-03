@@ -11,5 +11,5 @@ export default defineConfig(
   eslintPluginAstro.configs["flat/recommended"],
   // TODO: install eslint-plugin-jsx-a11y once it supports eslint 10
   // eslintPluginAstro.configs["flat/jsx-a11y-recommended"],
-  { ignores: ["*.d.ts"] },
+  { ignores: ["*.d.ts", "worker/.wrangler/"] },
 );

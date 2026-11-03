@@ -30,8 +30,26 @@ collections:
           date_format: "L",
           time_format: "LTS",
         }
-      - { label: "Content Preview", name: "img", widget: "image" }
-      - { label: "Image Alt", name: "img_alt", widget: "string" }
+      - { label: "Board Time", name: "when", widget: "string", required: false }
+      - {
+          label: "Status",
+          name: "status",
+          widget: "select",
+          options: ["in-development"],
+          required: false,
+        }
+      - {
+          label: "Content Preview",
+          name: "img",
+          widget: "image",
+          required: false,
+        }
+      - {
+          label: "Image Alt",
+          name: "img_alt",
+          widget: "string",
+          required: false,
+        }
       - {
           label: "Description",
           name: "description",

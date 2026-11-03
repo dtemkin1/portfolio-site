@@ -9,5 +9,3 @@ tags:
   - Command Line
   - Design
 ---
-
-Under construction :)
