@@ -10,11 +10,9 @@
   --placeholder: #b3b8c2;
   --sign-ink: #000000;
 
-  --font-system:
-    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --font-sign: var(--font-overpass), var(--font-system);
-  --font-mono: var(--font-overpass-mono), ui-monospace, Consolas, monospace;
-  --font-led: var(--font-doto), var(--font-mono);
+  --font-sign: var(--font-overpass);
+  --font-mono: var(--font-overpass-mono);
+  --font-led: var(--font-doto);
 
   --text-body: 1.125rem;
   --text-small: 0.9375rem;

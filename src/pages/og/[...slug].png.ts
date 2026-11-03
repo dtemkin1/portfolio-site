@@ -22,7 +22,7 @@ export const getStaticPaths = (async () => {
 
 type Weight = 500 | 800 | 900;
 
-// latin WOFF files from the fonts API, since Satori can't read WOFF2
+// the card-only WOFF files from astro.config.mjs, since Satori can't read WOFF2 or variable fonts
 async function font(
   name: string,
   variable: CssVariable,
@@ -47,9 +47,9 @@ async function font(
 let fonts: ReturnType<typeof loadFonts> | undefined;
 const loadFonts = (requestUrl: URL) =>
   Promise.all([
-    font("Overpass", "--font-overpass", 500, requestUrl),
-    font("Overpass", "--font-overpass", 800, requestUrl),
-    font("Doto", "--font-doto", 900, requestUrl),
+    font("Overpass", "--font-card-overpass", 500, requestUrl),
+    font("Overpass", "--font-card-overpass", 800, requestUrl),
+    font("Doto", "--font-card-doto", 900, requestUrl),
   ]);
 
 export const GET: APIRoute<{ entry: CollectionEntry<"work"> }> = async ({
