@@ -54,8 +54,8 @@ const hasTop = Astro.slots.has("top");
   import "../scripts/board";
 </script>
 
-<!-- Global, because the script swaps row links for buttons at runtime. -->
 <style is:global>
+  /* global, because the script swaps row links for buttons at runtime. */
   .board {
     background: var(--board);
     border-radius: 6px;
