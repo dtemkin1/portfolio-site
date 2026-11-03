@@ -1,29 +1,26 @@
 ---
+import { PROFILES, SITE } from "../lib/site";
+
 const isHome = Astro.url.pathname === "/";
 
 const links = [
   { label: "About", href: "/about/" },
   { label: "CV", href: "https://cv.diegotemkin.com/Diego_Temkin_CV.pdf" },
-  { label: "GitHub", href: "https://github.com/dtemkin1" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/diego-temkin/" },
+  { label: "GitHub", href: PROFILES.github },
+  { label: "LinkedIn", href: PROFILES.linkedin },
   { label: "Email", href: "mailto:dtemkin@mit.edu" },
 ];
 ---
 
 <header class:list={["wrapper station", { compact: !isHome }]}>
   {isHome ? (
-    <h1 class="sign">Diego Temkin</h1>
+    <h1 class="sign">{SITE.name}</h1>
   ) : (
     <a class="sign" href="/">
-      Diego Temkin
+      {SITE.name}
     </a>
   )}
-  {isHome && (
-    <p class="line">
-      MS in Transportation student at MIT, researching how students ride
-      transit.
-    </p>
-  )}
+  {isHome && <p class="line">{SITE.tagline}</p>}
   <nav aria-label="Main">
     <ul>
       {/* each link has its own transition name, so it travels to its spot on the next page. */}

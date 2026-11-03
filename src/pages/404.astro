@@ -6,10 +6,7 @@ import { getPublishedWork } from "../lib/work-data";
 const projects = await getPublishedWork();
 ---
 
-<BaseLayout
-  title="Not found | Diego Temkin"
-  description="This page was not found."
->
+<BaseLayout title="Not found" description="This page was not found.">
   <main id="content" class="wrapper">
     <Board projects={projects}>
       <Fragment slot="top">

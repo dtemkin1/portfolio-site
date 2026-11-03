@@ -8,6 +8,7 @@ import {
 } from "../../src/lib/live";
 
 import { currentSong, type SpotifyEnv } from "./spotify";
+import { upstreamTimeout } from "./upstream";
 import { liveRadio, WMBR_INFO } from "./wmbr";
 
 export interface Env extends SpotifyEnv {
@@ -27,7 +28,7 @@ const CACHE_SECONDS = { mbta: 30, wmbr: 30, wmbrShow: 300 };
 async function upstream(url: string, seconds: number): Promise<Response> {
   const response = await fetch(url, {
     cf: { cacheTtl: seconds, cacheEverything: true },
-    signal: AbortSignal.timeout(8_000),
+    signal: upstreamTimeout(),
   } as RequestInit);
   if (!response.ok) throw new Error(`Upstream ${response.status}`);
   return response;

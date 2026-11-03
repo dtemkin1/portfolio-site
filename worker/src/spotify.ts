@@ -1,5 +1,7 @@
 import type { Song } from "../../src/lib/live";
 
+import { upstreamTimeout } from "./upstream";
+
 export interface SpotifyEnv {
   SPOTIFY_CLIENT_ID?: string;
   SPOTIFY_CLIENT_SECRET?: string;
@@ -81,7 +83,7 @@ async function accessToken(env: Required<SpotifyEnv>, now: number) {
       grant_type: "refresh_token",
       refresh_token: env.SPOTIFY_REFRESH_TOKEN,
     }).toString(),
-    signal: AbortSignal.timeout(8_000),
+    signal: upstreamTimeout(),
   });
   if (!response.ok) throw new Error(`Spotify token ${response.status}`);
   const { access_token, expires_in } = (await response.json()) as {
@@ -96,7 +98,7 @@ async function accessToken(env: Required<SpotifyEnv>, now: number) {
 async function askSpotify(env: Required<SpotifyEnv>, now: number) {
   return fetch(NOW_PLAYING_URL, {
     headers: { Authorization: `Bearer ${await accessToken(env, now)}` },
-    signal: AbortSignal.timeout(8_000),
+    signal: upstreamTimeout(),
   });
 }
 

@@ -3,6 +3,7 @@ import type { APIRoute } from "astro";
 import { getImage } from "astro:assets";
 
 import { feedMarkdown } from "../lib/feed";
+import { SITE } from "../lib/site";
 import { getPublishedWork } from "../lib/work-data";
 
 import sanitizeHtml from "sanitize-html";
@@ -31,9 +32,8 @@ async function mediaContent(
 export const GET: APIRoute = async (context) => {
   const work = await getPublishedWork();
   return rss({
-    title: "Diego Temkin",
-    description:
-      "The personal site of Diego Temkin, an MS in Transportation student at MIT, researching how students ride transit.",
+    title: SITE.name,
+    description: `The personal site of ${SITE.name}, an ${SITE.tagline}`,
     site: context.site ?? "",
     xmlns: {
       media: "http://search.yahoo.com/mrss/",

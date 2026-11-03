@@ -1,13 +1,7 @@
+import { COLORS, SITE } from "./site";
+
 // Social preview cards: the station sign above one row of the countdown board.
 export const CARD = { width: 1200, height: 630 };
-
-const COLORS = {
-  wall: "#003da5",
-  board: "#17130b",
-  yellow: "#ffc72c",
-  readout: "#d6dbe5",
-  white: "#ffffff",
-};
 
 type Node = {
   type: string;
@@ -51,7 +45,7 @@ export function projectCard(data: {
     [
       el(
         { fontSize: 56, fontWeight: 800, lineHeight: 1, letterSpacing: -1 },
-        "Diego Temkin",
+        SITE.name,
       ),
       el(
         {
