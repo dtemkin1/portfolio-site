@@ -1,6 +1,7 @@
 export const LIVE_CONFIG = {
   title: "Live at Kendall/MIT",
   color: "#ff5a4d",
+  musicColor: "#1db954",
   stop: "place-knncl",
   route: "Red",
   routeName: "Red Line",

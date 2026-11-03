@@ -1,11 +1,31 @@
 // @ts-check
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.diegotemkin.com",
   integrations: [sitemap({ filter: (page) => !page.includes("/admin/") })],
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "Overpass",
+      cssVariable: "--font-overpass",
+      weights: [500, 800],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Overpass Mono",
+      cssVariable: "--font-overpass-mono",
+      weights: [400],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Doto",
+      cssVariable: "--font-doto",
+      weights: [700, 900],
+    },
+  ],
   env: {
     schema: {
       // be aware that until this is server side, these are public...

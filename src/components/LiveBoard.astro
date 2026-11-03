@@ -20,16 +20,20 @@ const lastfmUser = lastfmKey
   hidden
 >
   <h2 id="live-title">{LIVE_CONFIG.title}</h2>
-  <div class="display" style={`--live: ${LIVE_CONFIG.color}`}>
+  <div
+    class="display"
+    style={`--live: ${LIVE_CONFIG.color}; --music: ${LIVE_CONFIG.musicColor}`}
+  >
     <ul data-live-rows></ul>
     <p class="source">
-      Courtesy of the MBTA &lt;3
+      Courtesy of the MBTA
       {lastfmKey && (
         <span data-live-credit hidden>
-          , music from{" "}
-          <a href={`https://www.last.fm/user/${lastfmUser}`}>Last.fm</a>.
+          {" "}
+          and Last.fm
         </span>
-      )}
+      )}{" "}
+      &lt;3
     </p>
   </div>
 </section>
@@ -79,6 +83,10 @@ const lastfmUser = lastfmKey
 
   ul :global(.detail) {
     flex: none;
+  }
+
+  ul :global(.music) {
+    color: var(--music);
   }
 
   ul :global(.alert) {

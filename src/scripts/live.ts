@@ -45,6 +45,7 @@ if (live) {
       row.append(detailCell);
     }
     rows.append(row);
+    return row;
   };
 
   const render = () => {
@@ -56,7 +57,9 @@ if (live) {
     }
     alerts.filter(({ severe }) => !severe).forEach(addAlert);
     if (song) {
-      addRow(`Now playing: ${song.song}${song.artist && `, ${song.artist}`}`);
+      addRow(
+        `Now playing: ${song.song}${song.artist && `, ${song.artist}`}`,
+      ).classList.add("music");
     }
     if (credit) credit.hidden = !song;
     live.hidden = departures === null && !song && alerts.length === 0;

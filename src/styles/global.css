@@ -12,9 +12,9 @@
 
   --font-system:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --font-sign: "Overpass", var(--font-system);
-  --font-mono: "Overpass Mono", ui-monospace, Consolas, monospace;
-  --font-led: "Doto", var(--font-mono);
+  --font-sign: var(--font-overpass), var(--font-system);
+  --font-mono: var(--font-overpass-mono), ui-monospace, Consolas, monospace;
+  --font-led: var(--font-doto), var(--font-mono);
 
   --text-body: 1.125rem;
   --text-small: 0.9375rem;

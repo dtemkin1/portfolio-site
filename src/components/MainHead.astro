@@ -1,9 +1,5 @@
 ---
-import "@fontsource/overpass/500.css";
-import "@fontsource/overpass/800.css";
-import "@fontsource/overpass-mono/400.css";
-import "@fontsource/doto/700.css";
-import "@fontsource/doto/900.css";
+import { Font } from "astro:assets";
 
 import "../styles/global.css";
 
@@ -70,6 +66,10 @@ const person = JSON.stringify({
   title="RSS Feed for Diego Temkin's website"
   href="/rss.xml"
 />
+
+<Font cssVariable="--font-overpass" preload />
+<Font cssVariable="--font-overpass-mono" preload />
+<Font cssVariable="--font-doto" preload />
 
 {Astro.url.pathname === "/" && (
   <script is:inline type="application/ld+json" set:html={person} />
