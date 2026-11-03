@@ -103,6 +103,18 @@ a:hover {
   }
 }
 
+/* only a few things should be animated, be careful when using... */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
 .wrapper {
   width: 100%;
   max-width: 62rem;

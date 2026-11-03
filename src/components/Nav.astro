@@ -26,8 +26,9 @@ const links = [
   )}
   <nav aria-label="Main">
     <ul>
+      {/* each link has its own transition name, so it travels to its spot on the next page. */}
       {links.map(({ label, href }) => (
-        <li>
+        <li style={`view-transition-name: nav-${label.toLowerCase()}`}>
           <a href={href}>{label}</a>
         </li>
       ))}
@@ -48,10 +49,12 @@ const links = [
     letter-spacing: -0.02em;
     line-height: 1;
     text-decoration: none;
+    view-transition-name: sign;
   }
 
   .line {
     margin-top: 0.5rem;
+    view-transition-name: tagline;
   }
 
   ul {
