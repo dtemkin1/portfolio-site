@@ -24,6 +24,7 @@ export type Weather = {
   kind: "snow" | "rain" | "ice" | "storm" | "fog" | "heat" | "cold";
   text: string;
 };
+export type Building = { repo: string; at: number };
 
 // null means source failed
 export type LiveFeed = {
@@ -34,6 +35,7 @@ export type LiveFeed = {
   radio: Radio | null;
   night: Night | null;
   weather: Weather | null;
+  building: Building[] | null;
 };
 
 type RawAlert = {
@@ -221,22 +223,38 @@ export const nightLines = (night: Night): string[] => [
   ...firstTrainRows(night).map(([title, time]) => `${title}: ${time}`),
 ];
 
+const MINUTE = 60_000;
+
+// "14 min ago", "2 hr ago", "3 days ago": short enough for a board row.
+export function agoLabel(at: number, now: number): string {
+  const minutes = Math.floor((now - at) / MINUTE);
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} ${days === 1 ? "day" : "days"} ago`;
+}
+
 export function credits({
   mbta,
   song,
   radio,
   weather = false,
+  building,
 }: {
   mbta: boolean;
   song: boolean;
   radio: boolean;
   weather: boolean;
+  building: boolean;
 }): string {
   const names = [
     mbta && "the MBTA",
     song && "Spotify",
     radio && "WMBR",
     weather && "Open-Meteo",
+    building && "GitHub",
   ].filter((name): name is string => Boolean(name));
   if (names.length <= 2) return names.join(" and ");
   return `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`;

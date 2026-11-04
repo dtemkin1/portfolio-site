@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 
 import {
+  agoLabel,
   alertsUrl,
   arrivalLines,
   countdownLabel,
@@ -468,23 +469,68 @@ test("countdowns use the time the Worker sent, not the visitor's clock", () => {
 
 test("the credit names only the sources being shown", () => {
   expect(
-    credits({ mbta: true, song: false, radio: false, weather: false }),
+    credits({
+      mbta: true,
+      song: false,
+      radio: false,
+      weather: false,
+      building: false,
+    }),
   ).toBe("the MBTA");
   expect(
-    credits({ mbta: true, song: true, radio: false, weather: false }),
+    credits({
+      mbta: true,
+      song: true,
+      radio: false,
+      weather: false,
+      building: false,
+    }),
   ).toBe("the MBTA and Spotify");
-  expect(credits({ mbta: true, song: true, radio: true, weather: false })).toBe(
-    "the MBTA, Spotify, and WMBR",
-  );
   expect(
-    credits({ mbta: false, song: true, radio: false, weather: false }),
+    credits({
+      mbta: true,
+      song: true,
+      radio: true,
+      weather: false,
+      building: false,
+    }),
+  ).toBe("the MBTA, Spotify, and WMBR");
+  expect(
+    credits({
+      mbta: false,
+      song: true,
+      radio: false,
+      weather: false,
+      building: false,
+    }),
   ).toBe("Spotify");
   expect(
-    credits({ mbta: false, song: true, radio: true, weather: false }),
+    credits({
+      mbta: false,
+      song: true,
+      radio: true,
+      weather: false,
+      building: false,
+    }),
   ).toBe("Spotify and WMBR");
   expect(
-    credits({ mbta: true, song: false, radio: false, weather: true }),
+    credits({
+      mbta: true,
+      song: false,
+      radio: false,
+      weather: true,
+      building: false,
+    }),
   ).toBe("the MBTA and Open-Meteo");
+  expect(
+    credits({
+      mbta: true,
+      song: false,
+      radio: false,
+      weather: false,
+      building: true,
+    }),
+  ).toBe("the MBTA and GitHub");
 });
 
 const night = {
@@ -512,3 +558,12 @@ test("the prompt says the T is asleep, then when it wakes up", () =>
     "First train to Alewife: 5:37 am",
     "First train to Ashmont: 5:27 am",
   ]));
+
+test("how long ago a push landed, in board-sized words", () => {
+  const minute = 60_000;
+  expect(agoLabel(now - 20_000, now)).toBe("just now");
+  expect(agoLabel(now - 14 * minute, now)).toBe("14 min ago");
+  expect(agoLabel(now - 2 * 60 * minute, now)).toBe("2 hr ago");
+  expect(agoLabel(now - 26 * 60 * minute, now)).toBe("1 day ago");
+  expect(agoLabel(now - 3 * 24 * 60 * minute, now)).toBe("3 days ago");
+});

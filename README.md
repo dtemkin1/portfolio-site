@@ -20,7 +20,7 @@ Pushing to `main` deploys to GitHub Pages.
 
 ## Live display
 
-The site never talks to the MBTA, Spotify, or WMBR directly. A Cloudflare Worker in `worker/` holds the API keys, caches each source, and serves everything from `https://api.diegotemkin.com/live`. It only answers requests from this site and from localhost.
+The site never talks to the MBTA, Spotify, WMBR, Open-Meteo, or GitHub directly. A Cloudflare Worker in `worker/` holds the API keys, caches each source, and serves everything from `https://api.diegotemkin.com/live`. It only answers requests from this site and from localhost.
 
 The station, line, colors, and music toggle are in `LIVE_CONFIG` in `src/lib/live.ts`. The WMBR host name to match is `DJ` in `worker/src/index.ts`.
 
@@ -32,6 +32,7 @@ The station, line, colors, and music toggle are in `LIVE_CONFIG` in `src/lib/liv
    MBTA_KEY=...
    SPOTIFY_CLIENT_ID=...
    SPOTIFY_CLIENT_SECRET=...
+   GITHUB_TOKEN=...
    ```
 
 2. Get a Spotify refresh token once. Your Spotify app needs the redirect URI `http://127.0.0.1:8888/callback`. The script saves `SPOTIFY_REFRESH_TOKEN` to `worker/.dev.vars`.
@@ -46,14 +47,14 @@ The station, line, colors, and music toggle are in `LIVE_CONFIG` in `src/lib/liv
    pnpm worker:dev
    ```
 
-The MBTA key is optional; without it, the MBTA allows fewer requests. Without the Spotify settings, the music row stays off.
+The MBTA key and GitHub token are optional; without them, the MBTA and GitHub allow fewer requests. The GitHub token needs no permissions, since it only reads public activity. Without the Spotify settings, the music row stays off.
 
 ### Deploy the Worker
 
 ```sh
 pnpm exec wrangler login
 pnpm exec wrangler secret put MBTA_KEY --config worker/wrangler.toml
-# repeat for SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REFRESH_TOKEN
+# repeat for SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN, and GITHUB_TOKEN
 pnpm worker:deploy
 ```
 

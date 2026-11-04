@@ -1,6 +1,7 @@
 import { PUBLIC_LIVE_API } from "astro:env/client";
 
 import {
+  agoLabel,
   type Alert,
   arrivalLines,
   credits,
@@ -108,12 +109,19 @@ if (live) {
         `Now playing: ${song.song}${song.artist && `, ${song.artist}`}`,
       ).classList.add("music");
     }
+    const building = feed.building ?? [];
+    for (const { repo, at } of building) {
+      addRow(`Now building: ${repo}`, agoLabel(at, feed.at)).classList.add(
+        "building",
+      );
+    }
 
     sources.textContent = credits({
       mbta: departures !== null || alerts.length > 0 || Boolean(night),
       song: Boolean(song),
       radio: Boolean(radio),
       weather: Boolean(weather),
+      building: building.length > 0,
     });
     credit.hidden = !sources.textContent;
     shown = true;

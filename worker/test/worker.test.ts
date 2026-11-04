@@ -95,6 +95,17 @@ const env: Env = {
   SPOTIFY_REFRESH_TOKEN: "spotify-refresh",
 };
 
+// One public push to the site an hour ago.
+const githubEvents = () => [
+  {
+    type: "PushEvent",
+    public: true,
+    repo: { name: "dtemkin1/portfolio-site" },
+    created_at: soon(-60),
+  },
+];
+let githubHeaders: Headers | null = null;
+
 let failing: string[] = [];
 let calls: string[] = [];
 
@@ -106,9 +117,11 @@ beforeEach(() => {
   failing = [];
   calls = [];
   lastTrainIn = 60;
+  githubHeaders = null;
   weatherCode = 3;
-  vi.stubGlobal("fetch", async (input: string | URL) => {
-    const url = String(input);
+  vi.stubGlobal("fetch", async (input: string | URL | Request) => {
+    const url = input instanceof Request ? input.url : String(input);
+    if (input instanceof Request) githubHeaders = input.headers;
     calls.push(url);
     const source = url.includes("/predictions")
       ? "predictions"
@@ -116,15 +129,18 @@ beforeEach(() => {
         ? "schedules"
         : host(url) === "api.open-meteo.com"
           ? "weather"
-          : url.includes("/alerts")
-            ? "alerts"
-            : toSpotify(url)
-              ? "spotify"
-              : host(url) === "wmbr.org"
-                ? "wmbr"
-                : "other";
+          : host(url) === "api.github.com"
+            ? "github"
+            : url.includes("/alerts")
+              ? "alerts"
+              : toSpotify(url)
+                ? "spotify"
+                : host(url) === "wmbr.org"
+                  ? "wmbr"
+                  : "other";
     if (failing.includes(source)) return new Response("down", { status: 503 });
     if (source === "schedules") return Response.json(schedulesFor(url));
+    if (source === "github") return Response.json(githubEvents());
     if (source === "weather") {
       return Response.json({
         current: { temperature_2m: 30, weather_code: weatherCode },
@@ -179,6 +195,9 @@ test("answers the site with every feed", async () => {
   });
   expect(body.night).toBeNull();
   expect(body.weather).toBeNull();
+  expect(body.building).toEqual([
+    { repo: "portfolio-site", at: expect.any(Number) },
+  ]);
   expect(Math.abs(body.at - Date.now())).toBeLessThan(5_000);
 });
 
@@ -250,6 +269,24 @@ test("snow at Kendall is announced", async () => {
     await ask("https://www.diegotemkin.com")
   ).json()) as LiveFeed;
   expect(body.weather?.kind).toBe("snow");
+});
+
+test("failed GitHub only empties what's being built", async () => {
+  failing = ["github"];
+  const body = (await (
+    await ask("https://www.diegotemkin.com")
+  ).json()) as LiveFeed;
+  expect(body.building).toBeNull();
+  expect(body.trains).toHaveLength(1);
+});
+
+test("a GitHub token, when set, is sent to GitHub but never back", async () => {
+  const response = await ask("https://www.diegotemkin.com", "/live", {
+    ...env,
+    GITHUB_TOKEN: "gh-secret",
+  });
+  expect(githubHeaders?.get("authorization")).toBe("Bearer gh-secret");
+  expect(await response.text()).not.toContain("gh-secret");
 });
 
 test("failed weather only empties the weather", async () => {

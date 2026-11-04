@@ -7,13 +7,14 @@ import {
   relevantAlerts,
 } from "../../src/lib/live";
 
+import { type GitHubEnv, githubRequest, readBuilding } from "./github";
 import { serviceEnded } from "./night";
 import { currentSong, type SpotifyEnv } from "./spotify";
 import { upstreamTimeout } from "./upstream";
 import { readWeather, WEATHER_URL } from "./weather";
 import { liveRadio, WMBR_INFO } from "./wmbr";
 
-export interface Env extends SpotifyEnv {
+export interface Env extends SpotifyEnv, GitHubEnv {
   MBTA_KEY?: string;
 }
 
@@ -29,11 +30,15 @@ const CACHE_SECONDS = {
   mbta: 30,
   schedules: 3600,
   weather: 600,
+  github: 600,
   wmbr: 30,
   wmbrShow: 300,
 };
 
-async function upstream(url: string, seconds: number): Promise<Response> {
+async function upstream(
+  url: string | Request,
+  seconds: number,
+): Promise<Response> {
   const response = await fetch(url, {
     cf: { cacheTtl: seconds, cacheEverything: true },
     signal: upstreamTimeout(),
@@ -44,7 +49,7 @@ async function upstream(url: string, seconds: number): Promise<Response> {
 
 async function readFeed(env: Env): Promise<LiveFeed> {
   const now = Date.now();
-  const [trains, alerts, song, radio, night, weather] =
+  const [trains, alerts, song, radio, night, weather, building] =
     await Promise.allSettled([
       upstream(predictionsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
         .then((r) => r.json())
@@ -78,6 +83,9 @@ async function readFeed(env: Env): Promise<LiveFeed> {
       upstream(WEATHER_URL, CACHE_SECONDS.weather)
         .then((r) => r.json())
         .then(readWeather),
+      upstream(githubRequest(env.GITHUB_TOKEN), CACHE_SECONDS.github)
+        .then((r) => r.json())
+        .then((body) => readBuilding(body, now)),
     ]);
   const value = <T>(result: PromiseSettledResult<T>) =>
     result.status === "fulfilled" ? result.value : null;
@@ -89,6 +97,7 @@ async function readFeed(env: Env): Promise<LiveFeed> {
     radio: value(radio),
     night: value(night),
     weather: value(weather),
+    building: value(building),
   };
 }
 
