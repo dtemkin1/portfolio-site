@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import { type CollectionEntry, render } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { timeLabel } from "../../lib/work";
+import { hasPage, timeLabel } from "../../lib/work";
 import { getPublishedWork } from "../../lib/work-data";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-  const work = await getPublishedWork();
+  const work = (await getPublishedWork()).filter(hasPage);
   return work.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
@@ -117,7 +117,7 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
   .description,
   .tags {
     margin-top: 0.5rem;
-    max-width: 72ch;
+    max-width: 65ch;
   }
 
   .status {
@@ -138,6 +138,7 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
   .solo img {
     width: auto;
     max-height: 36rem;
+    margin-inline: auto;
   }
 
   .body {

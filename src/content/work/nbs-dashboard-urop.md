@@ -11,6 +11,8 @@ tags:
 when: Jun 2024
 ---
 
+With Cong Cong at MIT's Department of Urban Studies and Planning, I built the Nature-Based Solutions Dashboard, an interactive website for exploring how nature-based solutions such as green roofs, street trees, and urban parks can reduce a city's carbon emissions. It builds on research published in _Nature Climate Change_, and it's meant for community outreach.
+
 _The following is from an article published on the MIT Department of Urban Studies and Planning (DUSP) website titled "Leveraging Nature Based Solutions to Achieve Carbon-Neutral Cities". You can view the original article [on the DUSP website][article-link]._
 
 Institutions and organizations are increasingly aligned in their pursuit of solutions to anthropogenic climate change. [The Climate Project at MIT][climate-project-mit], announced in 2024, marshals the interdisciplinary skill, expertise, and resources of the Institute to solve what President Kornbluth called "the greatest and most urgent scientific and societal challenge of our age." When envisioning solutions and interventions, one often pictures more radical proposals such as speculation about solar sun shades or walls built to protect polar ice sheets. In addition to exploring these bold visions, smaller interventions focused on leveraging the benefits of human-scale nature also offer a pathway towards building healthy and resilient communities of the future.

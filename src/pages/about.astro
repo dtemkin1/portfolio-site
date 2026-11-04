@@ -318,6 +318,13 @@ const formatter = new Intl.ListFormat("en", {
   @media (min-width: 48rem) {
     .intro {
       grid-template-columns: minmax(0, 1fr) 14rem;
+      align-items: center;
+    }
+
+    .intro img {
+      aspect-ratio: 1;
+      object-fit: cover;
+      object-position: 50% 70%;
     }
   }
 

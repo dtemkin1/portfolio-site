@@ -8,6 +8,11 @@ const monthYear = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 
+export const hasPage = (entry: {
+  body?: string;
+  data: { img?: unknown };
+}): boolean => Boolean(entry.body?.trim() || entry.data.img);
+
 export function publishedNewestFirst<T extends WorkLike>(entries: T[]): T[] {
   return entries
     .filter((entry) => !entry.data.draft)

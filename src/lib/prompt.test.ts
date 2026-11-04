@@ -126,3 +126,8 @@ test("arrivals asks for live departures", () =>
 
 test("help lists arrivals", () =>
   expect(printed("help")).toContain("arrivals"));
+
+test("open on a project with no page opens it on the board instead", () =>
+  expect(
+    runCommand("open mostec-2021", [{ slug: "mostec-2021", page: false }]),
+  ).toEqual({ kind: "open", slug: "mostec-2021" }));

@@ -1,4 +1,4 @@
-export type PromptProject = { slug: string };
+export type PromptProject = { slug: string; page?: boolean };
 
 export type PromptResult =
   | { kind: "print"; lines: string[] }
@@ -103,7 +103,7 @@ export function runCommand(
       const project = findProject(argument, projects);
       if (!project)
         return print(`${command}: no project called ${argument}. Try ls.`);
-      return command === "cat"
+      return command === "cat" || project.page === false
         ? { kind: "open", slug: project.slug }
         : { kind: "navigate", href: `/work/${project.slug}/` };
     }
