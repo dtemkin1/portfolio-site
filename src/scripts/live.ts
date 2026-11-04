@@ -111,7 +111,7 @@ if (live) {
     }
     const building = feed.building ?? [];
     for (const { repo, at } of building) {
-      addRow(`Now building: ${repo}`, agoLabel(at, feed.at)).classList.add(
+      addRow(`Last push: ${repo}`, agoLabel(at, feed.at)).classList.add(
         "building",
       );
     }

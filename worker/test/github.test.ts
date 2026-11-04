@@ -28,7 +28,7 @@ test("a token, when set, goes in the authorization header", () =>
     "Bearer gh-secret",
   ));
 
-test("shows the latest push to each repository, newest first", () =>
+test("shows the repository with the latest push", () =>
   expect(
     readBuilding(
       [
@@ -38,10 +38,7 @@ test("shows the latest push to each repository, newest first", () =>
       ],
       now,
     ),
-  ).toEqual([
-    { repo: "portfolio-site", at: new Date(hoursAgo(1)).getTime() },
-    { repo: "mit-dormcon/website", at: new Date(hoursAgo(2)).getTime() },
-  ]));
+  ).toEqual([{ repo: "portfolio-site", at: new Date(hoursAgo(1)).getTime() }]));
 
 test("a fork and its original count as one project", () =>
   expect(
@@ -51,13 +48,13 @@ test("a fork and its original count as one project", () =>
     ).map(({ repo }) => repo),
   ).toEqual(["hydrant"]));
 
-test("only two repositories show", () =>
+test("only one repository shows", () =>
   expect(
     readBuilding(
       [event("dtemkin1/a", 1), event("dtemkin1/b", 2), event("dtemkin1/c", 3)],
       now,
     ),
-  ).toHaveLength(2));
+  ).toHaveLength(1));
 
 test("pushes older than a week are left out", () =>
   expect(readBuilding([event("dtemkin1/old", 24 * 8)], now)).toEqual([]));

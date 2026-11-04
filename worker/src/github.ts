@@ -2,7 +2,7 @@ import type { Building } from "../../src/lib/live";
 
 const USER = "dtemkin1";
 const WEEK = 7 * 24 * 60 * 60_000;
-const SHOWN = 2;
+const SHOWN = 1;
 
 export interface GitHubEnv {
   GITHUB_TOKEN?: string;
