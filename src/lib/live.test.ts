@@ -10,6 +10,7 @@ import {
   firstTrainRows,
   nextDepartures,
   nightLines,
+  nightUntil,
   predictionsUrl,
   relevantAlerts,
   steadyDepartures,
@@ -546,10 +547,12 @@ const night = {
   ],
 };
 
-test("first trains show in Boston time, whatever the visitor's clock", () =>
-  expect(firstTrainRows(night)).toEqual([
-    ["First train to Alewife", "5:37 am"],
-    ["First train to Ashmont", "5:27 am"],
+test("the board counts down to the first trains", () =>
+  expect(
+    firstTrainRows(night, new Date("2026-11-04T01:27:00-05:00").getTime()),
+  ).toEqual([
+    ["First train to Alewife", "4 hr 10 min"],
+    ["First train to Ashmont", "4 hr"],
   ]));
 
 test("the prompt says the T is asleep, then when it wakes up", () =>
@@ -566,4 +569,12 @@ test("how long ago a push landed, in board-sized words", () => {
   expect(agoLabel(now - 2 * 60 * minute, now)).toBe("2 hr ago");
   expect(agoLabel(now - 26 * 60 * minute, now)).toBe("1 day ago");
   expect(agoLabel(now - 3 * 24 * 60 * minute, now)).toBe("3 days ago");
+});
+
+test("the station stays closed until the first train of the morning", () => {
+  const at = new Date("2026-11-04T01:27:00-05:00").getTime();
+  expect(nightUntil(night, at)).toBe(
+    new Date("2026-11-04T05:27:00-05:00").getTime(),
+  );
+  expect(nightUntil({ firstTrains: [] }, at)).toBe(at + 30 * 60_000);
 });

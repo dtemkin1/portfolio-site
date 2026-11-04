@@ -26,7 +26,7 @@ export type Weather = {
 };
 export type Building = { repo: string; at: number };
 
-// null means source failed
+// null means source failed or nothing to show
 export type LiveFeed = {
   at: number;
   trains: Train[] | null;
@@ -212,15 +212,28 @@ const clockTime = (at: number) =>
 
 export const SERVICE_ENDED = "Service has ended";
 
-export const firstTrainRows = ({ firstTrains }: Night): [string, string][] =>
+export const firstTrainRows = (
+  { firstTrains }: Night,
+  now: number,
+): [string, string][] =>
   firstTrains.map(({ headsign, at }) => [
     `First train to ${headsign}`,
-    clockTime(at),
+    countdownLabel((at - now) / 1000),
   ]);
 
-export const nightLines = (night: Night): string[] => [
+// use to make all pages dark
+export const NIGHT_KEY = "night-until";
+
+export const nightUntil = ({ firstTrains }: Night, now: number): number =>
+  firstTrains.length > 0
+    ? Math.min(...firstTrains.map(({ at }) => at))
+    : now + 30 * 60_000;
+
+export const nightLines = ({ firstTrains }: Night): string[] => [
   "The T is asleep. Service has ended for the night.",
-  ...firstTrainRows(night).map(([title, time]) => `${title}: ${time}`),
+  ...firstTrains.map(
+    ({ headsign, at }) => `First train to ${headsign}: ${clockTime(at)}`,
+  ),
 ];
 
 const MINUTE = 60_000;

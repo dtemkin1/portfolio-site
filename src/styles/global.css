@@ -101,7 +101,6 @@ a:hover {
   }
 }
 
-/* only a few things should be animated, be careful when using... */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;

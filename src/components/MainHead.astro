@@ -1,6 +1,7 @@
 ---
 import { Font } from "astro:assets";
 
+import { NIGHT_KEY } from "../lib/live";
 import { COLORS, PROFILES, SITE, pageTitle } from "../lib/site";
 import "../styles/global.css";
 
@@ -53,6 +54,16 @@ const person = JSON.stringify({
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
 <meta name="theme-color" content={COLORS.wall} />
+
+<script is:inline define:vars={{ key: NIGHT_KEY }}>
+  try {
+    if (Number(sessionStorage.getItem(key)) > Date.now()) {
+      document.documentElement.setAttribute("data-night", "");
+    }
+  } catch {
+    // page starts normally
+  }
+</script>
 <title>{fullTitle}</title>
 
 <link rel="canonical" href={canonical} />

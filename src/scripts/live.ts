@@ -10,6 +10,8 @@ import {
   firstTrainRows,
   LIVE_CONFIG,
   type LiveFeed,
+  NIGHT_KEY,
+  nightUntil,
   SERVICE_ENDED,
   steadyDepartures,
 } from "../lib/live";
@@ -32,7 +34,6 @@ if (live) {
   const rows = live.querySelector<HTMLElement>("[data-live-rows]")!;
   const sources = live.querySelector<HTMLElement>("[data-live-sources]")!;
   const credit = live.querySelector<HTMLElement>("[data-live-credit]")!;
-  const announcement = live.querySelector<HTMLElement>("[data-live-weather]")!;
 
   let feed: LiveFeed | null = null;
   let departures: Departure[] | null = null;
@@ -79,17 +80,30 @@ if (live) {
 
     // dim background if no more trains running :3
     document.documentElement.toggleAttribute("data-night", Boolean(night));
+    try {
+      if (night) {
+        sessionStorage.setItem(NIGHT_KEY, String(nightUntil(night, feed.at)));
+      } else sessionStorage.removeItem(NIGHT_KEY);
+    } catch {
+      // can fail in private mode, just ignore ig
+    }
     document.documentElement.toggleAttribute(
       "data-snow",
       weather?.kind === "snow",
     );
-    announcement.textContent = weather?.text ?? "";
-    announcement.hidden = !weather;
 
     alerts.filter(({ severe }) => severe).forEach(addAlert);
+    if (weather) {
+      const sign = document.createElement("li");
+      sign.className = "notice announcement";
+      sign.textContent = weather.text;
+      rows.append(sign);
+    }
     if (night) {
       addRow(SERVICE_ENDED);
-      for (const [title, time] of firstTrainRows(night)) addRow(title, time);
+      for (const [title, time] of firstTrainRows(night, feed.at)) {
+        addRow(title, time);
+      }
     } else if (departures === null) {
       addRow("Train times unavailable");
     } else if (departures.length === 0) {

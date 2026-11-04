@@ -16,7 +16,6 @@ const flakes = Array.from({ length: 16 }, (_, i) => ({
     class="display"
     style={`--live: ${LIVE_CONFIG.color}; --music: ${LIVE_CONFIG.musicColor}`}
   >
-    <p class="notice announcement" data-live-weather hidden></p>
     <ul data-live-rows></ul>
     <p class="source" data-live-credit>
       Courtesy of <span data-live-sources>the MBTA</span> &lt;3
@@ -121,15 +120,15 @@ const flakes = Array.from({ length: 16 }, (_, i) => ({
     font-weight: 800;
   }
 
-  .announcement {
-    margin-bottom: 0.75rem;
+  ul :global(.announcement) {
+    display: block;
+    margin-block: 0.5rem;
     padding: 0.75rem 1rem;
+    color: var(--sign-ink);
+    font-family: var(--font-sign);
+    font-size: 1rem;
     font-weight: 800;
     line-height: 1.4;
-  }
-
-  .announcement[hidden] {
-    display: none;
   }
 
   .source {

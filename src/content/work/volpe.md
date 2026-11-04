@@ -15,4 +15,4 @@ From June 2024 to May 2025, I was a Student Trainee in the Innovative Research D
 
 I built analysis and validation pipelines for the Work Zone Data Exchange (WZDx), a cross-agency open standard used by over 25 states. I also documented and developed tools for the General Modeling Network Specification (GMNS), making real-world transportation networks easier to model.
 
-I also supported the interdepartmental U.S. DOT AI Working Group, helping key stakeholders engage with modern technology.
+I also supported the interdepartmental U.S. DOT AI Working Group.
