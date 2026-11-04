@@ -23,21 +23,22 @@ collections:
             ['^(?=[\S\s]{0,60}$)[\S\s]*', "Must have at most 60 characters"],
         }
       - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          pattern:
+            ['^(?=[\S\s]{0,160}$)[\S\s]*', "Must have at most 160 characters"],
+        }
+      - {
           label: "Publish Date",
           name: "publishDate",
           widget: "datetime",
           format: "YYYY-MM-DD HH:mm:ss",
           date_format: "L",
           time_format: "LTS",
+          picker_utc: true,
         }
-      - { label: "Board Time", name: "when", widget: "string", required: false }
-      - {
-          label: "Status",
-          name: "status",
-          widget: "select",
-          options: ["in-development"],
-          required: false,
-        }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
       - {
           label: "Content Preview",
           name: "img",
@@ -49,14 +50,15 @@ collections:
           name: "img_alt",
           widget: "string",
           required: false,
+          hint: "Required when there's a Content Preview image.",
         }
-      - {
-          label: "Description",
-          name: "description",
-          widget: "string",
-          pattern:
-            ['^(?=[\S\s]{0,160}$)[\S\s]*', "Must have at most 160 characters"],
-        }
-      - { label: "Tags", name: "tags", widget: "list" }
       - { label: "Draft", name: "draft", widget: "boolean", required: false }
-      - { label: "Content", name: "body", widget: "markdown" }
+      - { label: "Board Time", name: "when", widget: "string", required: false }
+      - {
+          label: "Status",
+          name: "status",
+          widget: "select",
+          options: ["in-development"],
+          required: false,
+        }
+      - { label: "Content", name: "body", widget: "markdown", required: false }
