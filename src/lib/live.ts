@@ -18,6 +18,8 @@ export type Departure = {
 export type Song = { song: string; artist: string };
 export type Alert = { text: string; severe: boolean };
 export type Radio = { show: string; track: string | null };
+export type FirstTrain = { headsign: string; at: number };
+export type Night = { firstTrains: FirstTrain[] };
 
 // null means source failed
 export type LiveFeed = {
@@ -26,6 +28,7 @@ export type LiveFeed = {
   alerts: Alert[] | null;
   song: Song | null;
   radio: Radio | null;
+  night: Night | null;
 };
 
 type RawAlert = {
@@ -190,6 +193,28 @@ export function departuresAt(trains: Train[], now: number): Departure[] {
   }
   return shown;
 }
+
+const bostonClock = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+const clockTime = (at: number) =>
+  bostonClock.format(at).replace(/\s/g, " ").toLowerCase();
+
+export const SERVICE_ENDED = "Service has ended";
+
+export const firstTrainRows = ({ firstTrains }: Night): [string, string][] =>
+  firstTrains.map(({ headsign, at }) => [
+    `First train to ${headsign}`,
+    clockTime(at),
+  ]);
+
+export const nightLines = (night: Night): string[] => [
+  "The T is asleep. Service has ended for the night.",
+  ...firstTrainRows(night).map(([title, time]) => `${title}: ${time}`),
+];
 
 export function credits({
   mbta,

@@ -6,8 +6,10 @@ import {
   credits,
   type Departure,
   departuresAt,
+  firstTrainRows,
   LIVE_CONFIG,
   type LiveFeed,
+  SERVICE_ENDED,
   steadyDepartures,
 } from "../lib/live";
 
@@ -70,12 +72,23 @@ if (live) {
     const alerts = feed.alerts ?? [];
     const song = LIVE_CONFIG.music ? feed.song : null;
     const radio = feed.radio;
+    const night = feed.night;
+
+    // dim background if no more trains running :3
+    document.documentElement.toggleAttribute("data-night", Boolean(night));
 
     alerts.filter(({ severe }) => severe).forEach(addAlert);
-    if (departures === null) addRow("Train times unavailable");
-    else if (departures.length === 0) addRow(arrivalLines([])[0]);
-    for (const { headsign, label } of departures ?? []) {
-      addRow(`${LIVE_CONFIG.routeName} to ${headsign}`, label);
+    if (night) {
+      addRow(SERVICE_ENDED);
+      for (const [title, time] of firstTrainRows(night)) addRow(title, time);
+    } else if (departures === null) {
+      addRow("Train times unavailable");
+    } else if (departures.length === 0) {
+      addRow(arrivalLines([])[0]);
+    } else {
+      for (const { headsign, label } of departures) {
+        addRow(`${LIVE_CONFIG.routeName} to ${headsign}`, label);
+      }
     }
     alerts.filter(({ severe }) => !severe).forEach(addAlert);
     if (radio) {
@@ -89,7 +102,7 @@ if (live) {
     }
 
     sources.textContent = credits({
-      mbta: departures !== null || alerts.length > 0,
+      mbta: departures !== null || alerts.length > 0 || Boolean(night),
       song: Boolean(song),
       radio: Boolean(radio),
     });

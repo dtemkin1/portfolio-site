@@ -7,6 +7,7 @@ import {
   relevantAlerts,
 } from "../../src/lib/live";
 
+import { serviceEnded } from "./night";
 import { currentSong, type SpotifyEnv } from "./spotify";
 import { upstreamTimeout } from "./upstream";
 import { liveRadio, WMBR_INFO } from "./wmbr";
@@ -23,7 +24,7 @@ const ALLOWED_ORIGINS = [
 ];
 
 // Every visitor shares these cached upstream responses, so the APIs see one request per window.
-const CACHE_SECONDS = { mbta: 30, wmbr: 30, wmbrShow: 300 };
+const CACHE_SECONDS = { mbta: 30, schedules: 3600, wmbr: 30, wmbrShow: 300 };
 
 async function upstream(url: string, seconds: number): Promise<Response> {
   const response = await fetch(url, {
@@ -35,10 +36,11 @@ async function upstream(url: string, seconds: number): Promise<Response> {
 }
 
 async function readFeed(env: Env): Promise<LiveFeed> {
-  const [trains, alerts, song, radio] = await Promise.allSettled([
+  const now = Date.now();
+  const [trains, alerts, song, radio, night] = await Promise.allSettled([
     upstream(predictionsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
       .then((r) => r.json())
-      .then((body) => nextDepartures(body, Date.now())),
+      .then((body) => nextDepartures(body, now)),
     upstream(alertsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
       .then((r) => r.json())
       .then((body) => {
@@ -60,15 +62,21 @@ async function readFeed(env: Env): Promise<LiveFeed> {
           ).then((r) => r.text()),
         ),
       ),
+    serviceEnded(
+      now,
+      (url) => upstream(url, CACHE_SECONDS.schedules).then((r) => r.json()),
+      env.MBTA_KEY,
+    ),
   ]);
   const value = <T>(result: PromiseSettledResult<T>) =>
     result.status === "fulfilled" ? result.value : null;
   return {
-    at: Date.now(),
+    at: now,
     trains: value(trains),
     alerts: value(alerts),
     song: value(song),
     radio: value(radio),
+    night: value(night),
   };
 }
 

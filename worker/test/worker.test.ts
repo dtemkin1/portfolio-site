@@ -64,6 +64,27 @@ const spotify = {
   item: { name: "Song", artists: [{ name: "Artist" }] },
 };
 
+// Service started this morning; the last train leaves in an hour unless a test moves it.
+let lastTrainIn = 60;
+const scheduled = (...rows: [string, number, string][]) => ({
+  data: rows.map(([time, direction], i) => ({
+    attributes: { departure_time: time, direction_id: direction },
+    relationships: { trip: { data: { id: `s${i}` } } },
+  })),
+  included: rows.map(([, , headsign], i) => ({
+    id: `s${i}`,
+    type: "trip",
+    attributes: { headsign },
+  })),
+});
+const schedulesFor = (url: string) =>
+  new URL(url).searchParams.get("sort") === "-departure_time"
+    ? scheduled([soon(lastTrainIn), 1, "Alewife"])
+    : scheduled(
+        [soon(-18 * 60), 0, "Ashmont"],
+        [soon(-18 * 60 + 9), 1, "Alewife"],
+      );
+
 const env: Env = {
   MBTA_KEY: "mbta-secret",
   SPOTIFY_CLIENT_ID: "spotify-id",
@@ -81,19 +102,23 @@ beforeEach(() => {
   resetSpotifyToken();
   failing = [];
   calls = [];
+  lastTrainIn = 60;
   vi.stubGlobal("fetch", async (input: string | URL) => {
     const url = String(input);
     calls.push(url);
     const source = url.includes("/predictions")
       ? "predictions"
-      : url.includes("/alerts")
-        ? "alerts"
-        : toSpotify(url)
-          ? "spotify"
-          : host(url) === "wmbr.org"
-            ? "wmbr"
-            : "other";
+      : url.includes("/schedules")
+        ? "schedules"
+        : url.includes("/alerts")
+          ? "alerts"
+          : toSpotify(url)
+            ? "spotify"
+            : host(url) === "wmbr.org"
+              ? "wmbr"
+              : "other";
     if (failing.includes(source)) return new Response("down", { status: 503 });
+    if (source === "schedules") return Response.json(schedulesFor(url));
     if (source === "wmbr") {
       if (url.includes("xmlinfo")) return new Response(info);
       if (url.includes("cgi-bin/show")) return new Response(showPage);
@@ -141,7 +166,22 @@ test("answers the site with every feed", async () => {
     show: "Evacuate the Station!",
     track: "The Cure: Disintegration",
   });
+  expect(body.night).toBeNull();
   expect(Math.abs(body.at - Date.now())).toBeLessThan(5_000);
+});
+
+test("after the last train, the feed says service has ended", async () => {
+  lastTrainIn = -30;
+  const body = (await (
+    await ask("https://www.diegotemkin.com")
+  ).json()) as LiveFeed;
+  expect(body.night?.firstTrains.map(({ headsign }) => headsign)).toEqual([
+    "Alewife",
+    "Ashmont",
+  ]);
+  expect(
+    calls.some((url) => url.includes("/schedules") && url.includes("api_key")),
+  ).toBe(true);
 });
 
 test.each([
@@ -190,6 +230,16 @@ test("a failed source only empties its own part", async () => {
   expect(body.radio).toBeNull();
   expect(body.alerts).toHaveLength(1);
   expect(body.song).not.toBeNull();
+});
+
+test("failed schedules leave the station open", async () => {
+  failing = ["schedules"];
+  lastTrainIn = -30;
+  const body = (await (
+    await ask("https://www.diegotemkin.com")
+  ).json()) as LiveFeed;
+  expect(body.night).toBeNull();
+  expect(body.trains).toHaveLength(1);
 });
 
 test("failed alerts are null, not an empty list", async () => {

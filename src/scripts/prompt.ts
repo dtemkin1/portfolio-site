@@ -1,4 +1,4 @@
-import { arrivalLines, departuresAt } from "../lib/live";
+import { arrivalLines, departuresAt, nightLines } from "../lib/live";
 import { complete, type PromptProject, runCommand } from "../lib/prompt";
 
 import { fetchLive } from "./live";
@@ -51,7 +51,8 @@ if (form) {
       case "arrivals":
         output.textContent = "$ arrivals\nChecking the MBTA...";
         fetchLive()
-          .then(({ at, trains, alerts }) => {
+          .then(({ at, trains, alerts, night }) => {
+            if (night) return nightLines(night);
             if (!trains) throw new Error("No train data");
             return arrivalLines(departuresAt(trains, at), alerts ?? []);
           })

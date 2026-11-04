@@ -113,6 +113,11 @@ a:hover {
   animation: none;
 }
 
+/* After the last train, the live display dims the station until morning. */
+:root[data-night] {
+  --wall: #0b1f52;
+}
+
 .wrapper {
   width: 100%;
   max-width: 62rem;

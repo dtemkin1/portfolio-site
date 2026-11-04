@@ -6,7 +6,9 @@ import {
   countdownLabel,
   credits,
   departuresAt,
+  firstTrainRows,
   nextDepartures,
+  nightLines,
   predictionsUrl,
   relevantAlerts,
   steadyDepartures,
@@ -477,3 +479,29 @@ test("the credit names only the sources being shown", () => {
     "Spotify and WMBR",
   );
 });
+
+const night = {
+  firstTrains: [
+    {
+      headsign: "Alewife",
+      at: new Date("2026-11-04T05:37:00-05:00").getTime(),
+    },
+    {
+      headsign: "Ashmont",
+      at: new Date("2026-11-04T05:27:00-05:00").getTime(),
+    },
+  ],
+};
+
+test("first trains show in Boston time, whatever the visitor's clock", () =>
+  expect(firstTrainRows(night)).toEqual([
+    ["First train to Alewife", "5:37 am"],
+    ["First train to Ashmont", "5:27 am"],
+  ]));
+
+test("the prompt says the T is asleep, then when it wakes up", () =>
+  expect(nightLines(night)).toEqual([
+    "The T is asleep. Service has ended for the night.",
+    "First train to Alewife: 5:37 am",
+    "First train to Ashmont: 5:27 am",
+  ]));
