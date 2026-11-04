@@ -467,17 +467,24 @@ test("countdowns use the time the Worker sent, not the visitor's clock", () => {
 });
 
 test("the credit names only the sources being shown", () => {
-  expect(credits({ mbta: true, song: false, radio: false })).toBe("the MBTA");
-  expect(credits({ mbta: true, song: true, radio: false })).toBe(
-    "the MBTA and Spotify",
-  );
-  expect(credits({ mbta: true, song: true, radio: true })).toBe(
+  expect(
+    credits({ mbta: true, song: false, radio: false, weather: false }),
+  ).toBe("the MBTA");
+  expect(
+    credits({ mbta: true, song: true, radio: false, weather: false }),
+  ).toBe("the MBTA and Spotify");
+  expect(credits({ mbta: true, song: true, radio: true, weather: false })).toBe(
     "the MBTA, Spotify, and WMBR",
   );
-  expect(credits({ mbta: false, song: true, radio: false })).toBe("Spotify");
-  expect(credits({ mbta: false, song: true, radio: true })).toBe(
-    "Spotify and WMBR",
-  );
+  expect(
+    credits({ mbta: false, song: true, radio: false, weather: false }),
+  ).toBe("Spotify");
+  expect(
+    credits({ mbta: false, song: true, radio: true, weather: false }),
+  ).toBe("Spotify and WMBR");
+  expect(
+    credits({ mbta: true, song: false, radio: false, weather: true }),
+  ).toBe("the MBTA and Open-Meteo");
 });
 
 const night = {

@@ -64,6 +64,9 @@ const spotify = {
   item: { name: "Song", artists: [{ name: "Artist" }] },
 };
 
+// Overcast unless a test changes it, which isn't worth an announcement.
+let weatherCode = 3;
+
 // Service started this morning; the last train leaves in an hour unless a test moves it.
 let lastTrainIn = 60;
 const scheduled = (...rows: [string, number, string][]) => ({
@@ -103,6 +106,7 @@ beforeEach(() => {
   failing = [];
   calls = [];
   lastTrainIn = 60;
+  weatherCode = 3;
   vi.stubGlobal("fetch", async (input: string | URL) => {
     const url = String(input);
     calls.push(url);
@@ -110,15 +114,22 @@ beforeEach(() => {
       ? "predictions"
       : url.includes("/schedules")
         ? "schedules"
-        : url.includes("/alerts")
-          ? "alerts"
-          : toSpotify(url)
-            ? "spotify"
-            : host(url) === "wmbr.org"
-              ? "wmbr"
-              : "other";
+        : host(url) === "api.open-meteo.com"
+          ? "weather"
+          : url.includes("/alerts")
+            ? "alerts"
+            : toSpotify(url)
+              ? "spotify"
+              : host(url) === "wmbr.org"
+                ? "wmbr"
+                : "other";
     if (failing.includes(source)) return new Response("down", { status: 503 });
     if (source === "schedules") return Response.json(schedulesFor(url));
+    if (source === "weather") {
+      return Response.json({
+        current: { temperature_2m: 30, weather_code: weatherCode },
+      });
+    }
     if (source === "wmbr") {
       if (url.includes("xmlinfo")) return new Response(info);
       if (url.includes("cgi-bin/show")) return new Response(showPage);
@@ -167,6 +178,7 @@ test("answers the site with every feed", async () => {
     track: "The Cure: Disintegration",
   });
   expect(body.night).toBeNull();
+  expect(body.weather).toBeNull();
   expect(Math.abs(body.at - Date.now())).toBeLessThan(5_000);
 });
 
@@ -230,6 +242,24 @@ test("a failed source only empties its own part", async () => {
   expect(body.radio).toBeNull();
   expect(body.alerts).toHaveLength(1);
   expect(body.song).not.toBeNull();
+});
+
+test("snow at Kendall is announced", async () => {
+  weatherCode = 73;
+  const body = (await (
+    await ask("https://www.diegotemkin.com")
+  ).json()) as LiveFeed;
+  expect(body.weather?.kind).toBe("snow");
+});
+
+test("failed weather only empties the weather", async () => {
+  failing = ["weather"];
+  weatherCode = 73;
+  const body = (await (
+    await ask("https://www.diegotemkin.com")
+  ).json()) as LiveFeed;
+  expect(body.weather).toBeNull();
+  expect(body.trains).toHaveLength(1);
 });
 
 test("failed schedules leave the station open", async () => {

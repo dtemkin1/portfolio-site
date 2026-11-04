@@ -1,5 +1,13 @@
 ---
 import { LIVE_CONFIG } from "../lib/live";
+
+const flakes = Array.from({ length: 16 }, (_, i) => ({
+  left: (i * 37) % 100,
+  top: (i * 53) % 100,
+  size: 3 + (i % 3),
+  duration: 11 + ((i * 7) % 8),
+  delay: -((i * 5) % 17),
+}));
 ---
 
 <section class="live" data-live aria-labelledby="live-title" hidden>
@@ -8,12 +16,21 @@ import { LIVE_CONFIG } from "../lib/live";
     class="display"
     style={`--live: ${LIVE_CONFIG.color}; --music: ${LIVE_CONFIG.musicColor}`}
   >
+    <p class="notice announcement" data-live-weather hidden></p>
     <ul data-live-rows></ul>
     <p class="source" data-live-credit>
       Courtesy of <span data-live-sources>the MBTA</span> &lt;3
     </p>
   </div>
 </section>
+
+<div class="snow" aria-hidden="true">
+  {flakes.map(({ left, top, size, duration, delay }) => (
+    <span
+      style={`--left: ${left}%; --top: ${top}%; --size: ${size}px; --duration: ${duration}s; --delay: ${delay}s`}
+    />
+  ))}
+</div>
 
 <script>
   import "../scripts/live";
@@ -98,6 +115,17 @@ import { LIVE_CONFIG } from "../lib/live";
     color: var(--live);
     font-size: var(--text-body);
     font-weight: 800;
+  }
+
+  .announcement {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-weight: 800;
+    line-height: 1.4;
+  }
+
+  .announcement[hidden] {
+    display: none;
   }
 
   .source {

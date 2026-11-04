@@ -10,6 +10,7 @@ import {
 import { serviceEnded } from "./night";
 import { currentSong, type SpotifyEnv } from "./spotify";
 import { upstreamTimeout } from "./upstream";
+import { readWeather, WEATHER_URL } from "./weather";
 import { liveRadio, WMBR_INFO } from "./wmbr";
 
 export interface Env extends SpotifyEnv {
@@ -24,7 +25,13 @@ const ALLOWED_ORIGINS = [
 ];
 
 // Every visitor shares these cached upstream responses, so the APIs see one request per window.
-const CACHE_SECONDS = { mbta: 30, schedules: 3600, wmbr: 30, wmbrShow: 300 };
+const CACHE_SECONDS = {
+  mbta: 30,
+  schedules: 3600,
+  weather: 600,
+  wmbr: 30,
+  wmbrShow: 300,
+};
 
 async function upstream(url: string, seconds: number): Promise<Response> {
   const response = await fetch(url, {
@@ -37,37 +44,41 @@ async function upstream(url: string, seconds: number): Promise<Response> {
 
 async function readFeed(env: Env): Promise<LiveFeed> {
   const now = Date.now();
-  const [trains, alerts, song, radio, night] = await Promise.allSettled([
-    upstream(predictionsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
-      .then((r) => r.json())
-      .then((body) => nextDepartures(body, now)),
-    upstream(alertsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
-      .then((r) => r.json())
-      .then((body) => {
-        if (!Array.isArray((body as { data?: unknown })?.data)) {
-          throw new Error("Unexpected alerts response");
-        }
-        return relevantAlerts(body);
-      }),
-    LIVE_CONFIG.music ? currentSong(env) : Promise.resolve(null),
-    upstream(WMBR_INFO, CACHE_SECONDS.wmbr)
-      .then((r) => r.text())
-      .then((xml) =>
-        liveRadio(xml, DJ, (url) =>
-          upstream(
-            url,
-            url.includes("cgi-bin/show")
-              ? CACHE_SECONDS.wmbrShow
-              : CACHE_SECONDS.wmbr,
-          ).then((r) => r.text()),
+  const [trains, alerts, song, radio, night, weather] =
+    await Promise.allSettled([
+      upstream(predictionsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
+        .then((r) => r.json())
+        .then((body) => nextDepartures(body, now)),
+      upstream(alertsUrl(env.MBTA_KEY), CACHE_SECONDS.mbta)
+        .then((r) => r.json())
+        .then((body) => {
+          if (!Array.isArray((body as { data?: unknown })?.data)) {
+            throw new Error("Unexpected alerts response");
+          }
+          return relevantAlerts(body);
+        }),
+      LIVE_CONFIG.music ? currentSong(env) : Promise.resolve(null),
+      upstream(WMBR_INFO, CACHE_SECONDS.wmbr)
+        .then((r) => r.text())
+        .then((xml) =>
+          liveRadio(xml, DJ, (url) =>
+            upstream(
+              url,
+              url.includes("cgi-bin/show")
+                ? CACHE_SECONDS.wmbrShow
+                : CACHE_SECONDS.wmbr,
+            ).then((r) => r.text()),
+          ),
         ),
+      serviceEnded(
+        now,
+        (url) => upstream(url, CACHE_SECONDS.schedules).then((r) => r.json()),
+        env.MBTA_KEY,
       ),
-    serviceEnded(
-      now,
-      (url) => upstream(url, CACHE_SECONDS.schedules).then((r) => r.json()),
-      env.MBTA_KEY,
-    ),
-  ]);
+      upstream(WEATHER_URL, CACHE_SECONDS.weather)
+        .then((r) => r.json())
+        .then(readWeather),
+    ]);
   const value = <T>(result: PromiseSettledResult<T>) =>
     result.status === "fulfilled" ? result.value : null;
   return {
@@ -77,6 +88,7 @@ async function readFeed(env: Env): Promise<LiveFeed> {
     song: value(song),
     radio: value(radio),
     night: value(night),
+    weather: value(weather),
   };
 }
 

@@ -20,6 +20,10 @@ export type Alert = { text: string; severe: boolean };
 export type Radio = { show: string; track: string | null };
 export type FirstTrain = { headsign: string; at: number };
 export type Night = { firstTrains: FirstTrain[] };
+export type Weather = {
+  kind: "snow" | "rain" | "ice" | "storm" | "fog" | "heat" | "cold";
+  text: string;
+};
 
 // null means source failed
 export type LiveFeed = {
@@ -29,6 +33,7 @@ export type LiveFeed = {
   song: Song | null;
   radio: Radio | null;
   night: Night | null;
+  weather: Weather | null;
 };
 
 type RawAlert = {
@@ -220,14 +225,19 @@ export function credits({
   mbta,
   song,
   radio,
+  weather = false,
 }: {
   mbta: boolean;
   song: boolean;
   radio: boolean;
+  weather: boolean;
 }): string {
-  const names = [mbta && "the MBTA", song && "Spotify", radio && "WMBR"].filter(
-    (name): name is string => Boolean(name),
-  );
+  const names = [
+    mbta && "the MBTA",
+    song && "Spotify",
+    radio && "WMBR",
+    weather && "Open-Meteo",
+  ].filter((name): name is string => Boolean(name));
   if (names.length <= 2) return names.join(" and ");
   return `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`;
 }

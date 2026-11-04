@@ -118,6 +118,81 @@ a:hover {
   --wall: #0b1f52;
 }
 
+/* Snow at Kendall: flakes drift down behind the page, and a ridge settles on the board.
+   The body goes see-through so the flakes can sit between the wall and the content. */
+:root[data-snow] body {
+  background: transparent;
+}
+
+.snow {
+  display: none;
+}
+
+:root[data-snow] .snow {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.snow span {
+  position: absolute;
+  top: var(--top);
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--white);
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .snow span {
+    top: -1rem;
+    animation: snowfall var(--duration) linear var(--delay) infinite;
+  }
+}
+
+@keyframes snowfall {
+  to {
+    transform: translate(2rem, calc(100vh + 2rem));
+  }
+}
+
+:root[data-snow] .board {
+  position: relative;
+}
+
+:root[data-snow] .board::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 0.75rem;
+  border-radius: 6px 6px 2px 2px;
+  background: var(--white);
+  clip-path: polygon(
+    0 60%,
+    6% 20%,
+    14% 45%,
+    23% 10%,
+    33% 40%,
+    44% 15%,
+    55% 45%,
+    66% 5%,
+    76% 35%,
+    86% 15%,
+    94% 40%,
+    100% 25%,
+    100% 100%,
+    0 100%
+  );
+  pointer-events: none;
+}
+
 .wrapper {
   width: 100%;
   max-width: 62rem;
@@ -224,6 +299,7 @@ main img {
   nav,
   footer,
   .skip,
+  .snow,
   [data-prompt],
   [data-live],
   .board .marker {
