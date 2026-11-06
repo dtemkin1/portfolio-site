@@ -30,6 +30,7 @@ export type OrcidWork = {
     "external-id"?: {
       "external-id-type": string;
       "external-id-value": string;
+      "external-id-relationship"?: string | null;
     }[];
   } | null;
   contributors?: {
@@ -134,7 +135,9 @@ export function fromOrcid(work: OrcidWork): OrcidEntry | null {
   const doi =
     csl.DOI ??
     work["external-ids"]?.["external-id"]?.find(
-      (id) => id["external-id-type"] === "doi",
+      (id) =>
+        id["external-id-type"] === "doi" &&
+        id["external-id-relationship"] === "self",
     )?.["external-id-value"];
 
   // orcid journal title field means different things for some reason...
@@ -177,22 +180,24 @@ export function fromOrcid(work: OrcidWork): OrcidEntry | null {
   });
 }
 
-// work list only has summaries, so yoink everything for full info
+type Summary = { "put-code": number; "display-index"?: string | null };
+
+// work list only has summaries, so yoink highest priority for full info.
 export async function orcidWorks(
   fetchJson: (path: string) => Promise<unknown>,
-): Promise<OrcidEntry[]> {
+): Promise<OrcidWork[]> {
   const { group = [] } = (await fetchJson("works")) as {
-    group?: { "work-summary": { "put-code": number }[] }[];
+    group?: { "work-summary": Summary[] }[];
   };
-  const works = await Promise.all(
-    group.map(
-      ({ "work-summary": [summary] }) =>
-        fetchJson(`work/${summary["put-code"]}`) as Promise<OrcidWork>,
-    ),
+  const index = (summary: Summary) => Number(summary["display-index"] ?? 0);
+  return Promise.all(
+    group.map(({ "work-summary": summaries }) => {
+      const preferred = summaries.reduce((a, b) =>
+        index(b) > index(a) ? b : a,
+      );
+      return fetchJson(`work/${preferred["put-code"]}`) as Promise<OrcidWork>;
+    }),
   );
-  return works
-    .map(fromOrcid)
-    .filter((entry): entry is OrcidEntry => entry !== null);
 }
 
 export function orcidLoader(profile: string): Loader {
@@ -200,7 +205,7 @@ export function orcidLoader(profile: string): Loader {
   return {
     name: "orcid",
     load: async ({ store, parseData, logger }) => {
-      const works = await orcidWorks(async (path) => {
+      const all = await orcidWorks(async (path) => {
         const response = await fetch(
           `https://pub.orcid.org/v3.0/${id}/${path}`,
           {
@@ -211,6 +216,15 @@ export function orcidLoader(profile: string): Loader {
         if (!response.ok) throw new Error(`ORCID ${path}: ${response.status}`);
         return response.json();
       });
+      const works: OrcidEntry[] = [];
+      for (const work of all) {
+        const entry = fromOrcid(work);
+        if (entry) works.push(entry);
+        else
+          logger.warn(
+            `Skipped ORCID work ${work["put-code"]}: its type, ${work.type}, isn't handled yet (see TYPES in loaders/orcid.ts).`,
+          );
+      }
       store.clear();
       for (const { id: key, ...work } of works) {
         if (store.has(key)) {

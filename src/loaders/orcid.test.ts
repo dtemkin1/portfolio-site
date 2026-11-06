@@ -46,7 +46,11 @@ const chapter = work({
   "publication-date": { year: { value: "2024" } },
   "external-ids": {
     "external-id": [
-      { "external-id-type": "doi", "external-id-value": "10.1016/b978" },
+      {
+        "external-id-type": "doi",
+        "external-id-value": "10.1016/b978",
+        "external-id-relationship": "self",
+      },
     ],
   },
   contributors: {
@@ -201,8 +205,42 @@ test("the loader reads the work list, then each work in full", async () => {
       : works[path];
   });
   expect(asked).toEqual(["works", "work/229097402", "work/232377834"]);
-  expect(entries.map(({ type }) => type)).toEqual(["thesis", "chapter"]);
+  expect(entries).toEqual([thesis, chapter]);
 });
+
+test("when sources disagree, the loader reads the one starred on ORCID", async () => {
+  const asked: string[] = [];
+  await orcidWorks(async (path) => {
+    asked.push(path);
+    return {
+      group: [
+        {
+          "work-summary": [
+            { "put-code": 1, "display-index": "0" },
+            { "put-code": 2, "display-index": "1" },
+          ],
+        },
+      ],
+    };
+  });
+  expect(asked).toEqual(["works", "work/2"]);
+});
+
+test("a DOI that's part-of another work, like the book's, isn't the chapter's", () =>
+  expect(
+    fromOrcid({
+      ...chapter,
+      "external-ids": {
+        "external-id": [
+          {
+            "external-id-type": "doi",
+            "external-id-value": "10.1016/book",
+            "external-id-relationship": "part-of",
+          },
+        ],
+      },
+    })?.DOI,
+  ).toBeUndefined());
 
 // Runs the loader against a fake ORCID API that answers from `responses`.
 async function load(responses: Record<string, unknown>) {
@@ -239,6 +277,15 @@ test("a record with no public works warns, and loads nothing", async () => {
   const { entries, warnings } = await load({ works: { group: [] } });
   expect(entries.size).toBe(0);
   expect(warnings[0]).toMatch(/no public works/);
+});
+
+test("a work of a type the site doesn't cite is skipped with a warning", async () => {
+  const { entries, warnings } = await load({
+    works: { group: [{ "work-summary": [{ "put-code": 7 }] }] },
+    "work/7": { ...chapter, "put-code": 7, type: "patent" },
+  });
+  expect(entries.size).toBe(0);
+  expect(warnings[0]).toMatch(/Skipped ORCID work 7: its type, patent/);
 });
 
 test("two works with the same BibTeX key stop the build", async () => {
