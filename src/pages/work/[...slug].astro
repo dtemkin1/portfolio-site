@@ -1,9 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { type CollectionEntry, render } from "astro:content";
+import { type CollectionEntry, getEntries, render } from "astro:content";
 
+import Publications from "../../components/Publications.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { hasPage, timeLabel } from "../../lib/work";
+import { hasPage, onHomeBoard, timeLabel } from "../../lib/work";
 import { getPublishedWork } from "../../lib/work-data";
 
 interface Props {
@@ -22,6 +23,14 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
 const hasBody = Boolean(entry.body?.trim());
+
+const publications = await getEntries(data.publications ?? []);
+const missing = (data.publications ?? []).filter((_, i) => !publications[i]);
+if (missing.length) {
+  throw new Error(
+    `${entry.id}: ${missing.map(({ id }) => id).join(", ")} isn't the BibTeX key of any public work on ORCID. Check the key, and that the work's visibility is "Everyone".`,
+  );
+}
 const isPortrait = data.img ? data.img.height > data.img.width : false;
 ---
 
@@ -74,8 +83,17 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
       )}
     </div>
 
+    {publications.length > 0 && (
+      <section class="notice prose writing">
+        <h2>Publications and presentations</h2>
+        <Publications entries={publications} />
+      </section>
+    )}
+
     <p class="back">
-      <a href={`/#${entry.id}`}>Back to the board</a>
+      <a href={onHomeBoard(entry) ? `/#${entry.id}` : `/work/#${entry.id}`}>
+        Back to the board
+      </a>
     </p>
   </main>
 </BaseLayout>
@@ -166,6 +184,14 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
       grid-area: 1 / 1;
       margin-top: 0;
     }
+  }
+
+  .writing {
+    margin-top: 2rem;
+  }
+
+  .writing > h2 {
+    margin-top: 0;
   }
 
   .back {

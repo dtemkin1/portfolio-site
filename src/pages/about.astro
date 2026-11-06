@@ -1,8 +1,13 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Publications from "../components/Publications.astro";
 import portrait from "../assets/portrait.jpg";
+import { PROFILES } from "../lib/site";
+
+const hasPublications = (await getCollection("publications")).length > 0;
 
 interface Ridden {
   name: string;
@@ -60,10 +65,18 @@ const formatter = new Intl.ListFormat("en", {
           <div class="prose">
             <p>
               I'm a first-year MS in Transportation student at MIT and a
-              Graduate Research Assistant in the JTL-Transit Lab. With the
-              Chicago Transit Authority, I'm studying why students stopped
-              riding transit to school after the pandemic, and what would help
-              them ride again.
+              Graduate Research Assistant in the JTL-Transit Lab, led by Jinhua
+              Zhao. My advisor is Anson Forest Stewart.
+            </p>
+            <p>
+              I research public transit network planning and operations, using
+              computational optimization and behavioral insight to design
+              transit for the people who rely on it.
+            </p>
+            <p>
+              With the Chicago Transit Authority, I'm now studying why students
+              stopped riding transit to school after the pandemic, and what
+              would help them ride again.
             </p>
             <p>
               <a href="/work/jtl-k12/">Read about the K-12 ridership project</a>
@@ -104,26 +117,7 @@ const formatter = new Intl.ListFormat("en", {
         <div class="notice prose">
           <p>
             BS in Computer Science and Engineering and in Planning, 2026. My
-            thesis received the MIT DUSP Best Undergraduate Thesis award.
-          </p>
-          <p>
-            <a href="https://dspace.mit.edu/handle/1721.1/176348">
-              <cite>
-                A Co-Design Framework for School Bus Network Redesign: Applying
-                Category Theory to Routing, Resources, and Equity
-              </cite>
-            </a>{" "}
-            (bachelor's thesis, May 2026)
-          </p>
-          <p>
-            <a href="https://doi.org/10.1016/B978-0-443-21782-1.00008-7">
-              NbS and policy communication
-            </a>{" "}
-            in{" "}
-            <cite>
-              Nature-Based Solutions in Supporting Sustainable Development Goals
-            </cite>{" "}
-            (book chapter with Cong Cong, November 2024)
+            thesis received the MIT DUSP Outstanding Undergraduate Thesis award.
           </p>
           <p>
             I'm a Student Developer and Member-at-Large at SIPB, MIT's student
@@ -148,11 +142,24 @@ const formatter = new Intl.ListFormat("en", {
       </li>
     </ol>
 
+    {hasPublications && (
+      <section class="notice prose extras">
+        <h2>Publications and presentations</h2>
+        <Publications />
+        <p>
+          Also on <a href={PROFILES.scholar}>Google Scholar</a> and{" "}
+          <a href={PROFILES.orcid}>ORCID</a>.
+        </p>
+      </section>
+    )}
+
     <section class="notice prose extras">
       <h2>Skills and honors</h2>
       <p>
-        Python, TypeScript, Java, C, C#, SQL, Go, and GIS. English and Spanish,
-        both native.
+        In research, I've used optimization and Pareto-front analysis, applied
+        category theory, GIS, and machine learning. I program in Python,
+        TypeScript, Java, C, C#, SQL, and Go. I speak English and Spanish
+        natively.
       </p>
       <p>
         MIT Karl Taylor Compton Prize, QuestBridge NCM Scholar, HSF Scholar,
@@ -313,6 +320,10 @@ const formatter = new Intl.ListFormat("en", {
 
   .extras > h2 {
     margin-top: 0;
+  }
+
+  .extras + .extras {
+    margin-top: 1.5rem;
   }
 
   @media (min-width: 48rem) {

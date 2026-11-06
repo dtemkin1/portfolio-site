@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { hasPage, publishedNewestFirst, timeLabel } from "./work";
+import { hasPage, onHomeBoard, publishedNewestFirst, timeLabel } from "./work";
 
 const e = (d: string, extra = {}) => ({
   data: { publishDate: new Date(d), ...extra },
@@ -33,6 +33,13 @@ test("falls back to month and year in UTC", () => {
 test("a project gets its own page only with text or an image", () => {
   expect(hasPage({ body: "Some text.", data: {} })).toBe(true);
   expect(hasPage({ body: "", data: { img: {} } })).toBe(true);
+  expect(hasPage({ data: { publications: [{}] } })).toBe(true);
+  expect(hasPage({ data: { publications: [] } })).toBe(false);
   expect(hasPage({ body: "  \n", data: {} })).toBe(false);
   expect(hasPage({ data: {} })).toBe(false);
+});
+
+test("work from before MIT stays off the home board", () => {
+  expect(onHomeBoard({ data: { earlier: true } })).toBe(false);
+  expect(onHomeBoard({ data: {} })).toBe(true);
 });

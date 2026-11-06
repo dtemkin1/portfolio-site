@@ -9,11 +9,13 @@ tags:
   - Sustainability
   - Mapping
 when: Jun 2024
+publications:
+  - cong2024nbs
 ---
 
 With Cong Cong at MIT's Department of Urban Studies and Planning, I built the Nature-Based Solutions Dashboard, a React website about how nature-based solutions can cut a city's carbon emissions. A short storyline explains what they are and why they matter. Then an interactive map shows where five types (green infrastructure, green buildings, street trees, urban parks, and greenbelts) could go on a 30-meter grid, and how much each would reduce emissions. The map's allocations come from our team's study in _Nature Climate Change_, and the dashboard currently covers three EU cities.
 
-We describe the dashboard in our book chapter, [NbS and policy communication](https://doi.org/10.1016/B978-0-443-21782-1.00008-7), in _Nature-Based Solutions in Supporting Sustainable Development Goals_.
+---
 
 _The following is from an article published on the MIT Department of Urban Studies and Planning (DUSP) website titled "Leveraging Nature Based Solutions to Achieve Carbon-Neutral Cities". You can view the original article [on the DUSP website][article-link]._
 
@@ -24,8 +26,6 @@ In an ongoing project, an interdisciplinary research team argues nature-based so
 The Nature-Based Solutions Dashboard, an interactive website, offers a portal to understand how we can work with nature to find solutions to the challenges of the anthropocene. "Nature-based solutions offer a sustainable and cost-effective way to mitigate urban greenhouse gas emissions while also providing other benefits like improving air quality, enhancing biodiversity, and creating more livable cities for people," says Cong, a lecturer of Urban Science at DUSP. "The dashboard builds upon research for [a paper in Nature Climate Change][research-paper] to offer an easy to navigate system, designed to help us imagine and realize greener and healthier cities."
 
 The dashboard was developed by Cong and Diego Temkin, a sophomore pursuing a dual degree in Computer Science and Engineering and Urban Planning at MIT. "By blending my knowledge in urban science that I’ve gained through this project and my DUSP coursework, alongside skills in practical programming that are now more essential than ever, I’ve gained a better understanding of the impacts this research can have on the future of climate change and communities across the globe," reflected Temkin.
-
----
 
 [Visit the Nature-Based Solutions Dashboard][nbs-dashboard]
 

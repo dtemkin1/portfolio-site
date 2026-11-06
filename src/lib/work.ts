@@ -10,8 +10,14 @@ const monthYear = new Intl.DateTimeFormat("en-US", {
 
 export const hasPage = (entry: {
   body?: string;
-  data: { img?: unknown };
-}): boolean => Boolean(entry.body?.trim() || entry.data.img);
+  data: { img?: unknown; publications?: unknown[] };
+}): boolean =>
+  Boolean(
+    entry.body?.trim() || entry.data.img || entry.data.publications?.length,
+  );
+
+export const onHomeBoard = (entry: { data: { earlier?: boolean } }): boolean =>
+  !entry.data.earlier;
 
 export function publishedNewestFirst<T extends WorkLike>(entries: T[]): T[] {
   return entries

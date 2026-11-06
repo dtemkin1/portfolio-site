@@ -2,14 +2,19 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Board from "../components/Board.astro";
 import LiveBoard from "../components/LiveBoard.astro";
+import { onHomeBoard } from "../lib/work";
 import { getPublishedWork } from "../lib/work-data";
 
-const projects = await getPublishedWork();
+const projects = (await getPublishedWork()).filter(onHomeBoard);
 ---
 
 <BaseLayout>
   <main id="content" class="wrapper">
-    <Board projects={projects} openFirst />
+    <Board
+      projects={projects}
+      openFirst
+      more={{ label: "See all stops", href: "/work/" }}
+    />
     <LiveBoard />
   </main>
 </BaseLayout>

@@ -53,6 +53,13 @@ collections:
           hint: "Required when there's a Content Preview image.",
         }
       - { label: "Draft", name: "draft", widget: "boolean", required: false }
+      - {
+          label: "Earlier project",
+          name: "earlier",
+          widget: "boolean",
+          required: false,
+          hint: "Shows on All stops, but not on the home board.",
+        }
       - { label: "Board Time", name: "when", widget: "string", required: false }
       - {
           label: "Status",
@@ -60,5 +67,12 @@ collections:
           widget: "select",
           options: ["in-development"],
           required: false,
+        }
+      - {
+          label: "Publications",
+          name: "publications",
+          widget: "list",
+          required: false,
+          hint: "BibTeX keys of works on ORCID, like cong2024nbs.",
         }
       - { label: "Content", name: "body", widget: "markdown", required: false }

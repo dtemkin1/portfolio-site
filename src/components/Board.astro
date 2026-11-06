@@ -8,9 +8,10 @@ import Prompt from "./Prompt.astro";
 interface Props {
   projects: CollectionEntry<"work">[];
   openFirst?: boolean;
+  more?: { label: string; href: string };
 }
 
-const { projects, openFirst = false } = Astro.props;
+const { projects, openFirst = false, more } = Astro.props;
 const hasTop = Astro.slots.has("top");
 ---
 
@@ -50,6 +51,14 @@ const hasTop = Astro.slots.has("top");
       </li>
     ))}
   </ol>
+  {more && (
+    <a class="row more" href={more.href} style={`--i: ${projects.length}`}>
+      <span class="title">{more.label}</span>
+      <span class="marker" aria-hidden="true">
+        &gt;
+      </span>
+    </a>
+  )}
   <Prompt
     projects={projects.map(({ id, body, data }) => ({
       slug: id,
@@ -131,8 +140,23 @@ const hasTop = Astro.slots.has("top");
     color: var(--white);
   }
 
-  .board .marker::before {
+  .board .marker:empty::before {
     content: "+";
+  }
+
+  .board .more {
+    color: var(--placeholder);
+  }
+
+  .board .more .marker {
+    grid-column: -2;
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    .board .more {
+      min-height: 44px;
+      align-content: center;
+    }
   }
 
   .board .row[aria-expanded="true"] .marker::before {

@@ -1,0 +1,80 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+
+import { newestFirst, parseName, references } from "../lib/publications";
+import { SITE } from "../lib/site";
+import { hasPage } from "../lib/work";
+import { getPublishedWork } from "../lib/work-data";
+
+interface Props {
+  entries?: CollectionEntry<"publications">[];
+}
+
+const { entries } = Astro.props;
+
+// project pages
+const projects = new Map<string, { title: string; href: string }>();
+if (!entries) {
+  for (const work of (await getPublishedWork()).filter(hasPage)) {
+    for (const { id } of work.data.publications ?? []) {
+      if (!projects.has(id)) {
+        projects.set(id, { title: work.data.title, href: `/work/${work.id}/` });
+      }
+    }
+  }
+}
+
+const publications = newestFirst(
+  (entries ?? (await getCollection("publications"))).map(({ id, data }) => ({
+    id,
+    ...data,
+  })),
+);
+
+const list = references(publications, parseName(SITE.name)).map(
+  (reference, i) => ({
+    ...reference,
+    note: publications[i].note,
+    project: projects.get(reference.id),
+  }),
+);
+---
+
+<ul class="publications">
+  {list.map(({ html, note, project }) => (
+    <li>
+      <Fragment set:html={html} />
+      {note && <span class="aside">{note}</span>}
+      {project && (
+        <span class="aside">
+          Project: <a href={project.href}>{project.title}</a>
+        </span>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .publications {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  /* hanging indent */
+  li {
+    padding-left: 1.5rem;
+    text-indent: -1.5rem;
+  }
+
+  li + li {
+    margin-top: 0.75rem;
+  }
+
+  .aside {
+    display: block;
+    margin-top: 0.25rem;
+    text-indent: 0;
+    font-size: var(--text-small);
+  }
+</style>

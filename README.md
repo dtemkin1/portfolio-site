@@ -18,6 +18,19 @@ Add a Markdown file to `src/content/work/`, or use the CMS at `/admin/`. The boa
 
 Pushing to `main` deploys to GitHub Pages.
 
+## Publications
+
+Publications and presentations on the About page load from the public ORCID record (`PROFILES.orcid` in `src/lib/site.ts`) at build time. Edit them on ORCID, then rebuild. If ORCID can't be reached, the build fails.
+
+To show a publication on a work page, list its BibTeX key from ORCID under `publications` in the work's front matter, or in the CMS:
+
+```yaml
+publications:
+  - cong2024nbs
+```
+
+A work with no BibTeX on ORCID goes by its ORCID put code. A key that doesn't match a work on ORCID fails the build.
+
 ## Live display
 
 The site never talks to the MBTA, Spotify, WMBR, Open-Meteo, or GitHub directly. A Cloudflare Worker in `worker/` holds the API keys, caches each source, and serves everything from `https://api.diegotemkin.com/live`. It only answers requests from this site and from localhost.
