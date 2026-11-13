@@ -6,11 +6,11 @@ const description = "Why did ridership fall?";
 
 test("in-development entries lead with their status and description", () =>
   expect(
-    feedMarkdown({ description, status: "in-development" }, "With the CTA."),
+    feedMarkdown({ description, inDevelopment: true }, "With the CTA."),
   ).toBe("In development.\n\nWhy did ridership fall?\n\nWith the CTA."));
 
 test("in-development entries with no body still say so", () =>
-  expect(feedMarkdown({ description, status: "in-development" }, "  ")).toBe(
+  expect(feedMarkdown({ description, inDevelopment: true }, "  ")).toBe(
     "In development.\n\nWhy did ridership fall?",
   ));
 

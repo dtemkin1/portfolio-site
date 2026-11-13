@@ -13,6 +13,7 @@ interface Props {
 
 const { projects, openFirst = false, more } = Astro.props;
 const hasTop = Astro.slots.has("top");
+const rows = projects.map((entry) => ({ ...entry, page: hasPage(entry) }));
 ---
 
 <section
@@ -23,9 +24,9 @@ const hasTop = Astro.slots.has("top");
 >
   <slot name="top" />
   <ol>
-    {projects.map(({ id, data, body }, i) => (
+    {rows.map(({ id, data, page }, i) => (
       <li data-slug={id} id={id} style={`--i: ${i}`}>
-        <a class="row" href={hasPage({ body, data }) ? workHref(id) : `#${id}`}>
+        <a class="row" href={page ? workHref(id) : `#${id}`}>
           <span class="title">{data.title}</span>
           <span class="time">{timeLabel(data)}</span>
         </a>
@@ -35,11 +36,11 @@ const hasTop = Astro.slots.has("top");
           hidden={!(openFirst && i === 0)}
         >
           <p class="command">$ cat {id}.md</p>
-          {data.status === "in-development" && (
+          {data.inDevelopment && (
             <p class="command-text">status: in development</p>
           )}
           <p>{data.description}</p>
-          {hasPage({ body, data }) && (
+          {page && (
             <p>
               <a href={workHref(id)}>Read the full page</a>
             </p>
@@ -56,12 +57,7 @@ const hasTop = Astro.slots.has("top");
       </span>
     </a>
   )}
-  <Prompt
-    projects={projects.map(({ id, body, data }) => ({
-      slug: id,
-      page: hasPage({ body, data }),
-    }))}
-  />
+  <Prompt projects={rows.map(({ id, page }) => ({ slug: id, page }))} />
 </section>
 
 <script>

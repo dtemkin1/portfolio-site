@@ -1,8 +1,9 @@
 ---
 title: Plasma Science and Fusion Center at MIT
 publishDate: 2023-06-01
-img: ../../assets/posts/psfc.jpg
-img_alt: MIT logo lit up by red lights at night
+img:
+  src: ../../assets/posts/psfc.jpg
+  alt: MIT logo lit up by red lights at night
 description: Applied machine learning to plasma science, including a surrogate model built on the Alcator C-Mod tokamak experiment.
 tags:
   - Machine Learning

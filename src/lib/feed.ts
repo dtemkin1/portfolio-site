@@ -1,11 +1,11 @@
-type FeedEntry = { description: string; status?: "in-development" };
+type FeedEntry = { description: string; inDevelopment?: boolean };
 
 // Feed readers often skip the description, so unfinished work carries it in the full text.
 export function feedMarkdown(
-  { description, status }: FeedEntry,
+  { description, inDevelopment }: FeedEntry,
   body: string | undefined,
 ): string | undefined {
   const text = body?.trim();
-  if (status !== "in-development") return text || undefined;
+  if (!inDevelopment) return text || undefined;
   return ["In development.", description, text].filter(Boolean).join("\n\n");
 }

@@ -2,8 +2,9 @@
 title: "WMATA: Reliability Engineering"
 publishDate: 2025-08-01
 description: Built a web application that maps where asset rehabilitation gets stuck, and an asset management dashboard that brings several data sources together.
-img: ../../assets/posts/wmata.jpg
-img_alt: "Aerial drone shot taken during the summer while surveying near the Potomac Yard station in Arlington, VA."
+img:
+  src: ../../assets/posts/wmata.jpg
+  alt: "Aerial drone shot taken during the summer while surveying near the Potomac Yard station in Arlington, VA."
 tags:
   - Reliability Engineering
   - Transportation Operations

@@ -1,8 +1,9 @@
 ---
 title: Law and Cutting-Edge Technologies
 publishDate: 2023-09-01
-img: ../../assets/posts/harvard-law.jpg
-img_alt: A landscape of Harvard Law School
+img:
+  src: ../../assets/posts/harvard-law.jpg
+  alt: A landscape of Harvard Law School
 description: Researched how new technologies such as large language models interact with established digital technology law.
 tags:
   - Legal Research

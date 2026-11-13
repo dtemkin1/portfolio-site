@@ -1,8 +1,9 @@
 ---
 title: Nature-Based Solutions Dashboard
 publishDate: 2024-06-01
-img: ../../assets/posts/nbs-dashboard.png
-img_alt: The Nature-Based Solutions Dashboard showing a satellite map of Stockholm, with options to locate green roofs, street trees, and other solutions.
+img:
+  src: ../../assets/posts/nbs-dashboard.png
+  alt: The Nature-Based Solutions Dashboard showing a satellite map of Stockholm, with options to locate green roofs, street trees, and other solutions.
 description: Built an interactive dashboard that maps where nature-based solutions, like street trees and green roofs, could cut carbon emissions in European cities.
 tags:
   - Web Development

@@ -15,27 +15,26 @@ const day = z.union([
 const workCollection = defineCollection({
   loader: glob({ base: "./src/content/work", pattern: "**/*.md" }),
   schema: ({ image }) =>
-    z
-      .strictObject({
-        title: z.string().min(1).max(60),
-        description: z.string().min(1).max(160),
-        publishDate: day,
-        tags: z.array(z.string().min(1)).default([]),
-        img: image().optional(),
-        img_alt: z.string().optional(),
-        draft: z.boolean().optional(),
-        earlier: z.boolean().optional(),
-        now: z.boolean().optional(),
-        status: z.literal("in-development").optional(),
-        publications: z.array(reference("publications")).optional(),
-        links: z
-          .array(z.strictObject({ label: z.string().min(1), url: z.httpUrl() }))
-          .optional(),
-      })
-      .refine((data) => !data.img || Boolean(data.img_alt?.trim()), {
-        message: "An image needs alt text (img_alt).",
-        path: ["img_alt"],
-      }),
+    z.strictObject({
+      title: z.string().min(1).max(60),
+      description: z.string().min(1).max(160),
+      publishDate: day,
+      tags: z.array(z.string().min(1)).default([]),
+      img: z
+        .object({
+          src: image(),
+          alt: z.string().min(1).max(150),
+        })
+        .optional(),
+      draft: z.boolean().optional(),
+      earlier: z.boolean().optional(),
+      now: z.boolean().optional(),
+      inDevelopment: z.boolean().optional(),
+      publications: z.array(reference("publications")).optional(),
+      links: z
+        .array(z.strictObject({ label: z.string().min(1), url: z.httpUrl() }))
+        .optional(),
+    }),
 });
 
 // pulls from orcid, see loaders/orcid.ts

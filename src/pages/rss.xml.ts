@@ -42,20 +42,20 @@ export const GET: APIRoute = async (context) => {
     },
     customData: `<language>en-us</language><atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml" />`,
     items: await Promise.all(
-      work.map(async (post) => {
-        const markdown = feedMarkdown(post.data, post.body);
+      work.map(async (entry) => {
+        const markdown = feedMarkdown(entry.data, entry.body);
         return {
-          title: post.data.title,
-          pubDate: post.data.publishDate,
-          description: post.data.description,
-          link: hasPage(post) ? workHref(post.id) : `/#${post.id}`,
+          title: entry.data.title,
+          pubDate: entry.data.publishDate,
+          description: entry.data.description,
+          link: hasPage(entry) ? workHref(entry.id) : `/#${entry.id}`,
           content: markdown
             ? sanitizeHtml(parser.render(markdown), {
                 allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
               })
             : undefined,
-          customData: post.data.img
-            ? await mediaContent(post.data.img, context.site)
+          customData: entry.data.img
+            ? await mediaContent(entry.data.img.src, context.site)
             : "",
         };
       }),

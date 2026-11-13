@@ -84,7 +84,7 @@ header a { color: inherit; }
       const WorkPreview = createClass({
         render: function () {
           const data = this.props.entry.get("data");
-          const img = data.get("img");
+          const src = data.getIn(["img", "src"]);
           const tags = list(data.get("tags"));
           const links = list(data.get("links"));
           const publications = list(data.get("publications"));
@@ -106,10 +106,10 @@ header a { color: inherit; }
                   timeLabel(data.get("now"), data.get("publishDate")),
                 ),
               ),
-              data.get("status") === "in-development"
+              data.get("inDevelopment")
                 ? h(
                     "p",
-                    { className: "status", "data-key-path": "status" },
+                    { className: "status", "data-key-path": "inDevelopment" },
                     "In development",
                   )
                 : null,
@@ -139,12 +139,12 @@ header a { color: inherit; }
                   )
                 : null,
             ),
-            img
+            src
               ? h("img", {
                   className: "photo",
-                  "data-key-path": "img",
-                  src: this.props.getAsset(img).toString(),
-                  alt: data.get("img_alt") || "",
+                  "data-key-path": "img.src",
+                  src: this.props.getAsset(src)?.toString(),
+                  alt: data.getIn(["img", "alt"]) || "",
                 })
               : null,
             body && body.trim()

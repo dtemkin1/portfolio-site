@@ -2,8 +2,9 @@
 title: U.S. DOT Volpe Center
 publishDate: 2025-05-01
 description: Built validation pipelines for the Work Zone Data Exchange and tools for network modeling standards at the U.S. DOT Volpe Center.
-img: ../../assets/posts/volpe.jpg
-img_alt: "Sign in front of Volpe building, which reads 'John A. Volpe National Transportation Systems Center'."
+img:
+  src: ../../assets/posts/volpe.jpg
+  alt: "Sign in front of Volpe building, which reads 'John A. Volpe National Transportation Systems Center'."
 tags:
   - Data Validation
   - Transportation Modelling

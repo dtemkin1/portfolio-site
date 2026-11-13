@@ -1,8 +1,9 @@
 ---
 title: mini-UROP 2023
 publishDate: 2023-02-01
-img: ../../assets/posts/mini-urop-2023.jpg
-img_alt: Two students created model oyster reef balls with wire, tin foil, and epoxy.
+img:
+  src: ../../assets/posts/mini-urop-2023.jpg
+  alt: Two students created model oyster reef balls with wire, tin foil, and epoxy.
 description: Helped design a flume experiment that teaches the public how coastal ecosystems protect shorelines as the climate changes.
 tags:
   - Coastal Engineering

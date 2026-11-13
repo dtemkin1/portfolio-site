@@ -33,12 +33,20 @@ collections:
       - title
       - { field: "publishDate", label: "Publish Date", default_sort: "desc" }
     fields:
-      - { label: "Title", name: "title", widget: "string", maxlength: 60 }
+      - {
+          label: "Title",
+          name: "title",
+          widget: "string",
+          minlength: 1,
+          maxlength: 60,
+        }
       - {
           label: "Description",
           name: "description",
-          widget: "string",
+          widget: "text",
+          minlength: 1,
           maxlength: 160,
+          pattern: ['^[^\n]*$', "Keep it to one line"],
         }
       - {
           label: "Publish Date",
@@ -46,20 +54,25 @@ collections:
           widget: "datetime",
           type: "date",
         }
-      - { label: "Tags", name: "tags", widget: "list", required: false }
-      - {
-          label: "Content Preview",
-          name: "img",
-          widget: "image",
-          required: false,
-        }
-      - {
-          label: "Image Alt",
-          name: "img_alt",
-          widget: "string",
-          required: false,
-          hint: "Required when there's a Content Preview image.",
-        }
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        pattern: ["^[^,]+(,[^,]+)*$", "Remove any empty tags"]
+      - label: "Content Preview"
+        name: "img"
+        widget: "object"
+        required: false
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - {
+              label: "Alt text",
+              name: "alt",
+              widget: "text",
+              minlength: 1,
+              maxlength: 150,
+              pattern: ['^[^\n]*$', "Keep it to one line"],
+            }
       - { label: "Draft", name: "draft", widget: "boolean", required: false }
       - {
           label: "Earlier project",
@@ -70,19 +83,18 @@ collections:
         }
       - { label: "Now", name: "now", widget: "boolean", required: false }
       - {
-          label: "Status",
-          name: "status",
-          widget: "select",
-          options: ["in-development"],
+          label: "In development",
+          name: "inDevelopment",
+          widget: "boolean",
           required: false,
         }
-      - {
-          label: "Publications",
-          name: "publications",
-          widget: "list",
-          required: false,
-          hint: "BibTeX keys of works on ORCID, like cong2024nbs.",
-        }
+      - label: "Publications"
+        name: "publications"
+        widget: "list"
+        required: false
+        hint: "BibTeX keys of works on ORCID, like cong2024nbs."
+        pattern:
+          ['^[^\s,]+(,[^\s,]+)*$', "Each key needs a value, with no spaces"]
       - label: "Links"
         name: "links"
         widget: "list"

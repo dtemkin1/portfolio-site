@@ -36,7 +36,7 @@ if (missing.length) {
 const notes = (await getNotes()).filter(
   ({ data }) => data.project?.id === entry.id,
 );
-const isPortrait = data.img ? data.img.height > data.img.width : false;
+const isPortrait = data.img && data.img.src.height > data.img.src.width;
 ---
 
 <BaseLayout
@@ -53,7 +53,7 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
         <h1>{data.title}</h1>
         <p class="time">{timeLabel(data)}</p>
       </div>
-      {data.status === "in-development" && <p class="status">In development</p>}
+      {data.inDevelopment && <p class="status">In development</p>}
       <p class="description">{data.description}</p>
       {data.tags.length > 0 && <p class="tags">{data.tags.join(", ")}</p>}
       {(data.links ?? []).length > 0 && (
@@ -75,9 +75,9 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
     >
       {data.img && (
         <Image
-          src={data.img}
-          alt={data.img_alt || ""}
-          width={Math.min(data.img.width, isPortrait ? 720 : 992)}
+          src={data.img.src}
+          alt={data.img.alt}
+          width={Math.min(data.img.src.width, isPortrait ? 720 : 992)}
           widths={isPortrait ? [320, 540, 720] : [400, 540, 800, 992]}
           quality={70}
           fetchpriority="high"
