@@ -18,6 +18,12 @@ Add a Markdown file to `src/content/work/`, or use the CMS at `/admin/`. The boa
 
 Pushing to `main` deploys to GitHub Pages.
 
+## CMS
+
+`/admin/` runs [Sveltia CMS](https://sveltiacms.app/), set up in `public/admin/config.yml`, with previews in `src/pages/admin/index.astro`. Sign in with **Sign In with Token**, using a fine-grained GitHub token for this repository with Contents and Pull requests set to read and write. Each change opens a pull request, and publishing merges it.
+
+Sveltia is in beta, so the script is limited to patch updates. Read its release notes before raising the version.
+
 ## Publications
 
 Publications and presentations on the About page load from the public ORCID record (`PROFILES.orcid` in `src/lib/site.ts`) at build time. Edit them on ORCID, then rebuild. If ORCID can't be reached, the build fails.

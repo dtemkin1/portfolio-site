@@ -5,11 +5,17 @@ backend:
   squash_merges: true
 publish_mode: editorial_workflow
 media_folder: "src/assets/posts" # Media files will be stored in the repo under src/assets/posts
-public_folder: "../../assets/posts"
+public_folder: "/src/assets/posts"
 site_url: https://www.diegotemkin.com/
-media_processing:
-  enabled: true
-  strip_metadata: true
+media_libraries:
+  default:
+    config:
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+output:
+  omit_empty_optional_fields: true
 slug:
   encoding: "ascii"
   clean_accents: true
@@ -18,6 +24,8 @@ collections:
     label: "Work"
     description: "Projects on the board. A project gets its own page when it has content, an image, or publications."
     folder: "/src/content/work"
+    media_folder: "/src/assets/posts"
+    public_folder: "../../assets/posts"
     preview_path: "work/{{slug}}"
     create: true
     slug: "{{slug}}"

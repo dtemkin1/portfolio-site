@@ -61,7 +61,7 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
   <body>
     <script
       is:inline
-      src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
+      src="https://unpkg.com/@sveltia/cms@^0.265.0/dist/sveltia-cms.js"
     ></script>
     <script is:inline define:vars={{ previewCss }}>
       // same as timeLabel in lib/work.ts
@@ -96,24 +96,37 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
               h(
                 "div",
                 { className: "heading" },
-                h("h1", {}, data.get("title")),
+                h("h1", { "data-key-path": "title" }, data.get("title")),
                 h(
                   "p",
-                  { className: "time" },
+                  { className: "time", "data-key-path": "publishDate" },
                   timeLabel(data.get("when"), data.get("publishDate")),
                 ),
               ),
               data.get("status") === "in-development"
-                ? h("p", { className: "status" }, "In development")
+                ? h(
+                    "p",
+                    { className: "status", "data-key-path": "status" },
+                    "In development",
+                  )
                 : null,
-              h("p", { className: "description" }, data.get("description")),
+              h(
+                "p",
+                { className: "description", "data-key-path": "description" },
+                data.get("description"),
+              ),
               tags.length
-                ? h("p", { className: "tags" }, tags.join(", "))
+                ? h(
+                    "p",
+                    { className: "tags", "data-key-path": "tags" },
+                    tags.join(", "),
+                  )
                 : null,
             ),
             img
               ? h("img", {
                   className: "photo",
+                  "data-key-path": "img",
                   src: this.props.getAsset(img).toString(),
                   alt: data.get("img_alt") || "",
                 })
@@ -121,14 +134,17 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
             body && body.trim()
               ? h(
                   "div",
-                  { className: "notice prose" },
+                  { className: "notice prose", "data-key-path": "body" },
                   this.props.widgetFor("body"),
                 )
               : null,
             publications.length
               ? h(
                   "section",
-                  { className: "notice prose" },
+                  {
+                    className: "notice prose",
+                    "data-key-path": "publications",
+                  },
                   h("h2", {}, "Publications and presentations"),
                   h(
                     "p",
@@ -153,7 +169,11 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
             .filter(Boolean)
             .join(", ");
           const note = data.get("note");
-          const link = h("a", { href: data.get("url") }, data.get("title"));
+          const link = h(
+            "a",
+            { href: data.get("url"), "data-key-path": "title" },
+            data.get("title"),
+          );
 
           return h(
             "main",
@@ -170,8 +190,18 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
                   "li",
                   {},
                   link,
-                  h("span", { className: "aside" }, source),
-                  note ? h("span", { className: "aside" }, note) : null,
+                  h(
+                    "span",
+                    { className: "aside", "data-key-path": "source" },
+                    source,
+                  ),
+                  note
+                    ? h(
+                        "span",
+                        { className: "aside", "data-key-path": "note" },
+                        note,
+                      )
+                    : null,
                 ),
               ),
             ),
@@ -184,7 +214,11 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
                   ),
                   h(
                     "div",
-                    { className: "board", key: "board" },
+                    {
+                      className: "board",
+                      key: "board",
+                      "data-key-path": "current",
+                    },
                     h(
                       "p",
                       { className: "alert" },
