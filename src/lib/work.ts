@@ -1,5 +1,5 @@
 export type WorkLike = {
-  data: { publishDate: Date; draft?: boolean; when?: string };
+  data: { publishDate: Date; draft?: boolean; now?: boolean };
 };
 
 export const monthYear = new Intl.DateTimeFormat("en-US", {
@@ -18,7 +18,6 @@ export const hasPage = (entry: {
 
 export const workHref = (id: string): string => `/work/${id}/`;
 
-// a link to a work page, from somewhere else on the site
 export const pageLink = ({
   id,
   data,
@@ -33,14 +32,17 @@ export const pageLink = ({
 export const onHomeBoard = (entry: { data: { earlier?: boolean } }): boolean =>
   !entry.data.earlier;
 
+// ongoing work first, then everything newest first
 export function publishedNewestFirst<T extends WorkLike>(entries: T[]): T[] {
   return entries
     .filter((entry) => !entry.data.draft)
     .sort(
-      (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+      (a, b) =>
+        Number(Boolean(b.data.now)) - Number(Boolean(a.data.now)) ||
+        b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
     );
 }
 
-export function timeLabel(data: { publishDate: Date; when?: string }): string {
-  return data.when ?? monthYear.format(data.publishDate);
+export function timeLabel(data: { publishDate: Date; now?: boolean }): string {
+  return data.now ? "Now" : monthYear.format(data.publishDate);
 }

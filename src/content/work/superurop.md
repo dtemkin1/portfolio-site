@@ -6,7 +6,6 @@ tags:
   - Network Design
   - Optimization
   - Category Theory
-when: May 2026
 publications:
   - temkin2025category
   - temkinCoDesignFrameworkSchool2026

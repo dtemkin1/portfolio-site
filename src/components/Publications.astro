@@ -12,7 +12,7 @@ interface Props {
 
 const { entries } = Astro.props;
 
-// project pages
+// which work page cites each publication
 const projects = new Map<string, { title: string; href: string }>();
 if (!entries) {
   for (const work of await getWorkPages()) {

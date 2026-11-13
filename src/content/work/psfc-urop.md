@@ -8,7 +8,6 @@ tags:
   - Machine Learning
   - Fusion Plasma Control
   - Modelling
-when: Jun 2023
 ---
 
 At MIT's Plasma Science and Fusion Center, I applied machine learning to plasma science through hands-on research.

@@ -14,7 +14,7 @@ pnpm fix      # format and lint
 
 ## Add a project
 
-Add a Markdown file to `src/content/work/`, or use the CMS at `/admin/`. The board sorts by `publishDate`, and `draft: true` hides an entry everywhere.
+Add a Markdown file to `src/content/work/`, or use the CMS at `/admin/`. The board lists `now: true` work first, then sorts by `publishDate`, and `draft: true` hides an entry everywhere. Links to a demo or the code go under `links`, each with a `label` and a `url`.
 
 Pushing to `main` deploys to GitHub Pages.
 

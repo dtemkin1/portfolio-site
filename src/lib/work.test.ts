@@ -24,8 +24,23 @@ test("removes drafts and sorts newest first", () => {
   ]);
 });
 
-test("when wins over the date", () => {
-  expect(timeLabel({ publishDate: new Date("2026-08-01"), when: "Now" })).toBe(
+test("ongoing work comes first, newest start first, then the rest by date", () => {
+  const out = publishedNewestFirst([
+    e("2025-08-01"),
+    e("2024-11-01", { now: true }),
+    e("2026-08-01", { now: true }),
+    e("2026-05-01"),
+  ]);
+  expect(out.map((x) => x.data.publishDate.toISOString().slice(0, 7))).toEqual([
+    "2026-08",
+    "2024-11",
+    "2026-05",
+    "2025-08",
+  ]);
+});
+
+test("now shows Now instead of the date", () => {
+  expect(timeLabel({ publishDate: new Date("2026-08-01"), now: true })).toBe(
     "Now",
   );
 });

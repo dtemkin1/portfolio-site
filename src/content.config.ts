@@ -25,9 +25,12 @@ const workCollection = defineCollection({
         img_alt: z.string().optional(),
         draft: z.boolean().optional(),
         earlier: z.boolean().optional(),
-        when: z.string().optional(),
+        now: z.boolean().optional(),
         status: z.literal("in-development").optional(),
         publications: z.array(reference("publications")).optional(),
+        links: z
+          .array(z.strictObject({ label: z.string().min(1), url: z.httpUrl() }))
+          .optional(),
       })
       .refine((data) => !data.img || Boolean(data.img_alt?.trim()), {
         message: "An image needs alt text (img_alt).",

@@ -29,6 +29,8 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
 .status, .description, .tags { margin-top: 0.5rem; max-width: 65ch; }
 .status { color: ${yellow}; }
 .tags { color: ${placeholder}; font-size: 0.9375rem; }
+.links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0.75rem 0 0; padding: 0; list-style: none; }
+header a { color: inherit; }
 .photo { width: 100%; margin-top: 1.5rem; border-radius: 10px; }
 .notice { --margin: clamp(3px, 0.8vw, 5px); --line: clamp(2px, 0.4vw, 3px); margin-top: 2rem; padding: clamp(1.375rem, 3.5vw, 2.25rem); border-radius: 10px; background: ${white}; box-shadow: inset 0 0 0 var(--margin) ${white}, inset 0 0 0 calc(var(--margin) + var(--line)) ${ink}; color: ${ink}; }
 .notice a { color: ${wall}; }
@@ -65,8 +67,8 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
     ></script>
     <script is:inline define:vars={{ previewCss }}>
       // same as timeLabel in lib/work.ts
-      function timeLabel(when, date) {
-        if (when) return when;
+      function timeLabel(now, date) {
+        if (now) return "Now";
         if (!date) return "";
         return new Date(date).toLocaleDateString("en-US", {
           month: "short",
@@ -84,6 +86,7 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
           const data = this.props.entry.get("data");
           const img = data.get("img");
           const tags = list(data.get("tags"));
+          const links = list(data.get("links"));
           const publications = list(data.get("publications"));
           const body = data.get("body");
 
@@ -100,7 +103,7 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
                 h(
                   "p",
                   { className: "time", "data-key-path": "publishDate" },
-                  timeLabel(data.get("when"), data.get("publishDate")),
+                  timeLabel(data.get("now"), data.get("publishDate")),
                 ),
               ),
               data.get("status") === "in-development"
@@ -120,6 +123,19 @@ header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background
                     "p",
                     { className: "tags", "data-key-path": "tags" },
                     tags.join(", "),
+                  )
+                : null,
+              links.length
+                ? h(
+                    "ul",
+                    { className: "links", "data-key-path": "links" },
+                    links.map((link, i) =>
+                      h(
+                        "li",
+                        { key: i },
+                        h("a", { href: link.url }, link.label),
+                      ),
+                    ),
                   )
                 : null,
             ),

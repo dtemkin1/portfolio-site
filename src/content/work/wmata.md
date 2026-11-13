@@ -8,7 +8,6 @@ tags:
   - Reliability Engineering
   - Transportation Operations
   - GIS and Web Mapping
-when: Aug 2025
 ---
 
 I spent the summer of 2025 as a Junior Associate Engineer in Reliability Engineering and Asset Management at the Washington Metropolitan Area Transit Authority.

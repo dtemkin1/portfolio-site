@@ -1,7 +1,7 @@
 export const SITE = {
   name: "Diego Temkin",
   tagline:
-    "MS in Transportation student at MIT, researching how students ride transit.",
+    "SM in Transportation student at MIT, researching how students ride transit.",
 };
 
 export const PROFILES = {

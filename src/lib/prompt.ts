@@ -75,7 +75,7 @@ export function runCommand(
       return print(...projects.map(({ slug }) => `${slug}.md`));
     case "whoami":
       return print(
-        "Diego Temkin. MS in Transportation student at MIT, JTL-Transit Lab.",
+        "Diego Temkin. SM in Transportation student at MIT, JTL-Transit Lab.",
       );
     case "clear":
       return { kind: "clear" };

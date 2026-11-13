@@ -8,7 +8,6 @@ tags:
   - Legal Research
   - Digital Tech
   - Collaboration
-when: Sep 2023
 ---
 
 In the summer of 2023, I worked as a Public Policy Researcher at MIT Sloan. I gathered legal, scientific, and technological materials on how new technologies such as large language models interact with established digital technology law, including Section 230 of the Communications Decency Act.

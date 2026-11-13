@@ -8,7 +8,6 @@ tags:
   - Data Validation
   - Transportation Modelling
   - Policy Analysis
-when: May 2025
 ---
 
 From June 2024 to May 2025, I was a Student Trainee in the Innovative Research Design and Deployment Division at the U.S. DOT Volpe Center.

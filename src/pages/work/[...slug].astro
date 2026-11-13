@@ -56,6 +56,15 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
       {data.status === "in-development" && <p class="status">In development</p>}
       <p class="description">{data.description}</p>
       {data.tags.length > 0 && <p class="tags">{data.tags.join(", ")}</p>}
+      {(data.links ?? []).length > 0 && (
+        <ul class="links">
+          {data.links!.map(({ label, url }) => (
+            <li>
+              <a href={url}>{label}</a>
+            </li>
+          ))}
+        </ul>
+      )}
     </header>
 
     <div
@@ -159,6 +168,15 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
     font-size: var(--text-small);
   }
 
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
   img {
     width: 100%;
     margin-top: 1.5rem;
@@ -211,7 +229,8 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
   }
 
   @media (pointer: coarse), (max-width: 36rem) {
-    .back a {
+    .back a,
+    .links a {
       display: inline-flex;
       align-items: center;
       min-height: 44px;

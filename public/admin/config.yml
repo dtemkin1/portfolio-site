@@ -68,7 +68,7 @@ collections:
           required: false,
           hint: "Shows on All stops, but not on the home board.",
         }
-      - { label: "Board Time", name: "when", widget: "string", required: false }
+      - { label: "Now", name: "now", widget: "boolean", required: false }
       - {
           label: "Status",
           name: "status",
@@ -83,6 +83,24 @@ collections:
           required: false,
           hint: "BibTeX keys of works on ORCID, like cong2024nbs.",
         }
+      - label: "Links"
+        name: "links"
+        widget: "list"
+        required: false
+        summary: "{{label}}"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - {
+              label: "Link",
+              name: "url",
+              widget: "string",
+              type: "url",
+              pattern:
+                [
+                  '^https?://\S+$',
+                  "Must be a full link, starting with https://",
+                ],
+            }
       - { label: "Content", name: "body", widget: "richtext", required: false }
   - name: "notes"
     label: "Notes"
@@ -119,5 +137,5 @@ collections:
           name: "current",
           widget: "boolean",
           required: false,
-          hint: "Enable if recent, will add to homepage.",
+          hint: "Turn on for recent news.",
         }

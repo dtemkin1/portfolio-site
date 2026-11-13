@@ -8,7 +8,6 @@ tags:
   - Coastal Engineering
   - Modelling
   - Design
-when: Feb 2023
 ---
 
 In this month-long project with MIT Civil and Environmental Engineering, I helped design a flume experiment to teach the public about water wave mechanics, and about how mangrove forests, salt marshes, seagrass meadows, and oyster reefs protect shorelines as the climate changes.
