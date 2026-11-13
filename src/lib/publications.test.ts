@@ -51,11 +51,14 @@ const talk: Publication & { id: string } = {
 };
 
 // The reference as a reader sees it, without the markup.
-const text = (html: string) =>
-  html
-    .replace(/<[^>]+>/g, "")
-    .replace(/&#38;/g, "&")
-    .trim();
+function text(html: string) {
+  let previous;
+  do {
+    previous = html;
+    html = html.replace(/<[^>]+>/g, "");
+  } while (html !== previous);
+  return html.replace(/&#38;/g, "&").trim();
+}
 const [thesisRef, chapterRef, talkRef] = references(
   [thesis, chapter, talk],
   temkin,
