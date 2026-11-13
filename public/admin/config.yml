@@ -1,10 +1,11 @@
+$schema: https://unpkg.com/@sveltia/cms@0.265.0/schema/sveltia-cms.json
 backend:
   name: github
   repo: dtemkin1/portfolio-site
-  branch: main # Branch to update (optional; defaults to master)
+  branch: main
   squash_merges: true
 publish_mode: editorial_workflow
-media_folder: "src/assets/posts" # Media files will be stored in the repo under src/assets/posts
+media_folder: "src/assets/posts"
 public_folder: "/src/assets/posts"
 site_url: https://www.diegotemkin.com/
 media_libraries:
@@ -27,33 +28,23 @@ collections:
     media_folder: "/src/assets/posts"
     public_folder: "../../assets/posts"
     preview_path: "work/{{slug}}"
-    create: true
     slug: "{{slug}}"
     sortable_fields:
       - title
       - { field: "publishDate", label: "Publish Date", default_sort: "desc" }
     fields:
-      - {
-          label: "Title",
-          name: "title",
-          widget: "string",
-          pattern:
-            ['^(?=[\S\s]{0,60}$)[\S\s]*', "Must have at most 60 characters"],
-        }
+      - { label: "Title", name: "title", widget: "string", maxlength: 60 }
       - {
           label: "Description",
           name: "description",
           widget: "string",
-          pattern:
-            ['^(?=[\S\s]{0,160}$)[\S\s]*', "Must have at most 160 characters"],
+          maxlength: 160,
         }
       - {
           label: "Publish Date",
           name: "publishDate",
           widget: "datetime",
-          date_format: "YYYY-MM-DD",
-          time_format: false,
-          picker_utc: true,
+          type: "date",
         }
       - { label: "Tags", name: "tags", widget: "list", required: false }
       - {
@@ -98,7 +89,6 @@ collections:
     label_singular: "Note"
     folder: "/src/content/notes"
     extension: "yml"
-    create: true
     slug: "{{slug}}"
     summary: "{{title}} ({{source}})"
     sortable_fields:
@@ -107,18 +97,12 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Source", name: "source", widget: "string" }
-      - {
-          label: "Date",
-          name: "date",
-          widget: "datetime",
-          date_format: "YYYY-MM-DD",
-          time_format: false,
-          picker_utc: true,
-        }
+      - { label: "Date", name: "date", widget: "datetime", type: "date" }
       - {
           label: "Link",
           name: "url",
           widget: "string",
+          type: "url",
           pattern:
             ['^https?://\S+$', "Must be a full link, starting with https://"],
         }
@@ -128,9 +112,6 @@ collections:
           name: "project",
           widget: "relation",
           collection: "work",
-          value_field: "{{slug}}",
-          search_fields: ["title"],
-          display_fields: ["title"],
           required: false,
         }
       - {
