@@ -33,28 +33,28 @@
     "@citation-js/core": "0.9.0",
     "@citation-js/plugin-bibtex": "0.9.0",
     "@citation-js/plugin-csl": "0.9.0",
-    "astro": "^7.4.7",
+    "astro": "^7.4.11",
     "markdown-it": "^15.0.3",
-    "sanitize-html": "^2.18.1",
+    "sanitize-html": "^2.18.2",
     "satori": "^0.63.2",
     "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@cloudflare/workers-types": "^5.20261106.1",
+    "@cloudflare/workers-types": "^5.20261113.1",
     "@eslint/js": "^10.0.1",
     "@types/markdown-it": "^14.2.0",
-    "@types/node": "24",
+    "@types/node": "^24.19.2",
     "@types/sanitize-html": "^2.16.2",
     "eslint": "^10.14.0",
     "eslint-plugin-astro": "^3.2.1",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "prettier-plugin-astro": "^1.1.2",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
-    "vite": "^8.3.6",
+    "typescript-eslint": "^8.72.2",
+    "vite": "^8.3.8",
     "vitest": "^5.1.0",
-    "wrangler": "^4.157.0"
+    "wrangler": "^4.161.0"
   },
   "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
 }
