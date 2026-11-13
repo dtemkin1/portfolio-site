@@ -55,6 +55,7 @@ collections:
           type: "date",
         }
       - label: "Tags"
+        label_singular: "Tag"
         name: "tags"
         widget: "list"
         required: false
@@ -89,6 +90,7 @@ collections:
           required: false,
         }
       - label: "Publications"
+        label_singular: "Publication"
         name: "publications"
         widget: "list"
         required: false
@@ -96,6 +98,7 @@ collections:
         pattern:
           ['^[^\s,]+(,[^\s,]+)*$', "Each key needs a value, with no spaces"]
       - label: "Links"
+        label_singular: "Link"
         name: "links"
         widget: "list"
         required: false
