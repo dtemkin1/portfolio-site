@@ -7,13 +7,23 @@ publish_mode: editorial_workflow
 media_folder: "src/assets/posts" # Media files will be stored in the repo under src/assets/posts
 public_folder: "../../assets/posts"
 site_url: https://www.diegotemkin.com/
+media_processing:
+  enabled: true
+  strip_metadata: true
+slug:
+  encoding: "ascii"
+  clean_accents: true
 collections:
   - name: "work"
     label: "Work"
+    description: "Projects on the board. A project gets its own page when it has content, an image, or publications."
     folder: "/src/content/work"
     preview_path: "work/{{slug}}"
     create: true
     slug: "{{slug}}"
+    sortable_fields:
+      - title
+      - { field: "publishDate", label: "Publish Date", default_sort: "desc" }
     fields:
       - {
           label: "Title",
@@ -33,9 +43,8 @@ collections:
           label: "Publish Date",
           name: "publishDate",
           widget: "datetime",
-          format: "YYYY-MM-DD HH:mm:ss",
-          date_format: "L",
-          time_format: "LTS",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
           picker_utc: true,
         }
       - { label: "Tags", name: "tags", widget: "list", required: false }
@@ -75,4 +84,51 @@ collections:
           required: false,
           hint: "BibTeX keys of works on ORCID, like cong2024nbs.",
         }
-      - { label: "Content", name: "body", widget: "markdown", required: false }
+      - { label: "Content", name: "body", widget: "richtext", required: false }
+  - name: "notes"
+    label: "Notes"
+    label_singular: "Note"
+    folder: "/src/content/notes"
+    extension: "yml"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} ({{source}})"
+    sortable_fields:
+      - title
+      - { field: "date", label: "Date", default_sort: "desc" }
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Source", name: "source", widget: "string" }
+      - {
+          label: "Date",
+          name: "date",
+          widget: "datetime",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          picker_utc: true,
+        }
+      - {
+          label: "Link",
+          name: "url",
+          widget: "string",
+          pattern:
+            ['^https?://\S+$', "Must be a full link, starting with https://"],
+        }
+      - { label: "Note", name: "note", widget: "string", required: false }
+      - {
+          label: "Project",
+          name: "project",
+          widget: "relation",
+          collection: "work",
+          value_field: "{{slug}}",
+          search_fields: ["title"],
+          display_fields: ["title"],
+          required: false,
+        }
+      - {
+          label: "Current",
+          name: "current",
+          widget: "boolean",
+          required: false,
+          hint: "Enable if recent, will add to homepage.",
+        }

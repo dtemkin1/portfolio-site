@@ -1,6 +1,6 @@
 ---
 title: School Bus Network Co-Design
-publishDate: 2026-05-01 00:00:00
+publishDate: 2026-05-01
 description: A co-design framework for bus network redesign, demonstrated through a case study of morning school bus service in Framingham, MA.
 tags:
   - Network Design

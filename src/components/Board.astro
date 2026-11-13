@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import { hasPage, timeLabel } from "../lib/work";
+import { hasPage, timeLabel, workHref } from "../lib/work";
 
 import Prompt from "./Prompt.astro";
 
@@ -25,10 +25,7 @@ const hasTop = Astro.slots.has("top");
   <ol>
     {projects.map(({ id, data, body }, i) => (
       <li data-slug={id} id={id} style={`--i: ${i}`}>
-        <a
-          class="row"
-          href={hasPage({ body, data }) ? `/work/${id}/` : `#${id}`}
-        >
+        <a class="row" href={hasPage({ body, data }) ? workHref(id) : `#${id}`}>
           <span class="title">{data.title}</span>
           <span class="time">{timeLabel(data)}</span>
         </a>
@@ -44,7 +41,7 @@ const hasTop = Astro.slots.has("top");
           <p>{data.description}</p>
           {hasPage({ body, data }) && (
             <p>
-              <a href={`/work/${id}/`}>Read the full page</a>
+              <a href={workHref(id)}>Read the full page</a>
             </p>
           )}
         </div>
@@ -115,6 +112,10 @@ const hasTop = Astro.slots.has("top");
     font-weight: 900;
     line-height: 1.3;
     text-wrap: wrap;
+  }
+
+  .board .alert a:hover {
+    color: var(--white);
   }
 
   .board .alert-note {

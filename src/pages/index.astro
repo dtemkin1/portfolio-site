@@ -2,10 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Board from "../components/Board.astro";
 import LiveBoard from "../components/LiveBoard.astro";
+import { getNotes, sourceLine } from "../lib/notes";
 import { onHomeBoard } from "../lib/work";
 import { getPublishedWork } from "../lib/work-data";
 
 const projects = (await getPublishedWork()).filter(onHomeBoard);
+const current = (await getNotes()).filter(({ data }) => data.current);
 ---
 
 <BaseLayout>
@@ -14,7 +16,22 @@ const projects = (await getPublishedWork()).filter(onHomeBoard);
       projects={projects}
       openFirst
       more={{ label: "See all stops", href: "/work/" }}
-    />
+    >
+      {current.length > 0 && (
+        <Fragment slot="top">
+          {current.map(({ data }) => (
+            <div role="note" aria-label="Notice">
+              <p class="alert">
+                <a href={data.url}>{data.title}</a>
+              </p>
+              <p class="alert-note">
+                {[sourceLine(data), data.note].filter(Boolean).join(". ")}
+              </p>
+            </div>
+          ))}
+        </Fragment>
+      )}
+    </Board>
     <LiveBoard />
   </main>
 </BaseLayout>

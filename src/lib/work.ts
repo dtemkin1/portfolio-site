@@ -2,7 +2,7 @@ export type WorkLike = {
   data: { publishDate: Date; draft?: boolean; when?: string };
 };
 
-const monthYear = new Intl.DateTimeFormat("en-US", {
+export const monthYear = new Intl.DateTimeFormat("en-US", {
   month: "short",
   year: "numeric",
   timeZone: "UTC",
@@ -15,6 +15,20 @@ export const hasPage = (entry: {
   Boolean(
     entry.body?.trim() || entry.data.img || entry.data.publications?.length,
   );
+
+export const workHref = (id: string): string => `/work/${id}/`;
+
+// a link to a work page, from somewhere else on the site
+export const pageLink = ({
+  id,
+  data,
+}: {
+  id: string;
+  data: { title: string };
+}): { title: string; href: string } => ({
+  title: data.title,
+  href: workHref(id),
+});
 
 export const onHomeBoard = (entry: { data: { earlier?: boolean } }): boolean =>
   !entry.data.earlier;

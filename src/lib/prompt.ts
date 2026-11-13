@@ -1,3 +1,5 @@
+import { workHref } from "./work";
+
 export type PromptProject = { slug: string; page?: boolean };
 
 export type PromptResult =
@@ -105,7 +107,7 @@ export function runCommand(
         return print(`${command}: no project called ${argument}. Try ls.`);
       return command === "cat" || project.page === false
         ? { kind: "open", slug: project.slug }
-        : { kind: "navigate", href: `/work/${project.slug}/` };
+        : { kind: "navigate", href: workHref(project.slug) };
     }
     default:
       return print(`${command}: command not found. Try help.`);

@@ -1,3 +1,7 @@
 {
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  "astro.content-intellisense": true,
+  "yaml.schemas": {
+    "./.astro/collections/notes.schema.json": ["src/content/notes/*.yml"]
+  }
 }

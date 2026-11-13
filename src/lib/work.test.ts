@@ -1,6 +1,12 @@
 import { expect, test } from "vitest";
 
-import { hasPage, onHomeBoard, publishedNewestFirst, timeLabel } from "./work";
+import {
+  hasPage,
+  onHomeBoard,
+  pageLink,
+  publishedNewestFirst,
+  timeLabel,
+} from "./work";
 
 const e = (d: string, extra = {}) => ({
   data: { publishDate: new Date(d), ...extra },
@@ -43,3 +49,8 @@ test("work from before MIT stays off the home board", () => {
   expect(onHomeBoard({ data: { earlier: true } })).toBe(false);
   expect(onHomeBoard({ data: {} })).toBe(true);
 });
+
+test("a link to a work page carries its title and its address", () =>
+  expect(
+    pageLink({ id: "superurop", data: { title: "Bus Co-Design" } }),
+  ).toEqual({ title: "Bus Co-Design", href: "/work/superurop/" }));

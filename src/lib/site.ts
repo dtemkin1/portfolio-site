@@ -21,6 +21,9 @@ export const COLORS = {
   yellow: "#ffc72c",
   readout: "#d6dbe5",
   white: "#ffffff",
+  placeholder: "#b3b8c2",
+  rule: "#4a3d1c",
+  "sign-ink": "#000000",
 };
 
 export const pageTitle = (title?: string) =>

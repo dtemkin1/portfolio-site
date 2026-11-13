@@ -2,17 +2,19 @@
 import { Image } from "astro:assets";
 import { type CollectionEntry, getEntries, render } from "astro:content";
 
+import Notes from "../../components/Notes.astro";
 import Publications from "../../components/Publications.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { hasPage, onHomeBoard, timeLabel } from "../../lib/work";
-import { getPublishedWork } from "../../lib/work-data";
+import { getNotes } from "../../lib/notes";
+import { onHomeBoard, timeLabel } from "../../lib/work";
+import { getWorkPages } from "../../lib/work-data";
 
 interface Props {
   entry: CollectionEntry<"work">;
 }
 
 export async function getStaticPaths() {
-  const work = (await getPublishedWork()).filter(hasPage);
+  const work = await getWorkPages();
   return work.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
@@ -31,6 +33,9 @@ if (missing.length) {
     `${entry.id}: ${missing.map(({ id }) => id).join(", ")} isn't the BibTeX key of any public work on ORCID. Check the key, and that the work's visibility is "Everyone".`,
   );
 }
+const notes = (await getNotes()).filter(
+  ({ data }) => data.project?.id === entry.id,
+);
 const isPortrait = data.img ? data.img.height > data.img.width : false;
 ---
 
@@ -87,6 +92,13 @@ const isPortrait = data.img ? data.img.height > data.img.width : false;
       <section class="notice prose writing">
         <h2>Publications and presentations</h2>
         <Publications entries={publications} />
+      </section>
+    )}
+
+    {notes.length > 0 && (
+      <section class="notice prose writing">
+        <h2>Elsewhere</h2>
+        <Notes entries={notes} />
       </section>
     )}
 

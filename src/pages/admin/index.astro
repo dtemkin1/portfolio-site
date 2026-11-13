@@ -1,0 +1,213 @@
+---
+import { COLORS } from "../../lib/site";
+
+// copies the work page and the notes card(s) closely...
+const {
+  wall,
+  board,
+  yellow,
+  readout,
+  white,
+  placeholder,
+  rule,
+  "sign-ink": ink,
+} = COLORS;
+const led = "900 clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem)/1.3 Doto, monospace";
+
+const previewCss = `
+*, ::before, ::after { box-sizing: border-box; }
+body { margin: 0; background: ${wall}; color: ${white}; font: 500 1.125rem/1.55 Overpass, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+main { max-width: 62rem; margin-inline: auto; padding: 1.5rem clamp(1rem, 4vw, 2.5rem); }
+h1, h2, h3 { margin: 0; font-weight: 800; line-height: 1.1; }
+h2 { font-size: 1.5rem; }
+p { margin: 0; }
+img { display: block; max-width: 100%; height: auto; }
+header { padding: clamp(0.875rem, 2.5vw, 1.5rem); border-radius: 6px; background: ${board}; color: ${readout}; font-size: 1rem; }
+.heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 1.5rem; color: ${yellow}; font: ${led}; }
+.heading h1 { flex: 1 1 16rem; font: inherit; }
+.time { white-space: nowrap; }
+.status, .description, .tags { margin-top: 0.5rem; max-width: 65ch; }
+.status { color: ${yellow}; }
+.tags { color: ${placeholder}; font-size: 0.9375rem; }
+.photo { width: 100%; margin-top: 1.5rem; border-radius: 10px; }
+.notice { --margin: clamp(3px, 0.8vw, 5px); --line: clamp(2px, 0.4vw, 3px); margin-top: 2rem; padding: clamp(1.375rem, 3.5vw, 2.25rem); border-radius: 10px; background: ${white}; box-shadow: inset 0 0 0 var(--margin) ${white}, inset 0 0 0 calc(var(--margin) + var(--line)) ${ink}; color: ${ink}; }
+.notice a { color: ${wall}; }
+.prose > * { max-width: 65ch; }
+.prose > * + * { margin-top: 1rem; }
+.prose :is(h2, h3) { margin-top: 2rem; }
+.prose > h2:first-child { margin-top: 0; }
+.prose blockquote { margin-inline: 1.5rem 0; font-style: italic; }
+.entries { margin-bottom: 0; padding: 0; list-style: none; }
+.aside { display: block; margin-top: 0.25rem; font-size: 0.9375rem; }
+.where { margin-top: 2rem; color: ${readout}; font-size: 0.9375rem; }
+.where:first-child { margin-top: 0; }
+.board { margin-top: 0.5rem; padding: clamp(0.75rem, 2vw, 1.25rem); border-radius: 6px; background: ${board}; }
+.alert { color: ${yellow}; font: ${led}; }
+.alert a { color: inherit; }
+.alert-note { margin-top: 0.25rem; padding-bottom: 0.75rem; border-bottom: 2px solid ${rule}; color: ${readout}; font-size: 1rem; }
+`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+    <title>Content Manager</title>
+  </head>
+
+  <body>
+    <script
+      is:inline
+      src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
+    ></script>
+    <script is:inline define:vars={{ previewCss }}>
+      // same as timeLabel in lib/work.ts
+      function timeLabel(when, date) {
+        if (when) return when;
+        if (!date) return "";
+        return new Date(date).toLocaleDateString("en-US", {
+          month: "short",
+          year: "numeric",
+          timeZone: "UTC",
+        });
+      }
+
+      function list(value) {
+        return value ? value.toJS().filter(Boolean) : [];
+      }
+
+      const WorkPreview = createClass({
+        render: function () {
+          const data = this.props.entry.get("data");
+          const img = data.get("img");
+          const tags = list(data.get("tags"));
+          const publications = list(data.get("publications"));
+          const body = data.get("body");
+
+          return h(
+            "main",
+            {},
+            h(
+              "header",
+              {},
+              h(
+                "div",
+                { className: "heading" },
+                h("h1", {}, data.get("title")),
+                h(
+                  "p",
+                  { className: "time" },
+                  timeLabel(data.get("when"), data.get("publishDate")),
+                ),
+              ),
+              data.get("status") === "in-development"
+                ? h("p", { className: "status" }, "In development")
+                : null,
+              h("p", { className: "description" }, data.get("description")),
+              tags.length
+                ? h("p", { className: "tags" }, tags.join(", "))
+                : null,
+            ),
+            img
+              ? h("img", {
+                  className: "photo",
+                  src: this.props.getAsset(img).toString(),
+                  alt: data.get("img_alt") || "",
+                })
+              : null,
+            body && body.trim()
+              ? h(
+                  "div",
+                  { className: "notice prose" },
+                  this.props.widgetFor("body"),
+                )
+              : null,
+            publications.length
+              ? h(
+                  "section",
+                  { className: "notice prose" },
+                  h("h2", {}, "Publications and presentations"),
+                  h(
+                    "p",
+                    {},
+                    "Cited from ORCID when the site builds: " +
+                      publications.join(", "),
+                  ),
+                )
+              : null,
+          );
+        },
+      });
+
+      const NotePreview = createClass({
+        render: function () {
+          const data = this.props.entry.get("data");
+          const date = data.get("date");
+          const source = [
+            data.get("source"),
+            date ? timeLabel(null, date) : null,
+          ]
+            .filter(Boolean)
+            .join(", ");
+          const note = data.get("note");
+          const link = h("a", { href: data.get("url") }, data.get("title"));
+
+          return h(
+            "main",
+            {},
+            h("p", { className: "where" }, "On the About page"),
+            h(
+              "section",
+              { className: "notice prose", style: { marginTop: "0.5rem" } },
+              h("h2", {}, "Elsewhere"),
+              h(
+                "ul",
+                { className: "entries" },
+                h(
+                  "li",
+                  {},
+                  link,
+                  h("span", { className: "aside" }, source),
+                  note ? h("span", { className: "aside" }, note) : null,
+                ),
+              ),
+            ),
+            data.get("current")
+              ? [
+                  h(
+                    "p",
+                    { className: "where", key: "where" },
+                    "On the home board",
+                  ),
+                  h(
+                    "div",
+                    { className: "board", key: "board" },
+                    h(
+                      "p",
+                      { className: "alert" },
+                      h("a", { href: data.get("url") }, data.get("title")),
+                    ),
+                    h(
+                      "p",
+                      { className: "alert-note" },
+                      [source, note].filter(Boolean).join(". "),
+                    ),
+                  ),
+                ]
+              : null,
+          );
+        },
+      });
+
+      CMS.registerPreviewTemplate("work", WorkPreview);
+      CMS.registerPreviewTemplate("notes", NotePreview);
+      CMS.registerPreviewStyle(
+        "https://fonts.googleapis.com/css2?family=Doto:wght@900&family=Overpass:wght@500;800&display=swap",
+      );
+      CMS.registerPreviewStyle(previewCss, { raw: true });
+    </script>
+  </body>
+</html>

@@ -272,6 +272,22 @@ main img {
   font-style: italic;
 }
 
+.entries {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.entries > li + li {
+  margin-top: 0.75rem;
+}
+
+.entries .aside {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--text-small);
+}
+
 @media print {
   :root {
     color-scheme: light;

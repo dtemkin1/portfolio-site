@@ -6,6 +6,7 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://www.diegotemkin.com",
   integrations: [sitemap({ filter: (page) => !page.includes("/admin/") })],
+  experimental: { contentIntellisense: true },
   fonts: [
     {
       provider: fontProviders.fontsource(),

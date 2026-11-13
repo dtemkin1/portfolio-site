@@ -1,0 +1,42 @@
+---
+import { type CollectionEntry, getEntry } from "astro:content";
+
+import { getNotes, sourceLine } from "../lib/notes";
+import { pageLink } from "../lib/work";
+import { getWorkPages } from "../lib/work-data";
+
+interface Props {
+  entries?: CollectionEntry<"notes">[];
+}
+
+const { entries } = Astro.props;
+const pages = entries ? [] : await getWorkPages();
+
+const notes = await Promise.all(
+  (entries ?? (await getNotes())).map(async ({ id, data }) => {
+    if (entries || !data.project) return { ...data, project: undefined };
+    if (!(await getEntry(data.project))) {
+      throw new Error(
+        `notes/${id}: ${data.project.id} isn't the name of any work page.`,
+      );
+    }
+    const page = pages.find(({ id }) => id === data.project?.id);
+    return { ...data, project: page && pageLink(page) };
+  }),
+);
+---
+
+<ul class="entries">
+  {notes.map(({ title, url, note, project, ...data }) => (
+    <li>
+      <a href={url}>{title}</a>
+      <span class="aside">{sourceLine(data)}</span>
+      {note && <span class="aside">{note}</span>}
+      {project && (
+        <span class="aside">
+          Project: <a href={project.href}>{project.title}</a>
+        </span>
+      )}
+    </li>
+  ))}
+</ul>

@@ -1,6 +1,6 @@
 ---
 title: Engineering, Design, and Development (EDD)
-publishDate: 2022-04-29 00:00:00
+publishDate: 2022-04-29
 earlier: true
 img: ../../assets/posts/edd.jpg
 img_alt: Napkin sketch of project layout, detailing convolutional neural networks, TCGA samples, and more.

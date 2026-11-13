@@ -4,7 +4,7 @@ import { getImage } from "astro:assets";
 
 import { feedMarkdown } from "../lib/feed";
 import { SITE } from "../lib/site";
-import { hasPage } from "../lib/work";
+import { hasPage, workHref } from "../lib/work";
 import { getPublishedWork } from "../lib/work-data";
 
 import sanitizeHtml from "sanitize-html";
@@ -48,7 +48,7 @@ export const GET: APIRoute = async (context) => {
           title: post.data.title,
           pubDate: post.data.publishDate,
           description: post.data.description,
-          link: hasPage(post) ? `/work/${post.id}/` : `/#${post.id}`,
+          link: hasPage(post) ? workHref(post.id) : `/#${post.id}`,
           content: markdown
             ? sanitizeHtml(parser.render(markdown), {
                 allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),

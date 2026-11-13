@@ -31,6 +31,22 @@ publications:
 
 A work with no BibTeX on ORCID goes by its ORCID put code. A key that doesn't match a work on ORCID fails the build.
 
+## Notes
+
+The Elsewhere card on the About page lists pages elsewhere that feature me, newest first. Add one in the CMS under Notes, or as a file in `src/content/notes/`:
+
+```yaml
+title: "Student spotlight: Diego Temkin"
+source: MIT News
+date: 2025-12-17
+url: https://news.mit.edu/2025/student-spotlight-diego-temkin-1217
+note: One optional line shown under it.
+project: jtl-k12 # optional, a work page's file name
+current: true # optional, also shows it at the top of the home board
+```
+
+A note with a `project` also shows on that work page. A `project` that doesn't match a work page fails the build. The card is hidden when there are no notes. Turn `current` off once a note is old news.
+
 ## Live display
 
 The site never talks to the MBTA, Spotify, WMBR, Open-Meteo, or GitHub directly. A Cloudflare Worker in `worker/` holds the API keys, caches each source, and serves everything from `https://api.diegotemkin.com/live`. It only answers requests from this site and from localhost.

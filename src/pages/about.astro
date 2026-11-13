@@ -3,11 +3,13 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Notes from "../components/Notes.astro";
 import Publications from "../components/Publications.astro";
 import portrait from "../assets/portrait.jpg";
 import { PROFILES } from "../lib/site";
 
 const hasPublications = (await getCollection("publications")).length > 0;
+const hasNotes = (await getCollection("notes")).length > 0;
 
 interface Ridden {
   name: string;
@@ -150,6 +152,13 @@ const formatter = new Intl.ListFormat("en", {
           Also on <a href={PROFILES.scholar}>Google Scholar</a> and{" "}
           <a href={PROFILES.orcid}>ORCID</a>.
         </p>
+      </section>
+    )}
+
+    {hasNotes && (
+      <section class="notice prose extras">
+        <h2>Elsewhere</h2>
+        <Notes />
       </section>
     )}
 

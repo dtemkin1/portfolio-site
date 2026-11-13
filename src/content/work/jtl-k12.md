@@ -1,6 +1,6 @@
 ---
 title: "JTL-Transit Lab: K-12 Student Ridership"
-publishDate: 2026-08-01 00:00:00
+publishDate: 2026-08-01
 when: Now
 status: in-development
 description: Why did student transit ridership fall so sharply after the pandemic, and what would help students ride again?
