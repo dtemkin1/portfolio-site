@@ -4,4 +4,5 @@ compatibility_date = "2026-10-01"
 
 routes = [{ pattern = "api.diegotemkin.com", custom_domain = true }]
 
-# secrets: MBTA_KEY, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REFRESH_TOKEN
+# optional secrets: 
+# MBTA_KEY, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN, and GITHUB_TOKEN
