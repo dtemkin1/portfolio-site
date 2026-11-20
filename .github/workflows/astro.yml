@@ -1,14 +1,11 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [main]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
+  pull_request:
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
 permissions:
   contents: read
   pages: write
@@ -18,23 +15,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
-        uses: actions/checkout@v7
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-      - name: Install Node
-        uses: actions/setup-node@v7
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: "package.json"
           cache: pnpm
-      - name: Run the tests
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm test
-      - name: Install, build, and upload your site
-        uses: withastro/action@v6
+      - run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm exec prettier --check . && pnpm exec eslint src worker
+      - name: Type-check
+        run: pnpm astro check && pnpm worker:check
+      - run: pnpm test
+      - run: pnpm build
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:

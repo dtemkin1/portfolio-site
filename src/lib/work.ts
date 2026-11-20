@@ -10,10 +10,13 @@ export const monthYear = new Intl.DateTimeFormat("en-US", {
 
 export const hasPage = (entry: {
   body?: string;
-  data: { img?: unknown; publications?: unknown[] };
+  data: { img?: unknown; publications?: unknown[]; links?: unknown[] };
 }): boolean =>
   Boolean(
-    entry.body?.trim() || entry.data.img || entry.data.publications?.length,
+    entry.body?.trim() ||
+    entry.data.img ||
+    entry.data.publications?.length ||
+    entry.data.links?.length,
   );
 
 export const workHref = (id: string): string => `/work/${id}/`;

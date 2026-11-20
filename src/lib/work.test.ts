@@ -51,11 +51,13 @@ test("falls back to month and year in UTC", () => {
   );
 });
 
-test("a project gets its own page only with text or an image", () => {
+test("a project gets its own page only with text, an image, publications, or links", () => {
   expect(hasPage({ body: "Some text.", data: {} })).toBe(true);
   expect(hasPage({ body: "", data: { img: {} } })).toBe(true);
   expect(hasPage({ data: { publications: [{}] } })).toBe(true);
   expect(hasPage({ data: { publications: [] } })).toBe(false);
+  expect(hasPage({ data: { links: [{}] } })).toBe(true);
+  expect(hasPage({ data: { links: [] } })).toBe(false);
   expect(hasPage({ body: "  \n", data: {} })).toBe(false);
   expect(hasPage({ data: {} })).toBe(false);
 });

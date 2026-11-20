@@ -23,7 +23,7 @@ slug:
 collections:
   - name: "work"
     label: "Work"
-    description: "Projects on the board. A project gets its own page when it has content, an image, or publications."
+    description: "Projects on the board. A project gets its own page when it has content, an image, publications, or links."
     folder: "/src/content/work"
     media_folder: "/src/assets/posts"
     public_folder: "../../assets/posts"
