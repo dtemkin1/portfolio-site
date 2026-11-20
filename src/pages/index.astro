@@ -2,9 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Board from "../components/Board.astro";
 import LiveBoard from "../components/LiveBoard.astro";
-import { getNotes, sourceLine } from "../lib/notes";
-import { onHomeBoard } from "../lib/work";
-import { getPublishedWork } from "../lib/work-data";
+import { getNotes, sourceLine } from "../lib/content/notes";
+import { onHomeBoard } from "../lib/content/work";
+import { getPublishedWork } from "../lib/content/work-data";
 
 const projects = (await getPublishedWork()).filter(onHomeBoard);
 const current = (await getNotes()).filter(({ data }) => data.current);

@@ -1,6 +1,11 @@
 import { expect, test, vi } from "vitest";
 
-import { fromOrcid, orcidLoader, type OrcidWork, orcidWorks } from "./orcid";
+import {
+  fromOrcid,
+  orcidLoader,
+  type OrcidWork,
+  orcidWorks,
+} from "./orcid-loader";
 
 // Small works in the shape the ORCID API returns, with only the fields each test needs.
 const person = (name: string, role: string | null = null) => ({

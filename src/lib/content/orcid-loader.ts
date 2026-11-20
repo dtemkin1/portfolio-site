@@ -1,6 +1,6 @@
 import type { Loader } from "astro/loaders";
 
-import { parseName } from "../lib/publications";
+import { parseName } from "./publications";
 
 import {
   Cite,
@@ -222,7 +222,7 @@ export function orcidLoader(profile: string): Loader {
         if (entry) works.push(entry);
         else
           logger.warn(
-            `Skipped ORCID work ${work["put-code"]}: its type, ${work.type}, isn't handled yet (see TYPES in loaders/orcid.ts).`,
+            `Skipped ORCID work ${work["put-code"]}: its type, ${work.type}, isn't handled yet (see TYPES in lib/content/orcid-loader.ts).`,
           );
       }
       store.clear();

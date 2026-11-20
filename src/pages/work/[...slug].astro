@@ -5,9 +5,9 @@ import { type CollectionEntry, getEntries, render } from "astro:content";
 import Notes from "../../components/Notes.astro";
 import Publications from "../../components/Publications.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getNotes } from "../../lib/notes";
-import { onHomeBoard, timeLabel } from "../../lib/work";
-import { getWorkPages } from "../../lib/work-data";
+import { getNotes } from "../../lib/content/notes";
+import { onHomeBoard, timeLabel } from "../../lib/content/work";
+import { getWorkPages } from "../../lib/content/work-data";
 
 interface Props {
   entry: CollectionEntry<"work">;

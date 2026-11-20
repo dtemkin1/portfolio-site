@@ -1,9 +1,9 @@
 ---
 import { type CollectionEntry, getEntry } from "astro:content";
 
-import { getNotes, sourceLine } from "../lib/notes";
-import { pageLink } from "../lib/work";
-import { getWorkPages } from "../lib/work-data";
+import { getNotes, sourceLine } from "../lib/content/notes";
+import { pageLink } from "../lib/content/work";
+import { getWorkPages } from "../lib/content/work-data";
 
 interface Props {
   entries?: CollectionEntry<"notes">[];

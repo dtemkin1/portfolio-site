@@ -1,10 +1,14 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 
-import { newestFirst, parseName, references } from "../lib/publications";
+import {
+  newestFirst,
+  parseName,
+  references,
+} from "../lib/content/publications";
 import { SITE } from "../lib/site";
-import { pageLink } from "../lib/work";
-import { getWorkPages } from "../lib/work-data";
+import { pageLink } from "../lib/content/work";
+import { getWorkPages } from "../lib/content/work-data";
 
 interface Props {
   entries?: CollectionEntry<"publications">[];

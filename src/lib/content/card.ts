@@ -1,4 +1,4 @@
-import { COLORS, SITE } from "./site";
+import { COLORS, SITE } from "../site";
 
 // Social preview cards: the station sign above one row of the countdown board.
 export const CARD = { width: 1200, height: 630 };

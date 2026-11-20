@@ -2,10 +2,10 @@ import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
 import { getImage } from "astro:assets";
 
-import { feedMarkdown } from "../lib/feed";
+import { feedMarkdown } from "../lib/content/feed";
 import { SITE } from "../lib/site";
-import { hasPage, workHref } from "../lib/work";
-import { getPublishedWork } from "../lib/work-data";
+import { hasPage, workHref } from "../lib/content/work";
+import { getPublishedWork } from "../lib/content/work-data";
 
 import sanitizeHtml from "sanitize-html";
 import MarkdownIt from "markdown-it";

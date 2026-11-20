@@ -1,4 +1,4 @@
-import { workHref } from "./work";
+import { workHref } from "./content/work";
 
 export type PromptProject = { slug: string; page?: boolean };
 

@@ -8,9 +8,9 @@ import type { CollectionEntry } from "astro:content";
 import satori from "satori";
 import sharp from "sharp";
 
-import { CARD, projectCard } from "../../lib/card";
-import { timeLabel } from "../../lib/work";
-import { getPublishedWork } from "../../lib/work-data";
+import { CARD, projectCard } from "../../lib/content/card";
+import { timeLabel } from "../../lib/content/work";
+import { getPublishedWork } from "../../lib/content/work-data";
 
 export const getStaticPaths = (async () => {
   const work = await getPublishedWork();

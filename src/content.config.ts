@@ -2,9 +2,9 @@ import { glob } from "astro/loaders";
 import { defineCollection, reference } from "astro:content";
 import { z } from "astro/zod";
 
-import { publicationSchema } from "./lib/publications";
+import { publicationSchema } from "./lib/content/publications";
 import { PROFILES } from "./lib/site";
-import { orcidLoader } from "./loaders/orcid";
+import { orcidLoader } from "./lib/content/orcid-loader";
 
 const day = z.union([
   z.date(),
@@ -37,7 +37,7 @@ const workCollection = defineCollection({
     }),
 });
 
-// pulls from orcid, see loaders/orcid.ts
+// pulls from orcid, see lib/content/orcid-loader.ts
 const publicationsCollection = defineCollection({
   loader: orcidLoader(PROFILES.orcid),
   schema: publicationSchema,
