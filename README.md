@@ -93,4 +93,6 @@ pnpm exec wrangler secret put MBTA_KEY --config worker/wrangler.toml
 pnpm worker:deploy
 ```
 
+After that, pushing a change to `worker/` or `src/lib/live.ts` to `main` deploys the Worker once its checks and tests pass. This needs the repository secrets `CLOUDFLARE_API_TOKEN`, a Cloudflare token made from the "Edit Cloudflare Workers" template, and `CLOUDFLARE_ACCOUNT_ID`. To deploy without a change, run "Deploy the Worker" from the Actions tab.
+
 `pnpm worker:check` type-checks the Worker and its tests.
