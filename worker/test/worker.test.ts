@@ -365,3 +365,20 @@ test("after a Spotify failure, the Worker waits before asking again", async () =
   expect(body.song).toBeNull();
   expect(MUSIC_COOLDOWN_SECONDS).toBeGreaterThan(0);
 });
+
+test("visitors share one feed through the edge cache when there is one", async () => {
+  const stored = new Map<string, Response>();
+  vi.stubGlobal("caches", {
+    default: {
+      match: async (key: Request) => stored.get(key.url)?.clone(),
+      put: async (key: Request, value: Response) => {
+        stored.set(key.url, value);
+      },
+    },
+  });
+  const first = await (await ask("https://www.diegotemkin.com")).json();
+  const asked = calls.length;
+  const second = await (await ask("http://localhost:4321")).json();
+  expect(calls).toHaveLength(asked);
+  expect(second).toEqual(first);
+});

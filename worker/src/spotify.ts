@@ -13,9 +13,8 @@ const NOW_PLAYING_URL =
   "https://api.spotify.com/v1/me/player/currently-playing";
 const SONG_SECONDS = 20;
 export const MUSIC_COOLDOWN_SECONDS = 60;
-const CACHE_KEY = "https://api.diegotemkin.com/__cache/spotify-now-playing";
 
-// The token stays in one Worker's memory; the song is also shared through the edge cache below.
+// The token and the latest song stay in one Worker's memory.
 let token: { value: string; expires: number } | null = null;
 let recent: { song: Song | null; at: number } | null = null;
 let coolingUntil = 0;
@@ -24,26 +23,6 @@ export function resetSpotifyToken() {
   token = null;
   recent = null;
   coolingUntil = 0;
-}
-
-const edgeCache = () =>
-  typeof caches === "undefined"
-    ? null
-    : (caches as unknown as { default: Cache }).default;
-
-async function cachedSong(): Promise<{ song: Song | null } | null> {
-  const hit = await edgeCache()?.match(new Request(CACHE_KEY));
-  return hit ? hit.json() : null;
-}
-
-async function shareSong(song: Song | null) {
-  await edgeCache()?.put(
-    new Request(CACHE_KEY),
-    Response.json(
-      { song },
-      { headers: { "Cache-Control": `max-age=${SONG_SECONDS}` } },
-    ),
-  );
 }
 
 // After a failure, wait before asking Spotify again, for as long as its Retry-After says.
@@ -114,12 +93,6 @@ export async function currentSong(
   if (recent && now - recent.at < SONG_SECONDS * 1000) return recent.song;
   if (now < coolingUntil) throw new Error("Spotify is cooling down");
 
-  const shared = await cachedSong();
-  if (shared) {
-    recent = { song: shared.song, at: now };
-    return shared.song;
-  }
-
   const settings = {
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET,
@@ -144,6 +117,5 @@ export async function currentSong(
   const song =
     response.status === 204 ? null : playingSong(await response.json());
   recent = { song, at: now };
-  await shareSong(song);
   return song;
 }

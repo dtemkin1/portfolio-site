@@ -10,7 +10,7 @@ import {
 import { type GitHubEnv, githubRequest, readBuilding } from "./github";
 import { serviceEnded } from "./night";
 import { currentSong, type SpotifyEnv } from "./spotify";
-import { upstreamTimeout } from "./upstream";
+import { edgeCache, upstreamTimeout } from "./upstream";
 import { readWeather, WEATHER_URL } from "./weather";
 import { liveRadio, WMBR_INFO } from "./wmbr";
 
@@ -34,6 +34,10 @@ const CACHE_SECONDS = {
   wmbr: 30,
   wmbrShow: 300,
 };
+
+// Visitors in one data center share the whole feed for a moment, so most polls fetch nothing.
+const FEED_SECONDS = 15;
+const FEED_KEY = "https://api.diegotemkin.com/__cache/live-feed";
 
 async function upstream(
   url: string | Request,
@@ -101,6 +105,20 @@ async function readFeed(env: Env): Promise<LiveFeed> {
   };
 }
 
+async function sharedFeed(env: Env): Promise<LiveFeed> {
+  const cache = edgeCache();
+  const hit = await cache?.match(new Request(FEED_KEY));
+  if (hit) return hit.json();
+  const feed = await readFeed(env);
+  await cache?.put(
+    new Request(FEED_KEY),
+    Response.json(feed, {
+      headers: { "Cache-Control": `max-age=${FEED_SECONDS}` },
+    }),
+  );
+  return feed;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const origin = request.headers.get("Origin") ?? "";
@@ -110,7 +128,7 @@ export default {
     if (new URL(request.url).pathname !== "/live") {
       return new Response("Not found", { status: 404 });
     }
-    return Response.json(await readFeed(env), {
+    return Response.json(await sharedFeed(env), {
       headers: {
         "Access-Control-Allow-Origin": origin,
         "Cache-Control": "no-store",

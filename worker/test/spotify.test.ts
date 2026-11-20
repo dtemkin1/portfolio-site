@@ -137,27 +137,3 @@ test("a failed token refresh also starts a cooldown", async () => {
   await expect(currentSong(env, 10_000)).rejects.toThrow();
   expect(requests).toHaveLength(asked);
 });
-
-test("the song is shared through the edge cache when there is one", async () => {
-  const stored = new Map<string, Response>();
-  vi.stubGlobal("caches", {
-    default: {
-      match: async (key: Request) => stored.get(key.url)?.clone(),
-      put: async (key: Request, value: Response) => {
-        stored.set(key.url, value);
-      },
-    },
-  });
-  try {
-    await currentSong(env, 0);
-    resetSpotifyToken();
-    const asked = requests.length;
-    expect(await currentSong(env, 1_000)).toEqual({
-      song: "Humming",
-      artist: "Gracie Abrams, Aaron Dessner",
-    });
-    expect(requests).toHaveLength(asked);
-  } finally {
-    vi.unstubAllGlobals();
-  }
-});
