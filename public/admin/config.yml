@@ -94,7 +94,7 @@ collections:
         name: "publications"
         widget: "list"
         required: false
-        hint: "BibTeX keys of works on ORCID, like cong2024nbs."
+        hint: "BibTeX keys of works on ORCID, like congNbSPolicyCommunication2025."
         pattern:
           ['^[^\s,]+(,[^\s,]+)*$', "Each key needs a value, with no spaces"]
       - label: "Links"

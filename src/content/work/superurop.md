@@ -7,9 +7,9 @@ tags:
   - Optimization
   - Category Theory
 publications:
-  - temkin2025category
+  - temkinUsingCategoryTheory2025
   - temkinCoDesignFrameworkSchool2026
-  - temkin2026urban
+  - temkinUrbanBusNetwork2026
 ---
 
 Cities and school districts face persistent challenges in designing bus systems that are efficient, reliable, and equitable under limited fleet, staffing, budget, and accessibility constraints. For my SuperUROP at MIT's Laboratory for Information and Decision Systems and Bachelor's thesis, I developed a co-design framework for bus network redesign using the monotone theory of co-design from applied category theory.

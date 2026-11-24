@@ -10,7 +10,7 @@ tags:
   - Sustainability
   - Mapping
 publications:
-  - cong2024nbs
+  - congNbSPolicyCommunication2025
 links:
   - label: Visit the dashboard
     url: https://dtemkin1.github.io/dusp-nbs/

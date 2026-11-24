@@ -32,7 +32,7 @@ To show a publication on a work page, list its BibTeX key from ORCID under `publ
 
 ```yaml
 publications:
-  - cong2024nbs
+  - congNbSPolicyCommunication2025
 ```
 
 A work with no BibTeX on ORCID goes by its ORCID put code. A key that doesn't match a work on ORCID fails the build.
