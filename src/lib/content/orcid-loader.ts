@@ -33,13 +33,7 @@ export type OrcidWork = {
       "external-id-relationship"?: string | null;
     }[];
   } | null;
-  contributors?: {
-    contributor?: {
-      "credit-name"?: Value;
-      "contributor-orcid"?: { path?: string | null } | null;
-      "contributor-attributes"?: { "contributor-role"?: string | null } | null;
-    }[];
-  } | null;
+  contributors?: { contributor?: { "credit-name"?: Value }[] } | null;
   citation?: { "citation-type"?: string; "citation-value"?: string } | null;
   country?: Value;
 };
@@ -47,6 +41,10 @@ export type OrcidWork = {
 // orcid to csl types
 const TYPES: Record<string, { type: CSLType; genre?: string } | undefined> = {
   "journal-article": { type: "article-journal" },
+  "conference-paper": { type: "paper-conference" },
+  preprint: { type: "article", genre: "Preprint" },
+  report: { type: "report" },
+  "working-paper": { type: "report", genre: "Working paper" },
   "book-chapter": { type: "chapter" },
   "dissertation-thesis": { type: "thesis" },
   "conference-poster": { type: "speech", genre: "Poster presentation" },
@@ -59,33 +57,13 @@ const TYPES: Record<string, { type: CSLType; genre?: string } | undefined> = {
 
 const COUNTRIES = new Intl.DisplayNames(["en"], { type: "region" });
 
-// credit roles that don't mean author
-const NOT_AUTHOR = new Set([
-  "supervision",
-  "editor",
-  "chair-or-translator",
-  "support-staff",
-]);
-const roleName = (role: string) =>
-  role.toLowerCase().split("/").filter(Boolean).pop() ?? "";
-
-// orcid lists person once per role for some reason...
-function authorsOf(work: OrcidWork): CSLName[] {
-  const people = new Map<string, { name: string; author: boolean }>();
-  for (const person of work.contributors?.contributor ?? []) {
-    const name = person["credit-name"]?.value?.trim();
-    if (!name) continue;
-    const key = person["contributor-orcid"]?.path ?? name;
-    const role = person["contributor-attributes"]?.["contributor-role"];
-    const author = !role || !NOT_AUTHOR.has(roleName(role));
-    people.set(key, {
-      name: people.get(key)?.name ?? name,
-      author: Boolean(people.get(key)?.author) || author,
-    });
-  }
-  return [...people.values()]
-    .filter(({ author }) => author)
-    .map(({ name }) => parseName(name));
+// BibTeX (from Zotero) says who the authors are; without it, everyone ORCID lists, once each
+function authorsOf(work: OrcidWork, csl: Partial<CSL>): CSLName[] {
+  if (csl.author?.length) return csl.author;
+  const names = (work.contributors?.contributor ?? []).flatMap(
+    (person) => person["credit-name"]?.value?.trim() || [],
+  );
+  return [...new Set(names)].map(parseName);
 }
 
 function bibtex(work: OrcidWork): Partial<CSL> {
@@ -151,7 +129,7 @@ export function fromOrcid(work: OrcidWork): OrcidEntry | null {
       type === "thesis"
         ? sentenceCase(csl.genre ?? "Thesis")
         : (kind.genre ?? csl.genre),
-    author: authorsOf(work),
+    author: authorsOf(work, csl),
     issued: {
       "date-parts": [
         date.length
@@ -181,31 +159,55 @@ export function fromOrcid(work: OrcidWork): OrcidEntry | null {
 }
 
 type Summary = { "put-code": number; "display-index"?: string | null };
+type WorkList = {
+  "last-modified-date"?: { value?: number } | null;
+  group?: { "work-summary": Summary[] }[];
+};
+type Bulk = { bulk?: ({ work: OrcidWork } | { error: unknown })[] };
 
-// work list only has summaries, so yoink highest priority for full info.
+// ORCID returns at most 100 works per request
+const BULK = 100;
+
+// Reads every public work, taking the copy starred on ORCID when sources disagree.
+// Returns no works when the record hasn't changed since `since`.
 export async function orcidWorks(
   fetchJson: (path: string) => Promise<unknown>,
-): Promise<OrcidWork[]> {
-  const { group = [] } = (await fetchJson("works")) as {
-    group?: { "work-summary": Summary[] }[];
-  };
+  since?: number,
+): Promise<{ modified?: number; works?: OrcidWork[] }> {
+  const list = (await fetchJson("works")) as WorkList;
+  const modified = list["last-modified-date"]?.value ?? undefined;
+  if (since !== undefined && modified === since) return { modified };
+
   const index = (summary: Summary) => Number(summary["display-index"] ?? 0);
-  return Promise.all(
-    group.map(({ "work-summary": summaries }) => {
-      const preferred = summaries.reduce((a, b) =>
-        index(b) > index(a) ? b : a,
-      );
-      return fetchJson(`work/${preferred["put-code"]}`) as Promise<OrcidWork>;
-    }),
+  const codes = (list.group ?? []).map(
+    ({ "work-summary": summaries }) =>
+      summaries.reduce((a, b) => (index(b) > index(a) ? b : a))["put-code"],
   );
+  const works = new Map<number, OrcidWork>();
+  for (let i = 0; i < codes.length; i += BULK) {
+    const batch = codes.slice(i, i + BULK);
+    const { bulk = [] } = (await fetchJson(`works/${batch.join(",")}`)) as Bulk;
+    for (const item of bulk) {
+      if ("error" in item) {
+        throw new Error(
+          `ORCID couldn't return one of works ${batch.join(", ")}.`,
+        );
+      }
+      works.set(item.work["put-code"], item.work);
+    }
+  }
+  // bulk answers come back in their own order
+  return { modified, works: codes.flatMap((code) => works.get(code) ?? []) };
 }
+
+type Cache = { modified?: number; works: OrcidWork[] };
 
 export function orcidLoader(profile: string): Loader {
   const id = new URL(profile).pathname.slice(1);
   return {
     name: "orcid",
-    load: async ({ store, parseData, logger }) => {
-      const all = await orcidWorks(async (path) => {
+    load: async ({ store, meta, parseData, logger }) => {
+      const fetchJson = async (path: string) => {
         const response = await fetch(
           `https://pub.orcid.org/v3.0/${id}/${path}`,
           {
@@ -215,7 +217,27 @@ export function orcidLoader(profile: string): Loader {
         );
         if (!response.ok) throw new Error(`ORCID ${path}: ${response.status}`);
         return response.json();
-      });
+      };
+
+      // The raw works are kept between local builds, so an unchanged record isn't refetched,
+      // and `astro dev` still works offline. CI starts empty, so it always fetches.
+      const saved = meta.get("works");
+      const cache: Cache | undefined = saved ? JSON.parse(saved) : undefined;
+      let all: OrcidWork[];
+      try {
+        const { modified, works } = await orcidWorks(
+          fetchJson,
+          cache?.modified,
+        );
+        all = works ?? cache!.works;
+        meta.set("works", JSON.stringify({ modified, works: all }));
+      } catch (cause) {
+        if (!cache) throw cause;
+        logger.warn(
+          `Couldn't reach ORCID (${(cause as Error).message}), so using the works from the last build.`,
+        );
+        all = cache.works;
+      }
       const works: OrcidEntry[] = [];
       for (const work of all) {
         const entry = fromOrcid(work);

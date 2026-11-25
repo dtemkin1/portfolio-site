@@ -2,9 +2,12 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 
 import {
+  coauthors,
+  isPresentation,
+  link,
   newestFirst,
   parseName,
-  references,
+  venueLine,
 } from "../lib/content/publications";
 import { SITE } from "../lib/site";
 import { pageLink } from "../lib/content/work";
@@ -26,44 +29,73 @@ if (!entries) {
   }
 }
 
-const publications = newestFirst(
+const self = parseName(SITE.name);
+const names = new Intl.ListFormat("en", { type: "conjunction" });
+
+const list = newestFirst(
   (entries ?? (await getCollection("publications"))).map(({ id, data }) => ({
     id,
     ...data,
   })),
-);
+).map((publication) => {
+  const authors = coauthors(publication, self);
+  const mine = new Set(authors.filter(([, me]) => me).map(([name]) => name));
+  return {
+    title: publication.title,
+    href: link(publication),
+    // "A, B, and C" with my name picked out
+    authors: names
+      .formatToParts(authors.map(([name]) => name))
+      .map(({ type, value }) => ({
+        value,
+        me: type === "element" && mine.has(value),
+      })),
+    venue: venueLine(publication),
+    note: publication.note,
+    project: projects.get(publication.id),
+    presentation: isPresentation(publication),
+  };
+});
 
-const list = references(publications, parseName(SITE.name)).map(
-  (reference, i) => ({
-    ...reference,
-    note: publications[i].note,
-    project: projects.get(reference.id),
-  }),
-);
+const groups = [
+  { title: "Publications", items: list.filter((item) => !item.presentation) },
+  { title: "Presentations", items: list.filter((item) => item.presentation) },
+].filter(({ items }) => items.length > 0);
 ---
 
-<ul class="entries">
-  {list.map(({ html, note, project }) => (
-    <li>
-      <Fragment set:html={html} />
-      {note && <span class="aside">{note}</span>}
-      {project && (
-        <span class="aside">
-          Project: <a href={project.href}>{project.title}</a>
-        </span>
-      )}
-    </li>
-  ))}
-</ul>
+{groups.map(({ title, items }) => (
+  <>
+    {groups.length > 1 && <h3>{title}</h3>}
+    <ul class="entries">
+      {items.map(({ title, href, authors, venue, note, project }) => (
+        <li>
+          {href ? <a href={href}>{title}</a> : <span>{title}</span>}
+          {authors.length > 0 && (
+            <span class="aside">
+              {authors.map(({ value, me }) =>
+                me ? <strong>{value}</strong> : value,
+              )}
+            </span>
+          )}
+          <span class="aside">{venue}</span>
+          {note && <span class="aside">{note}</span>}
+          {project && (
+            <span class="aside">
+              Project: <a href={project.href}>{project.title}</a>
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </>
+))}
 
 <style>
-  /* hanging indent */
-  li {
-    padding-left: 1.5rem;
-    text-indent: -1.5rem;
+  h3 {
+    font-size: 1.125rem;
   }
 
-  .aside {
-    text-indent: 0;
+  h3 + .entries {
+    margin-top: 0.5rem;
   }
 </style>

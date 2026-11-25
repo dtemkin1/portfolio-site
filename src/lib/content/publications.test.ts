@@ -1,11 +1,14 @@
 import { expect, test } from "vitest";
 
 import {
-  authorName,
+  coauthors,
+  dateLabel,
+  isPresentation,
+  link,
   newestFirst,
   parseName,
   type Publication,
-  references,
+  venueLine,
 } from "./publications";
 
 const temkin = { family: "Temkin", given: "Diego" };
@@ -26,17 +29,13 @@ const chapter: Publication & { id: string } = {
   id: "chapter",
   type: "chapter",
   author: [{ family: "Cong", given: "Cong" }, temkin],
-  issued: { "date-parts": [[2024]] },
+  issued: { "date-parts": [[2025]] },
   title: "NbS and Policy Communication",
   "container-title":
-    "Nature-Based Solutions in Supporting Sustainable Development Goals: Theory and Practice",
-  editor: [
-    { family: "Pan", given: "Haozhi" },
-    { family: "Cong", given: "Cong" },
-  ],
-  page: "153-172",
+    "Nature-Based Solutions in Supporting Sustainable Development Goals",
   publisher: "Elsevier",
   DOI: "10.1016/B978-0-443-21782-1.00008-7",
+  URL: "https://www.elsevier.com/",
 };
 
 const talk: Publication & { id: string } = {
@@ -50,20 +49,6 @@ const talk: Publication & { id: string } = {
   "event-place": "Toronto, ON, Canada",
 };
 
-// The reference as a reader sees it, without the markup.
-function text(html: string) {
-  let previous;
-  do {
-    previous = html;
-    html = html.replace(/<[^>]+>/g, "");
-  } while (html !== previous);
-  return html.replace(/&#38;/g, "&").trim();
-}
-const [thesisRef, chapterRef, talkRef] = references(
-  [thesis, chapter, talk],
-  temkin,
-);
-
 test("plain-text names take the last word as the family name", () => {
   expect(parseName("Diego Temkin")).toEqual(temkin);
   expect(parseName(" Anson Forest Stewart ")).toEqual({
@@ -73,76 +58,59 @@ test("plain-text names take the last word as the family name", () => {
   expect(parseName("Plato")).toEqual({ family: "Plato" });
 });
 
-test("authors are written the way APA writes them", () => {
-  expect(authorName(temkin)).toBe("Temkin, D.");
-  expect(authorName({ family: "Stewart", given: "Anson Forest" })).toBe(
-    "Stewart, A. F.",
-  );
-  expect(authorName({ family: "Plato" })).toBe("Plato");
+test("dates show the month and year, or just the year when that's all there is", () => {
+  expect(dateLabel(talk)).toBe("Jun 2026");
+  expect(dateLabel(chapter)).toBe("2025");
 });
 
-test("a thesis: the year, then the kind of work and school in brackets, with no URL or note", () =>
-  expect(text(thesisRef.html)).toBe(
-    "Temkin, D. (2026). A Co-Design Framework for School Bus Network Redesign [Bachelor’s thesis, Massachusetts Institute of Technology].",
+test("a thesis: its kind, the school, and the date", () =>
+  expect(venueLine(thesis)).toBe(
+    "Bachelor's thesis, Massachusetts Institute of Technology, May 2026",
   ));
 
-test("a chapter: the editors, the book in italics, the pages, and the publisher, with no DOI typed out", () => {
-  expect(text(chapterRef.html)).toBe(
-    "Cong, C., & Temkin, D. (2024). NbS and Policy Communication. In H. Pan & C. Cong (Eds.), Nature-Based Solutions in Supporting Sustainable Development Goals: Theory and Practice (pp. 153–172). Elsevier.",
-  );
-  expect(chapterRef.html).toContain(
-    "<i>Nature-Based Solutions in Supporting Sustainable Development Goals: Theory and Practice</i>",
-  );
-});
-
-test("a talk: the full date, the label APA uses, then the event and place", () =>
-  expect(text(talkRef.html)).toBe(
-    "Temkin, D., & Zardini, G. (2026, June 24). Urban Bus Network Co-Design [Conference presentation]. TransitData 2026, Toronto, ON, Canada.",
+test("a chapter: the book it's in, the publisher, and the year", () =>
+  expect(venueLine(chapter)).toBe(
+    "Chapter in Nature-Based Solutions in Supporting Sustainable Development Goals, Elsevier, 2025",
   ));
 
-test("my name is bold among the authors, and nowhere else", () => {
-  expect(chapterRef.html).toContain(
-    "Cong, C., &#38; <strong>Temkin, D.</strong>",
-  );
-  expect(chapterRef.html.match(/<strong>/g)).toHaveLength(1);
+test("a talk: its kind, the event, the place, and the date", () =>
+  expect(venueLine(talk)).toBe(
+    "Conference presentation, TransitData 2026, Toronto, ON, Canada, Jun 2026",
+  ));
+
+test("a work with no genre says what kind it is", () =>
+  expect(
+    venueLine({
+      ...talk,
+      type: "paper-conference",
+      genre: undefined,
+      "container-title": "TRB Annual Meeting",
+      "event-title": undefined,
+    }),
+  ).toBe(
+    "Conference paper, TRB Annual Meeting, Toronto, ON, Canada, Jun 2026",
+  ));
+
+test("authors show only with co-authors, and my name is marked", () => {
+  expect(coauthors(thesis, temkin)).toEqual([]);
+  expect(coauthors(chapter, temkin)).toEqual([
+    ["Cong Cong", false],
+    ["Diego Temkin", true],
+  ]);
 });
 
 test("the title links to the DOI, or else the URL", () => {
-  expect(chapterRef.html).toContain(
-    '<a href="https://doi.org/10.1016/B978-0-443-21782-1.00008-7">NbS and Policy Communication</a>',
+  expect(link(chapter)).toBe(
+    "https://doi.org/10.1016/B978-0-443-21782-1.00008-7",
   );
-  expect(thesisRef.html).toContain(
-    '<i><a href="https://dspace.mit.edu/handle/1721.1/176348">A Co-Design Framework for School Bus Network Redesign</a></i>',
-  );
-  expect(chapterRef.html.match(/<a /g)).toHaveLength(1);
+  expect(link(thesis)).toBe(thesis.URL);
+  expect(link({})).toBeUndefined();
 });
 
-test("a title with ?, parentheses, or & is still found and linked", () =>
-  expect(
-    references(
-      [{ ...chapter, title: "Why Did Ridership Fall? (Buses & Trains)" }],
-      temkin,
-    )[0].html,
-  ).toContain(
-    '<a href="https://doi.org/10.1016/B978-0-443-21782-1.00008-7">Why Did Ridership Fall? (Buses &#38; Trains)</a>',
-  ));
-
-test("a work with no DOI or URL has an unlinked title", () =>
-  expect(talkRef.html).not.toContain("<a "));
-
-test("a title keeps the curly quotes APA gives it, and stays linked", () =>
-  expect(
-    references(
-      [{ ...chapter, title: `The "Last Mile" and Students' Trips` }],
-      temkin,
-    )[0].html,
-  ).toMatch(/<a href="[^"]+">The “Last Mile” and Students’ Trips<\/a>/));
-
-test("references keep the order they're given, under their own ids", () =>
-  expect(references([talk, thesis], temkin).map(({ id }) => id)).toEqual([
-    "talk",
-    "thesis",
-  ]));
+test("talks and posters are presentations; the rest are publications", () => {
+  expect(isPresentation(talk)).toBe(true);
+  expect([thesis, chapter].some(isPresentation)).toBe(false);
+});
 
 test("the newest work comes first, and a bare year sorts after dates in it", () =>
   expect(

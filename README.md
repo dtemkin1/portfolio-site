@@ -26,7 +26,7 @@ Sveltia is in beta, so the script is limited to patch updates. Read its release 
 
 ## Publications
 
-Publications and presentations on the About page load from the public ORCID record (`PROFILES.orcid` in `src/lib/site.ts`) at build time. Edit them on ORCID, then rebuild. If ORCID can't be reached, the build fails.
+Publications and presentations on the About page load from the public ORCID record (`PROFILES.orcid` in `src/lib/site.ts`) at build time. Edit them on ORCID; the site rebuilds every morning, or run the deploy from the Actions tab to update sooner. The authors come from each work's BibTeX on ORCID, or from its contributors when it has none. Locally, an unchanged record isn't refetched, and the last works are used offline. In CI, if ORCID can't be reached, the build fails.
 
 To show a publication on a work page, list its BibTeX key from ORCID under `publications` in the work's front matter, or in the CMS:
 

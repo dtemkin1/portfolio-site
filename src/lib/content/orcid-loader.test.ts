@@ -8,10 +8,7 @@ import {
 } from "./orcid-loader";
 
 // Small works in the shape the ORCID API returns, with only the fields each test needs.
-const person = (name: string, role: string | null = null) => ({
-  "credit-name": { value: name },
-  "contributor-attributes": { "contributor-role": role },
-});
+const person = (name: string) => ({ "credit-name": { value: name } });
 const bibtex = (value: string) => ({
   "citation-type": "bibtex",
   "citation-value": value,
@@ -24,7 +21,6 @@ const work = (fields: Partial<OrcidWork>): OrcidWork => ({
   ...fields,
 });
 
-const SUPERVISION = "http://credit.niso.org/contributor-roles/supervision/";
 const temkin = { family: "Temkin", given: "Diego" };
 
 const thesis = work({
@@ -38,10 +34,10 @@ const thesis = work({
   url: { value: "https://dspace.mit.edu/handle/1721.1/176348" },
   "publication-date": { year: { value: "2026" }, month: { value: "05" } },
   contributors: {
-    contributor: [person("Diego Temkin"), person("Jim Aloisi", SUPERVISION)],
+    contributor: [person("Diego Temkin"), person("Jim Aloisi")],
   },
   citation: bibtex(
-    "@phdthesis{t, type = {Bachelor's Thesis}, school = {Massachusetts Institute of Technology}}",
+    "@phdthesis{t, author = {Temkin, Diego}, type = {Bachelor's Thesis}, school = {Massachusetts Institute of Technology}}",
   ),
 });
 
@@ -59,7 +55,7 @@ const chapter = work({
     ],
   },
   contributors: {
-    contributor: [person("Cong Cong", "author"), person("Diego Temkin")],
+    contributor: [person("Cong Cong"), person("Diego Temkin")],
   },
   citation: bibtex(`@incollection{c,
     booktitle = {Nature-Based Solutions: Theory and Practice},
@@ -137,29 +133,33 @@ test("without BibTeX, a talk's place is its country, and its put code names it",
     "event-place": "Canada",
   }));
 
-test("ORCID's roles decide the authors: a supervisor isn't one", () =>
+test("BibTeX names the authors, so an advisor ORCID lists isn't one", () =>
   expect(fromOrcid(thesis)?.author).toEqual([temkin]));
 
-test("someone listed once per CRediT role is one author, in the place they first appear", () => {
-  const credit = (role: string) =>
-    `http://credit.niso.org/contributor-roles/${role}/`;
-  const me = (role: string) => ({
-    ...person("Diego Temkin", credit(role)),
-    "contributor-orcid": { path: "0009-0007-6324-8029" },
-  });
+test("without BibTeX, everyone ORCID lists is an author, once each, in order", () =>
   expect(
     fromOrcid({
       ...thesis,
+      citation: null,
       contributors: {
         contributor: [
           person("Cong Cong"),
-          me("software"),
-          me("visualization"),
-          person("Jim Aloisi", SUPERVISION),
+          person("Diego Temkin"),
+          person("Diego Temkin"),
         ],
       },
     })?.author,
-  ).toEqual([{ family: "Cong", given: "Cong" }, temkin]);
+  ).toEqual([{ family: "Cong", given: "Cong" }, temkin]));
+
+test("conference papers, preprints, and reports are cited, with the right kind", () => {
+  const kind = (type: string) => {
+    const entry = fromOrcid({ ...chapter, type, citation: null });
+    return entry && [entry.type, entry.genre];
+  };
+  expect(kind("conference-paper")).toEqual(["paper-conference", undefined]);
+  expect(kind("preprint")).toEqual(["article", "Preprint"]);
+  expect(kind("report")).toEqual(["report", undefined]);
+  expect(kind("working-paper")).toEqual(["report", "Working paper"]);
 });
 
 test("a thesis's school can come from ORCID, and isn't treated as a book", () => {
@@ -193,42 +193,59 @@ test("BibTeX that can't be read names the ORCID work it came from", () =>
 test("an unknown kind of work is skipped", () =>
   expect(fromOrcid({ ...thesis, type: "patent" })).toBeNull());
 
-test("the loader reads the work list, then each work in full", async () => {
-  const works: Record<string, OrcidWork> = {
-    "work/229097402": thesis,
-    "work/232377834": chapter,
-  };
+const summary = (code: number, star = "0") => ({
+  "put-code": code,
+  "display-index": star,
+});
+const list = (codes: number[], modified = 1) => ({
+  "last-modified-date": { value: modified },
+  group: codes.map((code) => ({ "work-summary": [summary(code)] })),
+});
+const bulk = (...works: OrcidWork[]) => ({
+  bulk: works.map((work) => ({ work })),
+});
+
+test("the loader reads the work list, then every work in one request, in list order", async () => {
   const asked: string[] = [];
-  const entries = await orcidWorks(async (path) => {
+  const { works } = await orcidWorks(async (path) => {
     asked.push(path);
     return path === "works"
-      ? {
-          group: [229097402, 232377834].map((code) => ({
-            "work-summary": [{ "put-code": code }],
-          })),
-        }
-      : works[path];
+      ? list([229097402, 232377834])
+      : bulk(chapter, thesis);
   });
-  expect(asked).toEqual(["works", "work/229097402", "work/232377834"]);
-  expect(entries).toEqual([thesis, chapter]);
+  expect(asked).toEqual(["works", "works/229097402,232377834"]);
+  expect(works).toEqual([thesis, chapter]);
 });
 
 test("when sources disagree, the loader reads the one starred on ORCID", async () => {
   const asked: string[] = [];
   await orcidWorks(async (path) => {
     asked.push(path);
-    return {
-      group: [
-        {
-          "work-summary": [
-            { "put-code": 1, "display-index": "0" },
-            { "put-code": 2, "display-index": "1" },
-          ],
-        },
-      ],
-    };
+    return path === "works"
+      ? { group: [{ "work-summary": [summary(1, "0"), summary(2, "1")] }] }
+      : bulk();
   });
-  expect(asked).toEqual(["works", "work/2"]);
+  expect(asked).toEqual(["works", "works/2"]);
+});
+
+test("more than 100 works take more than one request", async () => {
+  const asked: string[] = [];
+  const codes = Array.from({ length: 150 }, (_, i) => i + 1);
+  await orcidWorks(async (path) => {
+    asked.push(path);
+    return path === "works" ? list(codes) : bulk();
+  });
+  expect(asked).toHaveLength(3);
+});
+
+test("a record that hasn't changed isn't fetched again", async () => {
+  const asked: string[] = [];
+  const result = await orcidWorks(async (path) => {
+    asked.push(path);
+    return list([1], 5);
+  }, 5);
+  expect(asked).toEqual(["works"]);
+  expect(result).toEqual({ modified: 5 });
 });
 
 test("a DOI that's part-of another work, like the book's, isn't the chapter's", () =>
@@ -247,13 +264,20 @@ test("a DOI that's part-of another work, like the book's, isn't the chapter's", 
     })?.DOI,
   ).toBeUndefined());
 
-// Runs the loader against a fake ORCID API that answers from `responses`.
-async function load(responses: Record<string, unknown>) {
+// Runs the loader against a fake ORCID API that answers from `responses`
+// (or fails, when it's null), with `saved` as the last build's cache.
+async function load(
+  responses: Record<string, unknown> | null,
+  saved?: { modified?: number; works: OrcidWork[] },
+) {
   vi.stubGlobal("fetch", async (url: string) => {
+    if (!responses) throw new Error("offline");
     const path = url.split("/0000-0000-0000-0000/")[1];
     return { ok: true, json: async () => responses[path] };
   });
   const entries = new Map<string, unknown>();
+  const cache = new Map<string, string>();
+  if (saved) cache.set("works", JSON.stringify(saved));
   const warnings: string[] = [];
   const context = {
     store: {
@@ -261,6 +285,10 @@ async function load(responses: Record<string, unknown>) {
       has: (id: string) => entries.has(id),
       set: ({ id, data }: { id: string; data: unknown }) =>
         entries.set(id, data),
+    },
+    meta: {
+      get: (key: string) => cache.get(key),
+      set: (key: string, value: string) => cache.set(key, value),
     },
     parseData: async ({ data }: { data: unknown }) => data,
     logger: {
@@ -275,33 +303,53 @@ async function load(responses: Record<string, unknown>) {
   } finally {
     vi.unstubAllGlobals();
   }
-  return { entries, warnings };
+  return { entries, warnings, cache };
 }
 
 test("a record with no public works warns, and loads nothing", async () => {
-  const { entries, warnings } = await load({ works: { group: [] } });
+  const { entries, warnings } = await load({ works: list([]) });
   expect(entries.size).toBe(0);
   expect(warnings[0]).toMatch(/no public works/);
 });
 
 test("a work of a type the site doesn't cite is skipped with a warning", async () => {
   const { entries, warnings } = await load({
-    works: { group: [{ "work-summary": [{ "put-code": 7 }] }] },
-    "work/7": { ...chapter, "put-code": 7, type: "patent" },
+    works: list([7]),
+    "works/7": bulk({ ...chapter, "put-code": 7, type: "patent" }),
   });
   expect(entries.size).toBe(0);
   expect(warnings[0]).toMatch(/Skipped ORCID work 7: its type, patent/);
 });
 
 test("two works with the same BibTeX key stop the build", async () => {
-  const summary = (code: number) => ({
-    "work-summary": [{ "put-code": code }],
-  });
   await expect(
     load({
-      works: { group: [summary(1), summary(2)] },
-      "work/1": { ...chapter, "put-code": 1 },
-      "work/2": { ...chapter, "put-code": 2 },
+      works: list([1, 2]),
+      "works/1,2": bulk(
+        { ...chapter, "put-code": 1 },
+        { ...chapter, "put-code": 2 },
+      ),
     }),
   ).rejects.toThrow("Two ORCID works share the BibTeX key c");
 });
+
+test("the works are saved, and an unchanged record loads them from there", async () => {
+  const first = await load({
+    works: list([232377834], 9),
+    "works/232377834": bulk(chapter),
+  });
+  const saved = JSON.parse(first.cache.get("works")!);
+  expect(saved).toEqual({ modified: 9, works: [chapter] });
+
+  const { entries } = await load({ works: list([232377834], 9) }, saved);
+  expect([...entries.keys()]).toEqual(["c"]);
+});
+
+test("when ORCID can't be reached, the last build's works are used, with a warning", async () => {
+  const { entries, warnings } = await load(null, { works: [chapter] });
+  expect([...entries.keys()]).toEqual(["c"]);
+  expect(warnings[0]).toMatch(/Couldn't reach ORCID \(offline\)/);
+});
+
+test("when ORCID can't be reached and nothing was saved, the build stops", async () =>
+  expect(load(null)).rejects.toThrow("offline"));

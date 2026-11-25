@@ -20,9 +20,6 @@ importers:
       '@citation-js/plugin-bibtex':
         specifier: 0.9.0
         version: 0.9.0(@citation-js/core@0.9.0)
-      '@citation-js/plugin-csl':
-        specifier: 0.9.0
-        version: 0.9.0(@citation-js/core@0.9.0)
       astro:
         specifier: ^7.4.12
         version: 7.4.12(@types/node@24.19.2)(esbuild@0.28.2)(yaml@2.9.1)
@@ -303,12 +300,6 @@ packages:
 
   '@citation-js/plugin-bibtex@0.9.0':
     resolution: {integrity: sha512-9n8EVP/kq+v7VuoWVI+p8SRE3KikQYd2c78NSRq9btC4b3XzuBA3qFI3uF6xyxbNLPtY7+Y4BQDayta2yrl1zQ==}
-    engines: {node: '>=22.12.0'}
-    peerDependencies:
-      '@citation-js/core': ^0.9.0
-
-  '@citation-js/plugin-csl@0.9.0':
-    resolution: {integrity: sha512-P0uxGr/rE9LaT5mY0T+Xh6JqDc+rdA7U3HDR/tLkiJ1ITRszQVhV9wBaOLc7vwCD+vuwh+m0Bha13hlgZEB7Ng==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       '@citation-js/core': ^0.9.0
@@ -1303,9 +1294,6 @@ packages:
   ci-info@4.5.0:
     resolution: {integrity: sha512-d1uM8k5UZEyPza1n/MG3ko8nKupKN0KJpFsipgPcgaCCvV+IqIfJ+NzTjetlLM+UcXZx3+cLrNr76+eAO7G1Mw==}
     engines: {node: '>=8'}
-
-  citeproc@2.4.63:
-    resolution: {integrity: sha512-68F95Bp4UbgZU/DBUGQn0qV3HDZLCdI9+Bb2ByrTaNJDL5VEm9LqaiNaxljsvoaExSLEXe1/r6n2Z06SCzW3/Q==}
 
   cliui@9.0.1:
     resolution: {integrity: sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w==}
@@ -2955,12 +2943,6 @@ snapshots:
       '@citation-js/name': 0.4.2
       moo: 0.5.3
 
-  '@citation-js/plugin-csl@0.9.0(@citation-js/core@0.9.0)':
-    dependencies:
-      '@citation-js/core': 0.9.0
-      '@citation-js/date': 0.5.1
-      citeproc: 2.4.63
-
   '@clack/core@1.6.0':
     dependencies:
       fast-string-width: 3.0.2
@@ -3910,8 +3892,6 @@ snapshots:
       readdirp: 5.1.1
 
   ci-info@4.5.0: {}
-
-  citeproc@2.4.63: {}
 
   cliui@9.0.1:
     dependencies:
