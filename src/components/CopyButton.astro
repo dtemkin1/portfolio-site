@@ -1,0 +1,62 @@
+---
+interface Props {
+  // id of the element whose text gets copied
+  target: string;
+  label?: string;
+}
+
+const { target, label = "Copy" } = Astro.props;
+---
+
+<span class="copy">
+  <button type="button" data-copy={target} hidden>
+    {label}
+  </button>
+  <span role="status"></span>
+</span>
+
+<script>
+  import "../scripts/copy";
+</script>
+
+<style>
+  .copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  button {
+    padding: 0.25rem 0.75rem;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    background: none;
+    color: var(--wall);
+    font: inherit;
+    font-size: var(--text-small);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover {
+    color: var(--sign-ink);
+  }
+
+  [role="status"] {
+    font-size: var(--text-small);
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    button {
+      min-height: 44px;
+    }
+  }
+
+  @media print {
+    .copy {
+      display: none;
+    }
+  }
+</style>

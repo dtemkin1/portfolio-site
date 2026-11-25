@@ -92,6 +92,7 @@ test("a thesis: the subtitle joins the title, BibTeX says what kind it is, and t
     publisher: "Massachusetts Institute of Technology",
     URL: "https://dspace.mit.edu/handle/1721.1/176348",
     note: "Outstanding Undergraduate Thesis award.",
+    bibtex: thesis.citation!["citation-value"],
   }));
 
 test("a chapter: the DOI, and the book, editors, publisher, and pages come from BibTeX", () =>
@@ -109,6 +110,7 @@ test("a chapter: the DOI, and the book, editors, publisher, and pages come from 
     ],
     publisher: "Elsevier",
     page: "153-172",
+    bibtex: chapter.citation!["citation-value"]!.trim(),
   }));
 
 test("a talk: the event ORCID calls a journal is where it was given, and BibTeX has the city", () =>
@@ -189,6 +191,11 @@ test("BibTeX that can't be read names the ORCID work it came from", () =>
   expect(() => fromOrcid({ ...chapter, citation: bibtex("@book{") })).toThrow(
     "ORCID work 232377834",
   ));
+
+test("the BibTeX is kept exactly as it is on ORCID, and only when there is some", () => {
+  expect(fromOrcid(thesis)?.bibtex).toBe(thesis.citation!["citation-value"]);
+  expect(fromOrcid({ ...thesis, citation: null })).not.toHaveProperty("bibtex");
+});
 
 test("an unknown kind of work is skipped", () =>
   expect(fromOrcid({ ...thesis, type: "patent" })).toBeNull());

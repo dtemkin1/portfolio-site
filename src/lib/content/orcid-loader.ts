@@ -13,6 +13,7 @@ import "@citation-js/plugin-bibtex";
 
 // id used to link work to publication
 export type OrcidEntry = Omit<Partial<CSL>, "id"> & {
+  bibtex?: string;
   id: string;
 };
 
@@ -155,6 +156,11 @@ export function fromOrcid(work: OrcidWork): OrcidEntry | null {
     DOI: doi,
     URL: doi ? undefined : (work.url?.value ?? csl.URL),
     note: work["short-description"]?.trim() || undefined,
+    // the entry exactly as it is on ORCID, for people citing the work
+    bibtex:
+      work.citation?.["citation-type"] === "bibtex"
+        ? work.citation["citation-value"]?.trim() || undefined
+        : undefined,
   });
 }
 

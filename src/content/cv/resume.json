@@ -1,0 +1,219 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Diego A. Temkin",
+    "label": "SM in Transportation student at MIT, researching how students ride transit",
+    "email": "dtemkin@mit.edu",
+    "url": "https://www.diegotemkin.com",
+    "location": {
+      "city": "Cambridge",
+      "region": "MA",
+      "countryCode": "US"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "diego-temkin",
+        "url": "https://www.linkedin.com/in/diego-temkin/"
+      },
+      {
+        "network": "GitHub",
+        "username": "dtemkin1",
+        "url": "https://github.com/dtemkin1"
+      }
+    ]
+  },
+  "education": [
+    {
+      "institution": "Massachusetts Institute of Technology",
+      "studyType": "SM",
+      "area": "Transportation (Networks and Systems)",
+      "location": "Cambridge, MA",
+      "startDate": "2026-09",
+      "endDate": "2028-05"
+    },
+    {
+      "institution": "Massachusetts Institute of Technology",
+      "studyType": "SB",
+      "area": "Computer Science and Engineering and in Planning",
+      "location": "Cambridge, MA",
+      "startDate": "2022-06",
+      "endDate": "2026-05",
+      "score": "4.5/5.0",
+      "courses": [
+        "Distributed Computer Systems Engineering",
+        "Design and Analysis of Algorithms",
+        "Transportation Planning and Policy",
+        "Modeling Pedestrian Activities"
+      ]
+    }
+  ],
+  "work": [
+    {
+      "name": "MIT JTL-Transit Lab",
+      "position": "Graduate Research Assistant",
+      "location": "Cambridge, MA",
+      "startDate": "2026-08",
+      "highlights": []
+    },
+    {
+      "name": "MIT Laboratory for Information and Decision Systems",
+      "position": "CEE Research & Innovation Scholar, Advanced Undergraduate Research Program",
+      "location": "Cambridge, MA",
+      "startDate": "2025-08",
+      "endDate": "2026-05",
+      "highlights": [
+        "Developed a general-purpose bus network redesign framework using monotone co-design theory and Mixed-Integer Linear Programming to jointly optimize cost, coverage, and equity objectives while satisfying fleet, labor, and policy constraints.",
+        "Built integrated data pipelines combining OpenStreetMap networks, estimated travel times, OD demand, and ACS demographic data to generate transparent Pareto frontiers for multi-objective transit planning tradeoff analysis.",
+        "Applied the framework to a real-world school bus network in Framingham, MA to evaluate the existing routing system, generate alternative designs, and demonstrate structurally achievable improvements in efficiency, coverage, and accessibility."
+      ]
+    },
+    {
+      "name": "Washington Metropolitan Area Transit Authority",
+      "position": "Junior Associate Engineer, Reliability Engineering & Asset Management",
+      "location": "Washington, DC",
+      "startDate": "2025-06",
+      "endDate": "2025-08",
+      "highlights": [
+        "Supported data governance efforts in a centralized transit asset management database to streamline analysis for more than 500,000 assets and work orders.",
+        "Integrated information from multiple sources to create a comprehensive asset management dashboard, enabling real-time monitoring and decision-making.",
+        "Designed and deployed a department-wide web application to spatially identify choke points in asset rehabilitation efforts, used to enhance data-driven prioritization of financial resources."
+      ]
+    },
+    {
+      "name": "U.S. DOT Volpe National Transportation Systems Center",
+      "position": "Student Trainee, Innovative Research Design and Deployment Division",
+      "location": "Cambridge, MA",
+      "startDate": "2024-06",
+      "endDate": "2025-05",
+      "highlights": [
+        "Created analysis and validation pipelines for the cross-agency Work Zone Data Exchange (WZDx) project, used by over 27 states, to facilitate open standard development.",
+        "Documented and developed tools for interfacing with the General Modeling Network Specification (GMNS), allowing for increased ease-of-use for modeling real-world transportation networks.",
+        "Supported the interdepartmental U.S. DOT AI Working Group, enhancing the ability for key stakeholders to engage with modern technological developments."
+      ]
+    },
+    {
+      "name": "MIT Department of Urban Studies and Planning",
+      "position": "Data Science and GIS Researcher",
+      "location": "Cambridge, MA",
+      "startDate": "2023-06",
+      "endDate": "2024-06",
+      "highlights": [
+        "Analyzed nature-based urban infrastructure solutions research data and developed a digital platform that can be used in community outreach to implement priorities.",
+        "Integrated spatial data analysis and GIS software in Python to create an online prototype for digital mapping and deployed a final iteration using a React front-end.",
+        "Configured Linux server infrastructure to host and manage web production, enabling widespread usage."
+      ]
+    },
+    {
+      "name": "Plasma Science and Fusion Center at MIT",
+      "position": "Machine Learning and Plasma Science Researcher",
+      "location": "Cambridge, MA",
+      "startDate": "2023-02",
+      "endDate": "2023-06",
+      "highlights": [
+        "Created a digital adaptation of the long-standing Alcator C-Mod tokamak experiment, which was operated for 25 years and took 50k shots (instances) of plasma experiments.",
+        "Constructed a generative surrogate model that can predict and categorize plasma current state, in order to evaluate the model's applicability to future experiments as a fast predictor of performance.",
+        "Practiced machine learning applications in plasma science and contributed to this field through hands-on research and experimentation."
+      ]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Student Information Processing Board",
+      "position": "Student Developer, Member-at-Large",
+      "startDate": "2025-02",
+      "summary": "Develop and spearhead the creation of multiple web applications using modern frameworks (such as React, Svelte, Node.js, etc.) to enhance the technological experience of students, used by thousands of students on a daily basis."
+    },
+    {
+      "organization": "Dormitory Council",
+      "position": "President",
+      "startDate": "2025-05",
+      "endDate": "2026-05",
+      "summary": "Advocated for more than 3,500 undergraduate students residing in university housing to administrators. Engaged with various stakeholders across the Institute to advance policy issues and pilot programs relevant to student life, managing and allocating a budget of over $75,000."
+    }
+  ],
+  "awards": [
+    {
+      "title": "MIT Karl Taylor Compton Prize",
+      "awarder": "MIT",
+      "date": "2026"
+    },
+    {
+      "title": "MIT DUSP Outstanding Undergraduate Thesis",
+      "awarder": "MIT Department of Urban Studies and Planning",
+      "date": "2026"
+    },
+    {
+      "title": "QuestBridge National College Match Scholar",
+      "awarder": "QuestBridge",
+      "date": "2021"
+    },
+    {
+      "title": "HSF Scholar",
+      "awarder": "Hispanic Scholarship Fund",
+      "date": "2022"
+    },
+    {
+      "title": "National Hispanic Scholar",
+      "awarder": "College Board",
+      "date": "2021"
+    },
+    {
+      "title": "National Rural and Small Town Scholar",
+      "awarder": "College Board",
+      "date": "2021"
+    },
+    {
+      "title": "AP Scholar with Distinction",
+      "awarder": "College Board",
+      "date": "2021"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming Languages",
+      "keywords": [
+        "Python",
+        "TypeScript",
+        "Java",
+        "C",
+        "C#",
+        "SQL",
+        "RISC-V Assembly",
+        "Go",
+        "Dafny"
+      ]
+    },
+    {
+      "name": "Methods",
+      "keywords": [
+        "Optimization",
+        "Pareto-front analysis",
+        "Applied category theory",
+        "GIS",
+        "Machine learning"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Native"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Software Development"
+    },
+    {
+      "name": "Data Science"
+    },
+    {
+      "name": "Transportation Operations and Planning"
+    }
+  ]
+}

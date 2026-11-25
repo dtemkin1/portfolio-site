@@ -9,6 +9,7 @@ import {
   parseName,
   type Publication,
   venueLine,
+  writingSections,
 } from "./publications";
 
 const temkin = { family: "Temkin", given: "Diego" };
@@ -105,6 +106,18 @@ test("the title links to the DOI, or else the URL", () => {
   );
   expect(link(thesis)).toBe(thesis.URL);
   expect(link({})).toBeUndefined();
+});
+
+test("works fill a Publications and a Presentations section, and an empty one is left out", () => {
+  const sections = (list: (typeof talk)[]) =>
+    writingSections(list.map((data) => ({ data }))).map(
+      ({ title, entries }) => [title, entries.map(({ data }) => data.id)],
+    );
+  expect(sections([talk, thesis, chapter])).toEqual([
+    ["Publications", ["thesis", "chapter"]],
+    ["Presentations", ["talk"]],
+  ]);
+  expect(sections([thesis])).toEqual([["Publications", ["thesis"]]]);
 });
 
 test("talks and posters are presentations; the rest are publications", () => {

@@ -1,6 +1,8 @@
 import type { CSLName } from "@citation-js/core";
 import { z } from "astro/zod";
 
+import { monthYearLabel } from "./work";
+
 // family name is required <3
 const name = z.looseObject({
   family: z.string().min(1),
@@ -23,6 +25,7 @@ export const publicationSchema = z.looseObject({
   "event-place": z.string().optional(),
   publisher: z.string().optional(),
   note: z.string().optional(),
+  bibtex: z.string().optional(),
   DOI: z.string().optional(),
   URL: z.url().optional(),
 });
@@ -38,16 +41,10 @@ export function parseName(text: string): CSLName {
 const fullName = ({ given, family }: CSLName) =>
   [given, family].filter(Boolean).join(" ");
 
-const MONTHS = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  timeZone: "UTC",
-});
-
 // "Jun 2026", or "2025" when ORCID has only the year
 export function dateLabel({ issued }: Pick<Publication, "issued">): string {
   const [year, month] = issued["date-parts"][0];
-  if (!month) return String(year);
-  return `${MONTHS.format(new Date(Date.UTC(year, month - 1)))} ${year}`;
+  return monthYearLabel(year, month);
 }
 
 // what the work is, when the genre doesn't say
@@ -60,8 +57,18 @@ const KINDS: Record<string, string> = {
   speech: "Presentation",
 };
 
-// "Conference presentation, TransitData 2026, Toronto, ON, Canada, Jun 2026"
-export function venueLine(publication: Publication): string {
+// "Conference presentation, TransitData 2026, Toronto, ON, Canada"
+export function venue(
+  publication: Pick<
+    Publication,
+    | "type"
+    | "genre"
+    | "publisher"
+    | "container-title"
+    | "event-title"
+    | "event-place"
+  >,
+): string {
   const { type, genre, publisher } = publication;
   const kind = genre ?? KINDS[type];
   const where = publication["container-title"] ?? publication["event-title"];
@@ -69,12 +76,14 @@ export function venueLine(publication: Publication): string {
     type === "chapter" && where ? `${kind} in ${where}` : [kind, where],
     publisher,
     publication["event-place"],
-    dateLabel(publication),
   ]
     .flat()
     .filter(Boolean)
     .join(", ");
 }
+
+export const venueLine = (publication: Publication) =>
+  `${venue(publication)}, ${dateLabel(publication)}`;
 
 // The authors when there are co-authors, as [name, isMe]; nothing when I wrote it alone.
 export function coauthors(
@@ -89,6 +98,21 @@ export function coauthors(
 
 export const isPresentation = ({ type }: Pick<Publication, "type">) =>
   type === "speech";
+
+// the Publications and Presentations sections a list of works fills, in that order, each keeping its order
+export const writingSections = <T extends { data: Pick<Publication, "type"> }>(
+  works: T[],
+) =>
+  [
+    {
+      title: "Publications",
+      entries: works.filter(({ data }) => !isPresentation(data)),
+    },
+    {
+      title: "Presentations",
+      entries: works.filter(({ data }) => isPresentation(data)),
+    },
+  ].filter(({ entries }) => entries.length > 0);
 
 export const link = ({ DOI, URL }: Pick<Publication, "DOI" | "URL">) =>
   DOI ? `https://doi.org/${DOI}` : URL;

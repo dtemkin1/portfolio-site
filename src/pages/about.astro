@@ -4,11 +4,8 @@ import { getCollection } from "astro:content";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Notes from "../components/Notes.astro";
-import Publications from "../components/Publications.astro";
 import portrait from "../assets/portrait.jpg";
-import { PROFILES } from "../lib/site";
 
-const hasPublications = (await getCollection("publications")).length > 0;
 const hasNotes = (await getCollection("notes")).length > 0;
 
 interface Ridden {
@@ -145,38 +142,12 @@ const formatter = new Intl.ListFormat("en", {
       </li>
     </ol>
 
-    {hasPublications && (
-      <section class="notice prose extras">
-        <h2>Publications and presentations</h2>
-        <Publications />
-        <p>
-          Also on <a href={PROFILES.scholar}>Google Scholar</a> and{" "}
-          <a href={PROFILES.orcid}>ORCID</a>.
-        </p>
-      </section>
-    )}
-
     {hasNotes && (
       <section class="notice prose extras">
         <h2>Elsewhere</h2>
         <Notes />
       </section>
     )}
-
-    <section class="notice prose extras">
-      <h2>Skills and honors</h2>
-      <p>
-        In research, I've used optimization and Pareto-front analysis, applied
-        category theory, GIS, and machine learning. I program in Python,
-        TypeScript, Java, C, C#, SQL, and Go. I speak English and Spanish
-        natively.
-      </p>
-      <p>
-        MIT Karl Taylor Compton Prize, QuestBridge NCM Scholar, HSF Scholar,
-        National Hispanic Scholar, National Rural and Small Town Scholar, and AP
-        Scholar with Distinction.
-      </p>
-    </section>
 
     <section class="ridden">
       <h2>Transit I've ridden</h2>

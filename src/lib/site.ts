@@ -28,3 +28,7 @@ export const COLORS = {
 
 export const pageTitle = (title?: string) =>
   title ? `${title} | ${SITE.name}` : SITE.name;
+
+// a link written out for reading or paper: "doi.org/10.1016/x", "dtemkin@mit.edu"
+export const shortAddress = (href: string) =>
+  href.replace(/^(mailto:|https?:\/\/(www\.)?)/, "").replace(/\/$/, "");

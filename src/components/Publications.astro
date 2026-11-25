@@ -1,27 +1,33 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+import CopyButton from "./CopyButton.astro";
 
 import {
   coauthors,
-  isPresentation,
+  dateLabel,
   link,
   newestFirst,
   parseName,
+  venue,
   venueLine,
 } from "../lib/content/publications";
-import { SITE } from "../lib/site";
+import { SITE, shortAddress } from "../lib/site";
 import { pageLink } from "../lib/content/work";
 import { getWorkPages } from "../lib/content/work-data";
 
 interface Props {
-  entries?: CollectionEntry<"publications">[];
+  entries: CollectionEntry<"publications">[];
+  // link each work to the project page that cites it (not on that page itself)
+  withProjects?: boolean;
+  // the date in its own column, like the CV's other entries
+  dated?: boolean;
 }
 
-const { entries } = Astro.props;
+const { entries, withProjects = false, dated = false } = Astro.props;
 
-// which work page cites each publication
 const projects = new Map<string, { title: string; href: string }>();
-if (!entries) {
+if (withProjects) {
   for (const work of await getWorkPages()) {
     for (const { id } of work.data.publications ?? []) {
       if (!projects.has(id)) projects.set(id, pageLink(work));
@@ -32,70 +38,198 @@ if (!entries) {
 const self = parseName(SITE.name);
 const names = new Intl.ListFormat("en", { type: "conjunction" });
 
-const list = newestFirst(
-  (entries ?? (await getCollection("publications"))).map(({ id, data }) => ({
-    id,
-    ...data,
-  })),
-).map((publication) => {
-  const authors = coauthors(publication, self);
-  const mine = new Set(authors.filter(([, me]) => me).map(([name]) => name));
-  return {
-    title: publication.title,
-    href: link(publication),
-    // "A, B, and C" with my name picked out
-    authors: names
-      .formatToParts(authors.map(([name]) => name))
-      .map(({ type, value }) => ({
-        value,
-        me: type === "element" && mine.has(value),
-      })),
-    venue: venueLine(publication),
-    note: publication.note,
-    project: projects.get(publication.id),
-    presentation: isPresentation(publication),
-  };
-});
-
-const groups = [
-  { title: "Publications", items: list.filter((item) => !item.presentation) },
-  { title: "Presentations", items: list.filter((item) => item.presentation) },
-].filter(({ items }) => items.length > 0);
+const list = newestFirst(entries.map(({ id, data }) => ({ id, ...data }))).map(
+  (publication) => {
+    const authors = coauthors(publication, self);
+    const mine = new Set(authors.filter(([, me]) => me).map(([name]) => name));
+    const href = link(publication);
+    return {
+      id: publication.id,
+      bibtex: publication.bibtex,
+      title: publication.title,
+      href,
+      address: href && shortAddress(href),
+      // "A, B, and C" with my name picked out
+      authors: names
+        .formatToParts(authors.map(([name]) => name))
+        .map(({ type, value }) => ({
+          value,
+          me: type === "element" && mine.has(value),
+        })),
+      venue: dated ? venue(publication) : venueLine(publication),
+      date: dateLabel(publication),
+      note: publication.note,
+      project: projects.get(publication.id),
+    };
+  },
+);
 ---
 
-{groups.map(({ title, items }) => (
-  <>
-    {groups.length > 1 && <h3>{title}</h3>}
-    <ul class="entries">
-      {items.map(({ title, href, authors, venue, note, project }) => (
-        <li>
-          {href ? <a href={href}>{title}</a> : <span>{title}</span>}
-          {authors.length > 0 && (
-            <span class="aside">
-              {authors.map(({ value, me }) =>
-                me ? <strong>{value}</strong> : value,
-              )}
-            </span>
-          )}
-          <span class="aside">{venue}</span>
-          {note && <span class="aside">{note}</span>}
-          {project && (
-            <span class="aside">
-              Project: <a href={project.href}>{project.title}</a>
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
-  </>
-))}
+<ul class:list={["entries", { dated }]}>
+  {list.map((item) => {
+    const title = item.href ? (
+      <a class="title" href={item.href}>
+        {item.title}
+      </a>
+    ) : (
+      <span class="title">{item.title}</span>
+    );
+    return (
+      <li>
+        {dated ? (
+          <div class="head">
+            {title}
+            <span class="when">{item.date}</span>
+          </div>
+        ) : (
+          title
+        )}
+        {item.authors.length > 0 && (
+          <span class="aside">
+            {item.authors.map(({ value, me }) =>
+              me ? <strong>{value}</strong> : value,
+            )}
+          </span>
+        )}
+        <span class="aside venue">{item.venue}</span>
+        {item.note && <span class="aside">{item.note}</span>}
+        {item.project && (
+          <span class="aside project">
+            Project: <a href={item.project.href}>{item.project.title}</a>
+          </span>
+        )}
+        {item.address && <span class="aside address">{item.address}</span>}
+        {item.bibtex && (
+          <details class="aside">
+            <summary>BibTeX</summary>
+            <pre id={`bibtex-${item.id}`}>{item.bibtex}</pre>
+            <CopyButton target={`bibtex-${item.id}`} label="Copy BibTeX" />
+          </details>
+        )}
+      </li>
+    );
+  })}
+</ul>
 
 <style>
-  h3 {
-    font-size: 1.125rem;
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 1.5rem;
   }
 
-  h3 + .entries {
-    margin-top: 0.5rem;
+  .dated {
+    margin-top: 0;
+  }
+
+  /* on the CV, a title reads like the other entry headings */
+  .dated .title {
+    flex: 1 1 22rem;
+    color: var(--sign-ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dated a.title:hover,
+  .dated a.title:focus-visible {
+    text-decoration: underline;
+  }
+
+  /* and its lines match the other entries' second lines */
+  .dated .aside {
+    font-size: inherit;
+  }
+
+  /* the venue in italics, like the other entries' second line */
+  .dated .venue {
+    font-style: italic;
+  }
+
+  /* the project link and the BibTeX toggle stay small, as extras */
+  .dated .project,
+  .dated details.aside {
+    font-size: var(--text-small);
+  }
+
+  .when {
+    font-size: var(--text-small);
+  }
+
+  /* only for paper, where the title can't be clicked */
+  .entries .address {
+    display: none;
+  }
+
+  summary {
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  pre {
+    margin: 0.5rem 0 0;
+    padding: 0.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    tab-size: 2;
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    summary {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+    }
+  }
+
+  /* .entries .aside is display: block, so these need the extra class to win */
+  @media print {
+    details.aside,
+    .project {
+      display: none;
+    }
+
+    .entries .address {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    /* the address line replaces the URL that print adds after links */
+    .title::after {
+      content: none !important;
+    }
+
+    .entries {
+      break-inside: auto;
+    }
+
+    .dated .title {
+      font-size: 10pt;
+    }
+
+    /* dates and link addresses in grey, like the other entries' dates */
+    .dated .when,
+    .dated .address {
+      color: var(--print-grey) !important;
+      font-size: 9pt;
+    }
+
+    .dated > li + li {
+      margin-top: 0.55rem;
+    }
+
+    .dated .aside {
+      margin-top: 0.1rem;
+    }
+
+    li {
+      break-inside: avoid;
+    }
   }
 </style>

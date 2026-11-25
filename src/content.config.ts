@@ -2,6 +2,7 @@ import { glob } from "astro/loaders";
 import { defineCollection, reference } from "astro:content";
 import { z } from "astro/zod";
 
+import { RESUME_DATE } from "./lib/content/cv";
 import { publicationSchema } from "./lib/content/publications";
 import { PROFILES } from "./lib/site";
 import { orcidLoader } from "./lib/content/orcid-loader";
@@ -57,8 +58,73 @@ const notesCollection = defineCollection({
   }),
 });
 
+// the CV, as JSON Resume (cv/resume.json); checks what /cv/ shows, and lets the rest of the standard through
+const date = z.string().regex(RESUME_DATE, "Use YYYY, YYYY-MM, or YYYY-MM-DD");
+const role = {
+  position: z.string().min(1),
+  location: z.string().optional(),
+  startDate: date,
+  endDate: date.optional(),
+  summary: z.string().optional(),
+  highlights: z.array(z.string().min(1)).default([]),
+};
+const cvCollection = defineCollection({
+  loader: glob({ base: "./src/content/cv", pattern: "resume.json" }),
+  schema: z.looseObject({
+    basics: z.looseObject({
+      name: z.string().min(1),
+      label: z.string().optional(),
+      email: z.email(),
+      url: z.httpUrl(),
+      location: z.looseObject({ city: z.string(), region: z.string() }),
+      profiles: z
+        .array(z.looseObject({ username: z.string(), url: z.httpUrl() }))
+        .default([]),
+    }),
+    education: z.array(
+      z.looseObject({
+        institution: z.string().min(1),
+        studyType: z.string().min(1),
+        area: z.string().min(1),
+        location: z.string().optional(),
+        startDate: date,
+        endDate: date.optional(),
+        score: z.string().optional(),
+        courses: z.array(z.string().min(1)).default([]),
+        summary: z.string().optional(),
+      }),
+    ),
+    work: z.array(z.looseObject({ name: z.string().min(1), ...role })),
+    volunteer: z
+      .array(z.looseObject({ organization: z.string().min(1), ...role }))
+      .default([]),
+    awards: z
+      .array(
+        z.looseObject({
+          title: z.string().min(1),
+          awarder: z.string().optional(),
+          date: date.optional(),
+        }),
+      )
+      .default([]),
+    skills: z
+      .array(
+        z.looseObject({
+          name: z.string().min(1),
+          keywords: z.array(z.string()),
+        }),
+      )
+      .default([]),
+    languages: z
+      .array(z.looseObject({ language: z.string(), fluency: z.string() }))
+      .default([]),
+    interests: z.array(z.looseObject({ name: z.string() })).default([]),
+  }),
+});
+
 export const collections = {
   work: workCollection,
   publications: publicationsCollection,
   notes: notesCollection,
+  cv: cvCollection,
 };

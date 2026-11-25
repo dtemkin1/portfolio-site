@@ -1,0 +1,444 @@
+---
+import { getCollection, getEntry } from "astro:content";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CvEntry from "../components/CvEntry.astro";
+import Publications from "../components/Publications.astro";
+import {
+  awarderLine,
+  dateRange,
+  lastCommit,
+  newestFirst,
+} from "../lib/content/cv";
+import { writingSections } from "../lib/content/publications";
+import { PROFILES, shortAddress } from "../lib/site";
+
+const FILE = "src/content/cv/resume.json";
+const cv = await getEntry("cv", "resume");
+if (!cv) throw new Error(`${FILE} is missing.`);
+const {
+  basics,
+  education,
+  work,
+  volunteer,
+  awards,
+  skills,
+  languages,
+  interests,
+} = cv.data;
+const writing = writingSections(await getCollection("publications"));
+
+// in Boston time, so an evening commit late in a month isn't dated the next month
+const updated = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  year: "numeric",
+  timeZone: "America/New_York",
+}).format(lastCommit(FILE));
+
+// printed only, since on screen the nav already links these; written out as addresses because paper can't be clicked
+const contact = [
+  `mailto:${basics.email}`,
+  basics.url,
+  ...basics.profiles.map(({ url }) => url),
+].map((href) => ({ href, label: shortAddress(href) }));
+
+// Experience and Leadership read the same way, under the organization's name
+const role = (
+  org: string,
+  entry: {
+    position: string;
+    location?: string | undefined;
+    startDate: string;
+    endDate?: string | undefined;
+    summary?: string | undefined;
+    highlights: string[];
+  },
+) => ({
+  heading: org,
+  sub: entry.position,
+  place: entry.location,
+  dates: dateRange(entry.startDate, entry.endDate),
+  summary: entry.summary,
+  points: entry.highlights,
+});
+const experience = work.map((entry) => role(entry.name, entry));
+const leadership = volunteer.map((entry) => role(entry.organization, entry));
+
+const skillLines = [
+  ...skills.map(({ name, keywords }) => [name, keywords.join(", ")]),
+  [
+    "Languages",
+    languages
+      .map(({ language, fluency }) => `${language} (${fluency})`)
+      .join(", "),
+  ],
+  ["Interests", interests.map(({ name }) => name).join(", ")],
+].filter(([, items]) => items);
+---
+
+<BaseLayout
+  title={`${basics.name}, CV`}
+  exactTitle
+  description="Diego Temkin's CV: education, research and work experience, publications, presentations, and honors."
+>
+  {/* the page footer is built here because page margins can't read the name from a CSS variable */}
+  <style
+    slot="head"
+    is:inline
+    set:html={`@page { @bottom-center { content: ${JSON.stringify(
+      `${basics.name}, page `,
+    )} counter(page) " of " counter(pages); font: 8pt var(--font-sign), sans-serif; color: var(--print-grey); } }`}
+  />
+  <main id="content" class="wrapper">
+    <div class="cv-head">
+      <div class="top">
+        <h1>
+          <span class="on-screen">CV</span>
+          <span class="on-paper">{basics.name}</span>
+        </h1>
+        {basics.label && <p class="label">{basics.label}</p>}
+        <ul class="files">
+          {import.meta.env.PROD && (
+            <li>
+              <a class="pdf" href="/cv.pdf" download="Diego_Temkin_CV.pdf">
+                Download PDF
+              </a>
+            </li>
+          )}
+          <li>
+            <a href="/cv.json">CV data (JSON Resume)</a>
+          </li>
+        </ul>
+      </div>
+      <p class="updated">Last updated in {updated}</p>
+      <ul class="contact">
+        <li>
+          {basics.location.city}, {basics.location.region}
+        </li>
+        {contact.map(({ href, label }) => (
+          <li>
+            <a href={href}>{label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <section class="notice">
+      <h2>Education</h2>
+      {education.map((degree) => (
+        <CvEntry
+          heading={`${degree.studyType} in ${degree.area}`}
+          sub={degree.institution}
+          place={degree.location}
+          dates={dateRange(degree.startDate, degree.endDate)}
+          points={[
+            degree.summary,
+            degree.score && `GPA: ${degree.score}`,
+            degree.courses.length > 0 &&
+              `Coursework: ${degree.courses.join(", ")}`,
+          ].filter((point): point is string => Boolean(point))}
+        />
+      ))}
+    </section>
+
+    {experience.length > 0 && (
+      <section class="notice">
+        <h2>Experience</h2>
+        {experience.map((entry) => (
+          <CvEntry {...entry} />
+        ))}
+      </section>
+    )}
+
+    {writing.map(({ title, entries }, i) => (
+      <section class="notice">
+        <h2>{title}</h2>
+        <Publications entries={entries} withProjects dated />
+        {/* the Scholar and ORCID line closes the last writing section */}
+        {i === writing.length - 1 && (
+          <p class="elsewhere">
+            Also on <a href={PROFILES.scholar}>Google Scholar</a> and{" "}
+            <a href={PROFILES.orcid}>ORCID</a>.
+          </p>
+        )}
+      </section>
+    ))}
+
+    {awards.length > 0 && (
+      <section class="notice">
+        <h2>Honors</h2>
+        <ul class="honors">
+          {newestFirst(awards).map((award) => (
+            <li>
+              <span>
+                {award.title}
+                {awarderLine(award) && <>, {awarderLine(award)}</>}
+              </span>
+              {award.date && <span class="when">{award.date}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {leadership.length > 0 && (
+      <section class="notice">
+        <h2>Leadership</h2>
+        {leadership.map((entry) => (
+          <CvEntry {...entry} />
+        ))}
+      </section>
+    )}
+
+    {skillLines.length > 0 && (
+      <section class="notice">
+        <h2>Skills</h2>
+        <dl class="skills">
+          {skillLines.map(([label, items]) => (
+            <div>
+              <dt>{label}:</dt>
+              <dd>{items}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .on-paper {
+    display: none;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pdf {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--yellow);
+    border-radius: 4px;
+    color: var(--yellow);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .pdf:hover {
+    background: var(--yellow);
+    color: var(--sign-ink);
+  }
+
+  .updated {
+    margin-top: 0.25rem;
+    color: var(--readout);
+    font-size: var(--text-small);
+  }
+
+  .contact {
+    display: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .notice {
+    margin-top: 1.5rem;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .elsewhere {
+    margin-top: 1rem;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  /* each honor is a row with its year, like the entries, so no bullets */
+  .honors {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .honors li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 1.5rem;
+  }
+
+  .honors li + li {
+    margin-top: 0.25rem;
+  }
+
+  .when {
+    font-size: var(--text-small);
+  }
+
+  .skills {
+    margin: 0;
+  }
+
+  .skills div + div {
+    margin-top: 0.5rem;
+  }
+
+  dt {
+    display: inline;
+    font-weight: 800;
+  }
+
+  dd {
+    display: inline;
+    margin: 0 0 0 0.25em;
+  }
+
+  /* Once the head wraps, the dates sit under the title, so they line up with it. */
+  @media (max-width: 36rem) {
+    .files a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+  }
+
+  /* US Letter everywhere, not each machine's default paper */
+  @page {
+    size: letter;
+    margin: 0.6in 0.6in 0.7in;
+  }
+
+  /* The printed CV is the PDF, so it carries the full name and none of the site around it. */
+  @media print {
+    :global(header.station) {
+      display: none !important;
+    }
+
+    .on-screen,
+    .files,
+    .elsewhere {
+      display: none;
+    }
+
+    main {
+      font-size: 10pt;
+      line-height: 1.35;
+    }
+
+    /* the header is centered over the page, like a letterhead */
+    .cv-head {
+      text-align: center;
+    }
+
+    .top {
+      display: block;
+      margin-top: 0;
+    }
+
+    /* the wall blue carries the name and headings onto paper */
+    h1,
+    .on-paper {
+      color: var(--print-blue) !important;
+    }
+
+    .on-paper {
+      display: inline;
+    }
+
+    h1 {
+      font-size: 24pt;
+      letter-spacing: -0.01em;
+    }
+
+    .label {
+      display: block;
+      font-size: 10pt;
+    }
+
+    .updated {
+      font-size: 9pt;
+      font-style: italic;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.1rem 0;
+      margin-top: 0.3rem;
+      font-size: 9pt;
+    }
+
+    /* thin rules between the items, so the addresses don't run together */
+    .contact li + li {
+      margin-left: 0.6rem;
+      padding-left: 0.6rem;
+      border-left: 0.75pt solid var(--print-grey);
+    }
+
+    /* the contact links are written out as their addresses already */
+    .contact a::after {
+      content: none !important;
+    }
+
+    /* each heading runs into a thin line to the margin, separating the sections */
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 6pt;
+      margin-bottom: 0.4rem;
+      color: var(--print-blue) !important;
+      font-size: 12pt;
+      line-height: 1.1;
+    }
+
+    h2::after {
+      content: "" !important;
+      display: block !important;
+      flex: 1;
+      border-top: 0.75pt solid var(--print-blue);
+    }
+
+    /* on paper a link can't be clicked, so it reads as plain text */
+    main a,
+    .notice :global(a) {
+      text-decoration: none !important;
+    }
+
+    .notice {
+      margin-top: 0.8rem;
+    }
+
+    /* the honors' years in grey, like the entries' dates */
+    .when {
+      color: var(--print-grey) !important;
+      font-size: 9pt;
+    }
+
+    .honors li + li,
+    .skills div + div {
+      margin-top: 0.1rem;
+    }
+  }
+</style>

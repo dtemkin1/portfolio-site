@@ -3,5 +3,8 @@
   "astro.content-intellisense": true,
   "yaml.schemas": {
     "./.astro/collections/notes.schema.json": ["src/content/notes/*.yml"]
+  },
+  "json.schemaDownload.trustedDomains": {
+    "https://raw.githubusercontent.com": true
   }
 }

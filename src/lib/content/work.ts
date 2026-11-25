@@ -8,6 +8,10 @@ export const monthYear = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 
+// "Jun 2026", or "2025" when there's no month
+export const monthYearLabel = (year: number, month?: number) =>
+  month ? monthYear.format(new Date(Date.UTC(year, month - 1))) : String(year);
+
 export const hasPage = (entry: {
   body?: string;
   data: { img?: unknown; publications?: unknown[]; links?: unknown[] };

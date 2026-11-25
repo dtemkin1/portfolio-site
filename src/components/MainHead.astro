@@ -7,12 +7,15 @@ import "../styles/global.css";
 
 interface Props {
   title?: string | undefined;
+  // use the title as is, without the site name after it
+  exactTitle?: boolean | undefined;
   description?: string | undefined;
   image?: { src: string; alt: string } | undefined;
 }
 
 const {
   title,
+  exactTitle,
   description = "Diego Temkin is an SM in Transportation student at MIT and a graduate research assistant in the JTL-Transit Lab.",
   image = {
     src: "/og.png",
@@ -20,7 +23,7 @@ const {
   },
 } = Astro.props;
 
-const fullTitle = pageTitle(title);
+const fullTitle = exactTitle && title ? title : pageTitle(title);
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = new URL(image.src, Astro.site).href;
 

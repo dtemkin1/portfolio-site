@@ -1,0 +1,127 @@
+---
+// One CV entry: what and where on the left, place and dates on the right, then the details.
+interface Props {
+  heading: string;
+  // the role, or the school, on the line under the heading
+  sub?: string | undefined;
+  place?: string | undefined;
+  dates: string;
+  summary?: string | undefined;
+  points?: string[];
+}
+
+const { heading, sub, place, dates, summary, points = [] } = Astro.props;
+---
+
+<div class="entry">
+  <div class="head">
+    <h3>
+      {heading}
+      {sub && <span class="sub">{sub}</span>}
+    </h3>
+    <p class="when">
+      {place && <span>{place}</span>}
+      <span>{dates}</span>
+    </p>
+  </div>
+  {summary && <p>{summary}</p>}
+  {points.length > 0 && (
+    <ul>
+      {points.map((point) => (
+        <li>{point}</li>
+      ))}
+    </ul>
+  )}
+</div>
+
+<style>
+  .entry + .entry {
+    margin-top: 1.5rem;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+  }
+
+  h3 {
+    flex: 1 1 22rem;
+    font-size: 1.125rem;
+    line-height: 1.35;
+  }
+
+  /* the role or school, in italics so the heading leads */
+  .sub {
+    display: block;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .when {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--text-small);
+    text-align: right;
+  }
+
+  ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+  }
+
+  li + li {
+    margin-top: 0.25rem;
+  }
+
+  .entry > p,
+  li {
+    max-width: 70ch;
+  }
+
+  .entry > p {
+    margin-top: 0.5rem;
+  }
+
+  /* Once the head wraps, the dates sit under the heading, so they line up with it. */
+  @media (max-width: 36rem) {
+    .when {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0 1rem;
+      text-align: left;
+    }
+  }
+
+  @media print {
+    .entry {
+      break-inside: avoid;
+    }
+
+    .entry + .entry {
+      margin-top: 0.55rem;
+    }
+
+    h3 {
+      font-size: 10pt;
+    }
+
+    .when {
+      color: var(--print-grey) !important;
+      font-size: 9pt;
+    }
+
+    ul {
+      margin-top: 0.2rem;
+    }
+
+    li + li {
+      margin-top: 0.1rem;
+    }
+
+    .entry > p {
+      margin-top: 0.2rem;
+    }
+  }
+</style>

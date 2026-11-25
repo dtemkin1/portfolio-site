@@ -13,6 +13,7 @@ export type PromptResult =
 const PAGES = new Map([
   ["~", "/"],
   ["home", "/"],
+  ["cv", "/cv/"],
   ["about", "/about/"],
   ["work", "/work/"],
 ]);
@@ -37,7 +38,7 @@ const HELP = [
   ["ls", "list projects"],
   ["cat <project>", "open a project on the board"],
   ["open <project>", "go to a project's page"],
-  ["cd <page>", "go to about, work, or ~"],
+  ["cd <page>", "go to about, work, cv, or ~"],
   ["arrivals", "next Red Line trains at Kendall/MIT"],
   ["whoami", "who runs this station"],
   ["clear", "clear this output"],

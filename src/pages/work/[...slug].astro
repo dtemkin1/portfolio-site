@@ -6,6 +6,7 @@ import Notes from "../../components/Notes.astro";
 import Publications from "../../components/Publications.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getNotes } from "../../lib/content/notes";
+import { writingSections } from "../../lib/content/publications";
 import { onHomeBoard, timeLabel } from "../../lib/content/work";
 import { getWorkPages } from "../../lib/content/work-data";
 
@@ -26,13 +27,15 @@ const { data } = entry;
 const { Content } = await render(entry);
 const hasBody = Boolean(entry.body?.trim());
 
-const publications = await getEntries(data.publications ?? []);
-const missing = (data.publications ?? []).filter((_, i) => !publications[i]);
+const cited = await getEntries(data.publications ?? []);
+const missing = (data.publications ?? []).filter((_, i) => !cited[i]);
 if (missing.length) {
   throw new Error(
     `${entry.id}: ${missing.map(({ id }) => id).join(", ")} isn't the BibTeX key of any public work on ORCID. Check the key, and that the work's visibility is "Everyone".`,
   );
 }
+// one card; the two kinds get their own headings only when the page cites both
+const groups = writingSections(cited);
 const notes = (await getNotes()).filter(
   ({ data }) => data.project?.id === entry.id,
 );
@@ -97,10 +100,19 @@ const isPortrait = data.img && data.img.src.height > data.img.src.width;
       )}
     </div>
 
-    {publications.length > 0 && (
+    {groups.length > 0 && (
       <section class="notice prose writing">
-        <h2>Publications and presentations</h2>
-        <Publications entries={publications} />
+        <h2>
+          {groups.length > 1
+            ? "Publications and presentations"
+            : groups[0].title}
+        </h2>
+        {groups.map(({ title, entries }) => (
+          <>
+            {groups.length > 1 && <h3>{title}</h3>}
+            <Publications entries={entries} />
+          </>
+        ))}
       </section>
     )}
 
@@ -222,6 +234,18 @@ const isPortrait = data.img && data.img.src.height > data.img.src.width;
 
   .writing > h2 {
     margin-top: 0;
+  }
+
+  .writing > h3 {
+    font-size: 1.125rem;
+  }
+
+  .writing > h2 + h3 {
+    margin-top: 1rem;
+  }
+
+  .writing > h3 + :global(.entries) {
+    margin-top: 0.5rem;
   }
 
   .back {
