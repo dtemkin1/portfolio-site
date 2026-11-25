@@ -32,7 +32,7 @@ It becomes three things at build time:
 
 - `/cv/`, the page, dated by the file's last commit
 - `/cv.json`, the full JSON Resume, with the publications from ORCID added
-- `/cv.pdf`, printed from `/cv/` by `scripts/cv-pdf.mjs` at the end of `pnpm build`, using the Google Chrome you have installed
+- `/cv.pdf`, printed from `/cv/` by `src/integrations/cv-pdf.ts` at the end of `astro build`, using the Google Chrome you have installed
 
 A role can link its work page with `"project": "<file name in src/content/work>"`.
 

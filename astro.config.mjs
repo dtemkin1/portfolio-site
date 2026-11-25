@@ -2,10 +2,15 @@
 import { defineConfig, envField, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
+import cvPdf from "./src/integrations/cv-pdf";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.diegotemkin.com",
-  integrations: [sitemap({ filter: (page) => !page.includes("/admin/") })],
+  integrations: [
+    sitemap({ filter: (page) => !page.includes("/admin/") }),
+    cvPdf(),
+  ],
   experimental: { contentIntellisense: true },
   fonts: [
     {
