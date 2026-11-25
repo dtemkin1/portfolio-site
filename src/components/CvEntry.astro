@@ -136,7 +136,12 @@ const {
   }
 
   @media print {
-    .entry {
+    .head {
+      break-after: avoid;
+    }
+
+    .entry > p,
+    li {
       break-inside: avoid;
     }
 

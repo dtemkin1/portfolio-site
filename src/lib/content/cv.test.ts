@@ -6,6 +6,7 @@ import {
   dateRange,
   lastCommit,
   newestFirst,
+  placeName,
   resumeDate,
   resumePublication,
 } from "./cv";
@@ -89,4 +90,12 @@ test("honors go newest first, keeping the order of a tie, with undated ones last
 test("a file's last change is a real date, even when it was never committed", () => {
   expect(lastCommit("src/content/cv/resume.json").getTime()).not.toBeNaN();
   expect(lastCommit("no/such/file.json").getTime()).not.toBeNaN();
+});
+
+test("a location reads the same as free text or as its parts", () => {
+  expect(placeName("Cambridge, MA")).toBe("Cambridge, MA");
+  expect(placeName({ city: "Cambridge", region: "MA" })).toBe("Cambridge, MA");
+  expect(placeName({ city: "Toronto", countryCode: "CA" })).toBe("Toronto, CA");
+  expect(placeName({})).toBeUndefined();
+  expect(placeName()).toBeUndefined();
 });

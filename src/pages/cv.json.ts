@@ -29,6 +29,7 @@ export const GET: APIRoute = async ({ site }) => {
     meta: {
       canonical: new URL("cv.json", site).href,
       lastModified: lastCommit("src/content/cv/resume.json").toISOString(),
+      language: "en",
     },
   });
 };

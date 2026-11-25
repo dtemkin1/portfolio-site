@@ -9,6 +9,8 @@ import {
   dateRange,
   lastCommit,
   newestFirst,
+  type Place,
+  placeName,
 } from "../lib/content/cv";
 import { writingSections } from "../lib/content/publications";
 import { pageLink } from "../lib/content/work";
@@ -37,12 +39,28 @@ const updated = new Intl.DateTimeFormat("en-US", {
   timeZone: "America/New_York",
 }).format(lastCommit(FILE));
 
-// printed only, since on screen the nav already links these; written out as addresses because paper can't be clicked
-const contact = [
-  `mailto:${basics.email}`,
-  basics.url,
-  ...basics.profiles.map(({ url }) => url),
-].map((href) => ({ href, label: shortAddress(href) }));
+// printed only, since on screen the nav already links these; written out as addresses because paper can't be clicked.
+// Two rows, so a wrapped row never starts with a separator: how to reach me, then the scholarly records.
+const SCHOLARLY = new Set(["ORCID", "Google Scholar"]);
+const asLinks = (hrefs: string[]) =>
+  hrefs.map((href) => ({ href, label: shortAddress(href) }));
+const contactRows = [
+  [
+    ...[placeName(basics.location)].filter((text) => text !== undefined),
+    ...asLinks([
+      `mailto:${basics.email}`,
+      basics.url,
+      ...basics.profiles
+        .filter(({ network }) => !SCHOLARLY.has(network))
+        .map(({ url }) => url),
+    ]),
+  ],
+  asLinks(
+    basics.profiles
+      .filter(({ network }) => SCHOLARLY.has(network))
+      .map(({ url }) => url),
+  ),
+].filter((row) => row.length > 0);
 
 // a role's project must be a work page that's published, or the link would go nowhere
 const pages = new Map((await getWorkPages()).map((page) => [page.id, page]));
@@ -64,7 +82,7 @@ const role = (
     position: string;
     url?: string | undefined;
     project?: { id: string } | undefined;
-    location?: string | undefined;
+    location?: Place | undefined;
     startDate: string;
     endDate?: string | undefined;
     summary?: string | undefined;
@@ -74,7 +92,7 @@ const role = (
   heading: org,
   href: entry.url,
   sub: entry.position,
-  place: entry.location,
+  place: placeName(entry.location),
   dates: dateRange(entry.startDate, entry.endDate),
   summary: entry.summary,
   points: entry.highlights,
@@ -86,7 +104,7 @@ const leadership = volunteer.map((entry) => role(entry.organization, entry));
 const skillLines = [
   ...skills.map(({ name, keywords }) => [name, keywords.join(", ")]),
   [
-    "Languages",
+    "Spoken Languages",
     languages
       .map(({ language, fluency }) => `${language} (${fluency})`)
       .join(", "),
@@ -130,16 +148,19 @@ const skillLines = [
         </ul>
       </div>
       <p class="updated">Last updated in {updated}</p>
-      <ul class="contact">
-        <li>
-          {basics.location.city}, {basics.location.region}
-        </li>
-        {contact.map(({ href, label }) => (
-          <li>
-            <a href={href}>{label}</a>
-          </li>
-        ))}
-      </ul>
+      {contactRows.map((row) => (
+        <ul class="contact">
+          {row.map((item) => (
+            <li>
+              {typeof item === "string" ? (
+                item
+              ) : (
+                <a href={item.href}>{item.label}</a>
+              )}
+            </li>
+          ))}
+        </ul>
+      ))}
     </div>
 
     <section class="notice">
@@ -148,7 +169,7 @@ const skillLines = [
         <CvEntry
           heading={`${degree.studyType} in ${degree.area}`}
           sub={degree.institution}
-          place={degree.location}
+          place={placeName(degree.location)}
           dates={dateRange(degree.startDate, degree.endDate)}
           points={[
             degree.summary,
@@ -410,6 +431,10 @@ const skillLines = [
       font-size: 9pt;
     }
 
+    .contact + .contact {
+      margin-top: 0.1rem;
+    }
+
     /* thin rules between the items, so the addresses don't run together */
     .contact li + li {
       margin-left: 0.6rem;
@@ -420,6 +445,11 @@ const skillLines = [
     /* the contact links are written out as their addresses already */
     .contact a::after {
       content: none !important;
+    }
+
+    /* the honors are short, so they stay together on one page */
+    .honors {
+      break-inside: avoid;
     }
 
     /* each heading runs into a thin line to the margin, separating the sections */

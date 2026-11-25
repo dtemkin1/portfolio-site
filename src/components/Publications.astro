@@ -45,7 +45,8 @@ const list = newestFirst(entries.map(({ id, data }) => ({ id, ...data }))).map(
         })),
       venue: dated ? venue(publication) : venueLine(publication),
       date: dateLabel(publication),
-      note: publication.note,
+      // the CV lists honors in their own section, so notes (like an award) stay on the work pages
+      note: dated ? undefined : publication.note,
     };
   },
 );

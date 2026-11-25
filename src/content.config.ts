@@ -59,12 +59,21 @@ const notesCollection = defineCollection({
   }),
 });
 
+const place = z.union([
+  z.string(),
+  z.looseObject({
+    city: z.string().optional(),
+    region: z.string().optional(),
+    countryCode: z.string().optional(),
+  }),
+]);
+
 const role = {
   position: z.string().min(1),
   url: z.httpUrl().optional(),
   // a work page on this site, by its file name
   project: reference("work").optional(),
-  location: z.string().optional(),
+  location: place.optional(),
   startDate: z.string(),
   endDate: z.string().optional(),
   summary: z.string().optional(),
@@ -73,8 +82,13 @@ const role = {
 
 const standard = {
   ...resumeSchema,
-  properties: { ...resumeSchema.properties, $schema: { type: "string" } },
+  properties: Object.fromEntries(
+    Object.entries(resumeSchema.properties).filter(
+      ([key]) => key !== "$schema",
+    ),
+  ),
 } as z.core.JSONSchema.JSONSchema;
+
 const cvCollection = defineCollection({
   loader: glob({ base: "./src/content/cv", pattern: "resume.json" }),
   schema: z.fromJSONSchema(standard).pipe(
@@ -84,9 +98,14 @@ const cvCollection = defineCollection({
         label: z.string().optional(),
         email: z.string(),
         url: z.httpUrl(),
-        location: z.looseObject({ city: z.string(), region: z.string() }),
+        location: place.optional(),
         profiles: z
-          .array(z.looseObject({ username: z.string(), url: z.httpUrl() }))
+          .array(
+            z.looseObject({
+              network: z.string(),
+              url: z.httpUrl(),
+            }),
+          )
           .default([]),
       }),
       education: z.array(
@@ -94,7 +113,7 @@ const cvCollection = defineCollection({
           institution: z.string().min(1),
           studyType: z.string().min(1),
           area: z.string().min(1),
-          location: z.string().optional(),
+          location: place.optional(),
           startDate: z.string(),
           endDate: z.string().optional(),
           score: z.string().optional(),

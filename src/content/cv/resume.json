@@ -20,6 +20,16 @@
         "network": "GitHub",
         "username": "dtemkin1",
         "url": "https://github.com/dtemkin1"
+      },
+      {
+        "network": "ORCID",
+        "username": "0009-0007-6324-8029",
+        "url": "https://orcid.org/0009-0007-6324-8029"
+      },
+      {
+        "network": "Google Scholar",
+        "username": "3dl85osAAAAJ",
+        "url": "https://scholar.google.com/citations?user=3dl85osAAAAJ"
       }
     ]
   },
@@ -41,6 +51,7 @@
       "location": "Cambridge, MA",
       "startDate": "2022-06",
       "endDate": "2026-05",
+      "summary": "Thesis: A Co-Design Framework for School Bus Network Redesign (advisor: Jim Aloisi)",
       "score": "4.5/5.0",
       "courses": [
         "Distributed Computer Systems Engineering",
@@ -54,7 +65,9 @@
     {
       "name": "MIT JTL-Transit Lab",
       "url": "https://mobility.mit.edu/",
+      "description": "Public transit research lab at MIT",
       "position": "Graduate Research Assistant",
+      "type": "full-time",
       "project": "jtl-k12",
       "location": "Cambridge, MA",
       "startDate": "2026-08",
@@ -63,7 +76,9 @@
     {
       "name": "MIT Laboratory for Information and Decision Systems",
       "url": "https://lids.mit.edu/",
+      "description": "MIT's interdepartmental research center for information and decision systems",
       "position": "CEE Research and Innovation Scholar, Advanced Undergraduate Research Program",
+      "type": "part-time",
       "project": "superurop",
       "location": "Cambridge, MA",
       "startDate": "2025-08",
@@ -77,7 +92,9 @@
     {
       "name": "Washington Metropolitan Area Transit Authority",
       "url": "https://www.wmata.com/",
+      "description": "Transit agency for the Washington, DC area, running Metrorail and Metrobus",
       "position": "Junior Associate Engineer, Reliability Engineering and Asset Management",
+      "type": "internship",
       "project": "wmata",
       "location": "Washington, DC",
       "startDate": "2025-06",
@@ -91,7 +108,9 @@
     {
       "name": "U.S. DOT Volpe National Transportation Systems Center",
       "url": "https://www.volpe.dot.gov/",
+      "description": "Federal transportation research center in the U.S. Department of Transportation",
       "position": "Student Trainee, Innovative Research Design and Deployment Division",
+      "type": "internship",
       "project": "volpe",
       "location": "Cambridge, MA",
       "startDate": "2024-06",
@@ -105,7 +124,9 @@
     {
       "name": "MIT Department of Urban Studies and Planning",
       "url": "https://dusp.mit.edu/",
+      "description": "MIT's department of urban studies and planning",
       "position": "Data Science and GIS Researcher",
+      "type": "part-time",
       "project": "nbs-dashboard-urop",
       "location": "Cambridge, MA",
       "startDate": "2023-06",
@@ -119,7 +140,9 @@
     {
       "name": "MIT Plasma Science and Fusion Center",
       "url": "https://www.psfc.mit.edu/",
+      "description": "MIT's research center for plasma physics and fusion energy",
       "position": "Machine Learning and Plasma Science Researcher",
+      "type": "part-time",
       "project": "psfc-urop",
       "location": "Cambridge, MA",
       "startDate": "2023-02",
@@ -135,6 +158,7 @@
     {
       "organization": "MIT Student Information Processing Board",
       "url": "https://sipb.mit.edu/",
+      "location": "Cambridge, MA",
       "position": "Student Developer, Member-at-Large",
       "startDate": "2025-02",
       "summary": "Lead development of web applications for students, built with React, Svelte, and Node.js and used daily by thousands of students."
@@ -142,6 +166,7 @@
     {
       "organization": "MIT Dormitory Council",
       "url": "https://dormcon.mit.edu/",
+      "location": "Cambridge, MA",
       "position": "President",
       "startDate": "2025-05",
       "endDate": "2026-05",

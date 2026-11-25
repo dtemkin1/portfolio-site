@@ -9,6 +9,21 @@ export function resumeDate(text: string): string {
   return monthYearLabel(year, month);
 }
 
+// a JSON Resume location, which is free text or its parts, as text: "Cambridge, MA"
+export type Place =
+  | string
+  | {
+      city?: string | undefined;
+      region?: string | undefined;
+      countryCode?: string | undefined;
+    };
+export const placeName = (place?: Place): string | undefined =>
+  typeof place === "string"
+    ? place
+    : [place?.city, place?.region ?? place?.countryCode]
+        .filter(Boolean)
+        .join(", ") || undefined;
+
 // "Aug 2025 – May 2026", or "Aug 2026 – present" with no end date
 export const dateRange = (start: string, end?: string) =>
   `${resumeDate(start)} – ${end ? resumeDate(end) : "present"}`;
