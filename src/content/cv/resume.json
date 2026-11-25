@@ -26,6 +26,7 @@
   "education": [
     {
       "institution": "Massachusetts Institute of Technology",
+      "url": "https://www.mit.edu/",
       "studyType": "SM",
       "area": "Transportation (Networks and Systems)",
       "location": "Cambridge, MA",
@@ -34,6 +35,7 @@
     },
     {
       "institution": "Massachusetts Institute of Technology",
+      "url": "https://www.mit.edu/",
       "studyType": "SB",
       "area": "Computer Science and Engineering and in Planning",
       "location": "Cambridge, MA",
@@ -51,18 +53,18 @@
   "work": [
     {
       "name": "MIT JTL-Transit Lab",
+      "url": "https://mobility.mit.edu/",
       "position": "Graduate Research Assistant",
       "project": "jtl-k12",
-      "url": "https://mobility.mit.edu/people/diego-temkin/",
       "location": "Cambridge, MA",
       "startDate": "2026-08",
       "summary": "Research on how K-12 students use public transit, with the Chicago Transit Authority."
     },
     {
       "name": "MIT Laboratory for Information and Decision Systems",
+      "url": "https://lids.mit.edu/",
       "position": "CEE Research and Innovation Scholar, Advanced Undergraduate Research Program",
       "project": "superurop",
-      "url": "https://zardini.mit.edu/people/diego-temkin/",
       "location": "Cambridge, MA",
       "startDate": "2025-08",
       "endDate": "2026-05",
@@ -74,6 +76,7 @@
     },
     {
       "name": "Washington Metropolitan Area Transit Authority",
+      "url": "https://www.wmata.com/",
       "position": "Junior Associate Engineer, Reliability Engineering and Asset Management",
       "project": "wmata",
       "location": "Washington, DC",
@@ -87,6 +90,7 @@
     },
     {
       "name": "U.S. DOT Volpe National Transportation Systems Center",
+      "url": "https://www.volpe.dot.gov/",
       "position": "Student Trainee, Innovative Research Design and Deployment Division",
       "project": "volpe",
       "location": "Cambridge, MA",
@@ -100,6 +104,7 @@
     },
     {
       "name": "MIT Department of Urban Studies and Planning",
+      "url": "https://dusp.mit.edu/",
       "position": "Data Science and GIS Researcher",
       "project": "nbs-dashboard-urop",
       "location": "Cambridge, MA",
@@ -113,6 +118,7 @@
     },
     {
       "name": "MIT Plasma Science and Fusion Center",
+      "url": "https://www.psfc.mit.edu/",
       "position": "Machine Learning and Plasma Science Researcher",
       "project": "psfc-urop",
       "location": "Cambridge, MA",
@@ -128,12 +134,14 @@
   "volunteer": [
     {
       "organization": "MIT Student Information Processing Board",
+      "url": "https://sipb.mit.edu/",
       "position": "Student Developer, Member-at-Large",
       "startDate": "2025-02",
       "summary": "Lead development of web applications for students, built with React, Svelte, and Node.js and used daily by thousands of students."
     },
     {
       "organization": "MIT Dormitory Council",
+      "url": "https://dormcon.mit.edu/",
       "position": "President",
       "startDate": "2025-05",
       "endDate": "2026-05",
