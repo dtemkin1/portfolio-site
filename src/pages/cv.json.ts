@@ -1,3 +1,4 @@
+import resumeSchema from "@jsonresume/schema/schema.json";
 import type { APIRoute } from "astro";
 import { getCollection, getEntry } from "astro:content";
 
@@ -21,6 +22,7 @@ export const GET: APIRoute = async ({ site }) => {
   });
   return Response.json({
     ...cv.data,
+    $schema: resumeSchema.$id,
     work: cv.data.work.map(withProject),
     volunteer: cv.data.volunteer.map(withProject),
     publications: publications.map(resumePublication),

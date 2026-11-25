@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "$schema": "../../../.astro/collections/cv.schema.json",
   "basics": {
     "name": "Diego A. Temkin",
     "label": "SM in Transportation student at MIT, researching how students ride transit",

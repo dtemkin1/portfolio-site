@@ -6,7 +6,6 @@ import {
   dateRange,
   lastCommit,
   newestFirst,
-  RESUME_DATE,
   resumeDate,
   resumePublication,
 } from "./cv";
@@ -20,15 +19,6 @@ test("JSON Resume dates read as a month and year, or a year", () => {
 test("a role with no end date runs to the present", () => {
   expect(dateRange("2025-08", "2026-05")).toBe("Aug 2025 – May 2026");
   expect(dateRange("2026-08")).toBe("Aug 2026 – present");
-});
-
-test("only the date forms JSON Resume allows pass", () => {
-  for (const ok of ["2026", "2026-09", "2026-09-01"]) {
-    expect(ok).toMatch(RESUME_DATE);
-  }
-  for (const bad of ["Sept 2026", "2026/09", "26-09"]) {
-    expect(bad).not.toMatch(RESUME_DATE);
-  }
 });
 
 test("an ORCID work becomes a JSON Resume publication", () =>
@@ -60,14 +50,14 @@ test("a month and day are padded the way JSON Resume writes dates", () =>
     }).releaseDate,
   ).toBe("2026-06-04"));
 
-test("the CV file points editors at the JSON Resume schema", () => {
+test("the CV file points editors at the collection's generated schema", () => {
   const cv = JSON.parse(
     readFileSync(
       new URL("../../content/cv/resume.json", import.meta.url),
       "utf8",
     ),
   );
-  expect(cv.$schema).toMatch(/jsonresume\/resume-schema/);
+  expect(cv.$schema).toBe("../../../.astro/collections/cv.schema.json");
 });
 
 test("an honor names its awarder only when the title doesn't already", () => {

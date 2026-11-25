@@ -3,9 +3,7 @@ import { execFileSync } from "node:child_process";
 import { link, type Publication, venue } from "./publications";
 import { monthYearLabel } from "./work";
 
-// JSON Resume dates: "2026", "2026-09", or "2026-09-01"
-export const RESUME_DATE = /^[12]\d{3}(-[01]\d(-[0-3]\d)?)?$/;
-
+// a JSON Resume date ("2026", "2026-09", or "2026-09-01"; the standard's schema checks the form)
 export function resumeDate(text: string): string {
   const [year, month] = text.split("-").map(Number);
   return monthYearLabel(year, month);
