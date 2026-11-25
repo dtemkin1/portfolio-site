@@ -39,27 +39,27 @@ const updated = new Intl.DateTimeFormat("en-US", {
   timeZone: "America/New_York",
 }).format(lastCommit(FILE));
 
-// printed only, since on screen the nav already links these; written out as addresses because paper can't be clicked.
+// Printed only, since on screen the nav already links these. The email and site are written
+// out; profiles read as "LinkedIn: diego-temkin".
 // Two rows, so a wrapped row never starts with a separator: how to reach me, then the scholarly records.
 const SCHOLARLY = new Set(["ORCID", "Google Scholar"]);
-const asLinks = (hrefs: string[]) =>
-  hrefs.map((href) => ({ href, label: shortAddress(href) }));
+const profileLinks = (scholarly: boolean) =>
+  basics.profiles
+    .filter(({ network }) => SCHOLARLY.has(network) === scholarly)
+    .map(({ network, username, url }) => ({
+      href: url,
+      label: `${network}: ${username}`,
+    }));
 const contactRows = [
   [
     ...[placeName(basics.location)].filter((text) => text !== undefined),
-    ...asLinks([
-      `mailto:${basics.email}`,
-      basics.url,
-      ...basics.profiles
-        .filter(({ network }) => !SCHOLARLY.has(network))
-        .map(({ url }) => url),
-    ]),
+    ...[`mailto:${basics.email}`, basics.url].map((href) => ({
+      href,
+      label: shortAddress(href),
+    })),
+    ...profileLinks(false),
   ],
-  asLinks(
-    basics.profiles
-      .filter(({ network }) => SCHOLARLY.has(network))
-      .map(({ url }) => url),
-  ),
+  profileLinks(true),
 ].filter((row) => row.length > 0);
 
 // a role's project must be a work page that's published, or the link would go nowhere

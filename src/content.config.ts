@@ -103,6 +103,7 @@ const cvCollection = defineCollection({
           .array(
             z.looseObject({
               network: z.string(),
+              username: z.string().min(1),
               url: z.httpUrl(),
             }),
           )
