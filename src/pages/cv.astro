@@ -442,7 +442,7 @@ const skillLines = [
       border-left: 0.75pt solid var(--print-grey);
     }
 
-    /* the contact links are written out as their addresses already */
+    /* each contact already shows its address or username, and the PDF links it */
     .contact a::after {
       content: none !important;
     }
@@ -470,7 +470,7 @@ const skillLines = [
       border-top: 0.75pt solid var(--print-blue);
     }
 
-    /* on paper a link can't be clicked, so it reads as plain text */
+    /* links aren't underlined on paper; the PDF keeps them clickable */
     main a,
     .notice :global(a) {
       text-decoration: none !important;

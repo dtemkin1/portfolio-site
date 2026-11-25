@@ -70,15 +70,9 @@ const {
     line-height: 1.35;
   }
 
-  /* a linked heading reads like the others, like the publication titles */
+  /* black like the other headings; the underline shows it's a link, since touch screens have no hover */
   h3 a {
     color: inherit;
-    text-decoration: none;
-  }
-
-  h3 a:hover,
-  h3 a:focus-visible {
-    text-decoration: underline;
   }
 
   /* the role or school, in italics so the heading leads */
@@ -119,6 +113,7 @@ const {
   }
 
   @media (pointer: coarse), (max-width: 36rem) {
+    h3 a,
     .project a {
       padding-block: 0.85rem;
       margin-block: -0.85rem;

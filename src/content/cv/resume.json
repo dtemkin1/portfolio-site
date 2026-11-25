@@ -76,7 +76,6 @@
     {
       "name": "MIT Laboratory for Information and Decision Systems",
       "url": "https://lids.mit.edu/",
-      "description": "MIT's interdepartmental research center for information and decision systems",
       "position": "CEE Research and Innovation Scholar, Advanced Undergraduate Research Program",
       "type": "part-time",
       "project": "superurop",
@@ -124,7 +123,6 @@
     {
       "name": "MIT Department of Urban Studies and Planning",
       "url": "https://dusp.mit.edu/",
-      "description": "MIT's department of urban studies and planning",
       "position": "Data Science and GIS Researcher",
       "type": "part-time",
       "project": "nbs-dashboard-urop",
@@ -140,7 +138,6 @@
     {
       "name": "MIT Plasma Science and Fusion Center",
       "url": "https://www.psfc.mit.edu/",
-      "description": "MIT's research center for plasma physics and fusion energy",
       "position": "Machine Learning and Plasma Science Researcher",
       "type": "part-time",
       "project": "psfc-urop",
