@@ -34,6 +34,10 @@ It becomes three things at build time:
 - `/cv.json`, the full JSON Resume, with the publications from ORCID added
 - `/cv.pdf`, printed from `/cv/` by `scripts/cv-pdf.mjs` at the end of `pnpm build`, using the Google Chrome you have installed
 
+A role can link its work page with `"project": "<file name in src/content/work>"`.
+
+After each successful deploy, the `cv-gist` workflow copies the live `/cv.json` into a Gist as `resume.json`, for tools that read JSON Resume from a Gist. It needs the repository variable `CV_GIST_ID` (the Gist's ID) and the secret `GIST_TOKEN` (a token that can edit Gists); without the variable, the step is skipped.
+
 ## Publications
 
 Publications and presentations, on the CV and the work pages that cite them, load from the public ORCID record (`PROFILES.orcid` in `src/lib/site.ts`) at build time. Edit them on ORCID; the site rebuilds every morning, or run the deploy from the Actions tab to update sooner. The authors come from each work's BibTeX on ORCID, or from its contributors when it has none. Locally, an unchanged record isn't refetched, and the last works are used offline. In CI, if ORCID can't be reached, the build fails.

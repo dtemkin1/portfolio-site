@@ -13,27 +13,14 @@ import {
   venueLine,
 } from "../lib/content/publications";
 import { SITE, shortAddress } from "../lib/site";
-import { pageLink } from "../lib/content/work";
-import { getWorkPages } from "../lib/content/work-data";
 
 interface Props {
   entries: CollectionEntry<"publications">[];
-  // link each work to the project page that cites it (not on that page itself)
-  withProjects?: boolean;
   // the date in its own column, like the CV's other entries
   dated?: boolean;
 }
 
-const { entries, withProjects = false, dated = false } = Astro.props;
-
-const projects = new Map<string, { title: string; href: string }>();
-if (withProjects) {
-  for (const work of await getWorkPages()) {
-    for (const { id } of work.data.publications ?? []) {
-      if (!projects.has(id)) projects.set(id, pageLink(work));
-    }
-  }
-}
+const { entries, dated = false } = Astro.props;
 
 const self = parseName(SITE.name);
 const names = new Intl.ListFormat("en", { type: "conjunction" });
@@ -59,7 +46,6 @@ const list = newestFirst(entries.map(({ id, data }) => ({ id, ...data }))).map(
       venue: dated ? venue(publication) : venueLine(publication),
       date: dateLabel(publication),
       note: publication.note,
-      project: projects.get(publication.id),
     };
   },
 );
@@ -93,11 +79,6 @@ const list = newestFirst(entries.map(({ id, data }) => ({ id, ...data }))).map(
         )}
         <span class="aside venue">{item.venue}</span>
         {item.note && <span class="aside">{item.note}</span>}
-        {item.project && (
-          <span class="aside project">
-            Project: <a href={item.project.href}>{item.project.title}</a>
-          </span>
-        )}
         {item.address && <span class="aside address">{item.address}</span>}
         {item.bibtex && (
           <details class="aside">
@@ -147,8 +128,7 @@ const list = newestFirst(entries.map(({ id, data }) => ({ id, ...data }))).map(
     font-style: italic;
   }
 
-  /* the project link and the BibTeX toggle stay small, as extras */
-  .dated .project,
+  /* the BibTeX toggle stays small, as an extra */
   .dated details.aside {
     font-size: var(--text-small);
   }
@@ -181,17 +161,15 @@ const list = newestFirst(entries.map(({ id, data }) => ({ id, ...data }))).map(
   }
 
   @media (pointer: coarse), (max-width: 36rem) {
+    /* padding, not flex, so the toggle keeps its arrow */
     summary {
-      display: flex;
-      align-items: center;
-      min-height: 44px;
+      padding-block: 0.75rem;
     }
   }
 
   /* .entries .aside is display: block, so these need the extra class to win */
   @media print {
-    details.aside,
-    .project {
+    details.aside {
       display: none;
     }
 

@@ -1,0 +1,26 @@
+name: Publish the CV to its Gist
+
+# After each successful deploy, copies the live /cv.json into the Gist as resume.json,
+# so JSON Resume tools can read it. Skipped until the CV_GIST_ID variable is set.
+on:
+  workflow_run:
+    workflows: [Deploy to GitHub Pages]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    if: vars.CV_GIST_ID != '' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy /cv.json into the Gist
+        env:
+          GH_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ vars.CV_GIST_ID }}
+        run: |
+          curl --fail --silent --show-error https://www.diegotemkin.com/cv.json -o cv.json
+          jq -n --arg content "$(jq . cv.json)" '{files: {"resume.json": {content: $content}}}' |
+            gh api --method PATCH "gists/$GIST_ID" --input - --silent

@@ -11,6 +11,8 @@ import {
   newestFirst,
 } from "../lib/content/cv";
 import { writingSections } from "../lib/content/publications";
+import { pageLink } from "../lib/content/work";
+import { getWorkPages } from "../lib/content/work-data";
 import { PROFILES, shortAddress } from "../lib/site";
 
 const FILE = "src/content/cv/resume.json";
@@ -42,11 +44,26 @@ const contact = [
   ...basics.profiles.map(({ url }) => url),
 ].map((href) => ({ href, label: shortAddress(href) }));
 
+// a role's project must be a work page that's published, or the link would go nowhere
+const pages = new Map((await getWorkPages()).map((page) => [page.id, page]));
+const projectLink = (org: string, project?: { id: string }) => {
+  if (!project) return undefined;
+  const page = pages.get(project.id);
+  if (!page) {
+    throw new Error(
+      `${FILE}: ${org}'s project "${project.id}" isn't a published work page with content.`,
+    );
+  }
+  return pageLink(page);
+};
+
 // Experience and Leadership read the same way, under the organization's name
 const role = (
   org: string,
   entry: {
     position: string;
+    url?: string | undefined;
+    project?: { id: string } | undefined;
     location?: string | undefined;
     startDate: string;
     endDate?: string | undefined;
@@ -55,11 +72,13 @@ const role = (
   },
 ) => ({
   heading: org,
+  href: entry.url,
   sub: entry.position,
   place: entry.location,
   dates: dateRange(entry.startDate, entry.endDate),
   summary: entry.summary,
   points: entry.highlights,
+  project: projectLink(org, entry.project),
 });
 const experience = work.map((entry) => role(entry.name, entry));
 const leadership = volunteer.map((entry) => role(entry.organization, entry));
@@ -153,7 +172,7 @@ const skillLines = [
     {writing.map(({ title, entries }, i) => (
       <section class="notice">
         <h2>{title}</h2>
-        <Publications entries={entries} withProjects dated />
+        <Publications entries={entries} dated />
         {/* the Scholar and ORCID line closes the last writing section */}
         {i === writing.length - 1 && (
           <p class="elsewhere">
@@ -281,10 +300,11 @@ const skillLines = [
     list-style: none;
   }
 
+  /* the year stays on the right at every width; only the title wraps */
   .honors li {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: baseline;
     gap: 0 1.5rem;
   }
 

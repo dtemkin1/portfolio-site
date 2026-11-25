@@ -62,6 +62,9 @@ const notesCollection = defineCollection({
 const date = z.string().regex(RESUME_DATE, "Use YYYY, YYYY-MM, or YYYY-MM-DD");
 const role = {
   position: z.string().min(1),
+  url: z.httpUrl().optional(),
+  // a work page on this site, by its file name (not JSON Resume, which allows extra fields)
+  project: reference("work").optional(),
   location: z.string().optional(),
   startDate: date,
   endDate: date.optional(),

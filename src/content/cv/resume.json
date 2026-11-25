@@ -52,25 +52,30 @@
     {
       "name": "MIT JTL-Transit Lab",
       "position": "Graduate Research Assistant",
+      "project": "jtl-k12",
+      "url": "https://mobility.mit.edu/people/diego-temkin/",
       "location": "Cambridge, MA",
       "startDate": "2026-08",
-      "highlights": []
+      "summary": "Research on how K-12 students use public transit, with the Chicago Transit Authority."
     },
     {
       "name": "MIT Laboratory for Information and Decision Systems",
-      "position": "CEE Research & Innovation Scholar, Advanced Undergraduate Research Program",
+      "position": "CEE Research and Innovation Scholar, Advanced Undergraduate Research Program",
+      "project": "superurop",
+      "url": "https://zardini.mit.edu/people/diego-temkin/",
       "location": "Cambridge, MA",
       "startDate": "2025-08",
       "endDate": "2026-05",
       "highlights": [
-        "Developed a general-purpose bus network redesign framework using monotone co-design theory and Mixed-Integer Linear Programming to jointly optimize cost, coverage, and equity objectives while satisfying fleet, labor, and policy constraints.",
-        "Built integrated data pipelines combining OpenStreetMap networks, estimated travel times, OD demand, and ACS demographic data to generate transparent Pareto frontiers for multi-objective transit planning tradeoff analysis.",
+        "Developed a general-purpose bus network redesign framework using monotone co-design theory and mixed-integer linear programming to jointly optimize cost, coverage, and equity objectives while satisfying fleet, labor, and policy constraints.",
+        "Built integrated data pipelines combining OpenStreetMap networks, estimated travel times, origin-destination demand, and American Community Survey demographic data to generate transparent Pareto frontiers for multi-objective transit planning tradeoff analysis.",
         "Applied the framework to a real-world school bus network in Framingham, MA to evaluate the existing routing system, generate alternative designs, and demonstrate structurally achievable improvements in efficiency, coverage, and accessibility."
       ]
     },
     {
       "name": "Washington Metropolitan Area Transit Authority",
-      "position": "Junior Associate Engineer, Reliability Engineering & Asset Management",
+      "position": "Junior Associate Engineer, Reliability Engineering and Asset Management",
+      "project": "wmata",
       "location": "Washington, DC",
       "startDate": "2025-06",
       "endDate": "2025-08",
@@ -83,35 +88,38 @@
     {
       "name": "U.S. DOT Volpe National Transportation Systems Center",
       "position": "Student Trainee, Innovative Research Design and Deployment Division",
+      "project": "volpe",
       "location": "Cambridge, MA",
       "startDate": "2024-06",
       "endDate": "2025-05",
       "highlights": [
-        "Created analysis and validation pipelines for the cross-agency Work Zone Data Exchange (WZDx) project, used by over 27 states, to facilitate open standard development.",
-        "Documented and developed tools for interfacing with the General Modeling Network Specification (GMNS), allowing for increased ease-of-use for modeling real-world transportation networks.",
+        "Created analysis and validation pipelines for the cross-agency Work Zone Data Exchange (WZDx) project, used by more than 27 states, to facilitate open standard development.",
+        "Documented and developed tools for working with the General Modeling Network Specification (GMNS), making it easier to model real-world transportation networks.",
         "Supported the interdepartmental U.S. DOT AI Working Group, enhancing the ability for key stakeholders to engage with modern technological developments."
       ]
     },
     {
       "name": "MIT Department of Urban Studies and Planning",
       "position": "Data Science and GIS Researcher",
+      "project": "nbs-dashboard-urop",
       "location": "Cambridge, MA",
       "startDate": "2023-06",
       "endDate": "2024-06",
       "highlights": [
-        "Analyzed nature-based urban infrastructure solutions research data and developed a digital platform that can be used in community outreach to implement priorities.",
+        "Analyzed research data on nature-based solutions for urban infrastructure and developed a digital platform that can be used in community outreach to implement priorities.",
         "Integrated spatial data analysis and GIS software in Python to create an online prototype for digital mapping and deployed a final iteration using a React front-end.",
         "Configured Linux server infrastructure to host and manage web production, enabling widespread usage."
       ]
     },
     {
-      "name": "Plasma Science and Fusion Center at MIT",
+      "name": "MIT Plasma Science and Fusion Center",
       "position": "Machine Learning and Plasma Science Researcher",
+      "project": "psfc-urop",
       "location": "Cambridge, MA",
       "startDate": "2023-02",
       "endDate": "2023-06",
       "highlights": [
-        "Created a digital adaptation of the long-standing Alcator C-Mod tokamak experiment, which was operated for 25 years and took 50k shots (instances) of plasma experiments.",
+        "Created a digital adaptation of the long-standing Alcator C-Mod tokamak experiment, which was operated for 25 years and took 50,000 shots of plasma experiments.",
         "Constructed a generative surrogate model that can predict and categorize plasma current state, in order to evaluate the model's applicability to future experiments as a fast predictor of performance.",
         "Practiced machine learning applications in plasma science and contributed to this field through hands-on research and experimentation."
       ]
@@ -119,17 +127,17 @@
   ],
   "volunteer": [
     {
-      "organization": "Student Information Processing Board",
+      "organization": "MIT Student Information Processing Board",
       "position": "Student Developer, Member-at-Large",
       "startDate": "2025-02",
-      "summary": "Develop and spearhead the creation of multiple web applications using modern frameworks (such as React, Svelte, Node.js, etc.) to enhance the technological experience of students, used by thousands of students on a daily basis."
+      "summary": "Lead development of web applications for students, built with React, Svelte, and Node.js and used daily by thousands of students."
     },
     {
-      "organization": "Dormitory Council",
+      "organization": "MIT Dormitory Council",
       "position": "President",
       "startDate": "2025-05",
       "endDate": "2026-05",
-      "summary": "Advocated for more than 3,500 undergraduate students residing in university housing to administrators. Engaged with various stakeholders across the Institute to advance policy issues and pilot programs relevant to student life, managing and allocating a budget of over $75,000."
+      "summary": "Advocated for more than 3,500 undergraduate students residing in university housing to administrators. Engaged with various stakeholders across the Institute to advance policy issues and pilot programs relevant to student life, managing and allocating a budget of more than $75,000."
     }
   ],
   "awards": [
@@ -193,6 +201,19 @@
         "GIS",
         "Machine learning"
       ]
+    },
+    {
+      "name": "Tools",
+      "keywords": [
+        "React",
+        "Svelte",
+        "Node.js",
+        "Docker",
+        "Linux",
+        "PostgreSQL",
+        "QGIS",
+        "Gurobi"
+      ]
     }
   ],
   "languages": [
@@ -207,13 +228,13 @@
   ],
   "interests": [
     {
-      "name": "Software Development"
+      "name": "Software development"
     },
     {
-      "name": "Data Science"
+      "name": "Data science"
     },
     {
-      "name": "Transportation Operations and Planning"
+      "name": "Transportation operations and planning"
     }
   ]
 }

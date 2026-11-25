@@ -6,5 +6,6 @@
   },
   "json.schemaDownload.trustedDomains": {
     "https://raw.githubusercontent.com": true
-  }
+  },
+  "files.insertFinalNewline": true
 }

@@ -2,21 +2,34 @@
 // One CV entry: what and where on the left, place and dates on the right, then the details.
 interface Props {
   heading: string;
+  // the organization's own page about the role, if there is one
+  href?: string | undefined;
   // the role, or the school, on the line under the heading
   sub?: string | undefined;
   place?: string | undefined;
   dates: string;
   summary?: string | undefined;
   points?: string[];
+  // this site's page about the work
+  project?: { title: string; href: string } | undefined;
 }
 
-const { heading, sub, place, dates, summary, points = [] } = Astro.props;
+const {
+  heading,
+  href,
+  sub,
+  place,
+  dates,
+  summary,
+  points = [],
+  project,
+} = Astro.props;
 ---
 
 <div class="entry">
   <div class="head">
     <h3>
-      {heading}
+      {href ? <a href={href}>{heading}</a> : heading}
       {sub && <span class="sub">{sub}</span>}
     </h3>
     <p class="when">
@@ -31,6 +44,11 @@ const { heading, sub, place, dates, summary, points = [] } = Astro.props;
         <li>{point}</li>
       ))}
     </ul>
+  )}
+  {project && (
+    <p class="project">
+      Project: <a href={project.href}>{project.title}</a>
+    </p>
   )}
 </div>
 
@@ -50,6 +68,17 @@ const { heading, sub, place, dates, summary, points = [] } = Astro.props;
     flex: 1 1 22rem;
     font-size: 1.125rem;
     line-height: 1.35;
+  }
+
+  /* a linked heading reads like the others, like the publication titles */
+  h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h3 a:hover,
+  h3 a:focus-visible {
+    text-decoration: underline;
   }
 
   /* the role or school, in italics so the heading leads */
@@ -84,6 +113,18 @@ const { heading, sub, place, dates, summary, points = [] } = Astro.props;
     margin-top: 0.5rem;
   }
 
+  /* small, like the project lines under the publications */
+  .project {
+    font-size: var(--text-small);
+  }
+
+  @media (pointer: coarse), (max-width: 36rem) {
+    .project a {
+      padding-block: 0.85rem;
+      margin-block: -0.85rem;
+    }
+  }
+
   /* Once the head wraps, the dates sit under the heading, so they line up with it. */
   @media (max-width: 36rem) {
     .when {
@@ -105,6 +146,16 @@ const { heading, sub, place, dates, summary, points = [] } = Astro.props;
 
     h3 {
       font-size: 10pt;
+    }
+
+    /* the link still works in the PDF, so its address isn't printed */
+    h3 a::after {
+      content: none !important;
+    }
+
+    /* paper leaves out the site's own pages, as it does under the publications */
+    .project {
+      display: none;
     }
 
     .when {
